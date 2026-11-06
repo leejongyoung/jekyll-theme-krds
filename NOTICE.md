@@ -14,7 +14,7 @@
 Attribution (shown in every page footer by `_includes/footer.html`; do not remove it):
 
 > 이 사이트의 디자인은 행정안전부가 2024년 제작하여 공공누리 제1유형으로 개방한 범정부 UI/UX 디자인시스템(KRDS)을
-> 바탕으로 한 비공식 Jekyll 테마 jekyll-theme-krds를 사용합니다.
+> 바탕으로 한 Jekyll 테마 jekyll-theme-krds를 사용합니다.
 
 ### What is vendored, and where
 

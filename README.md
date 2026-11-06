@@ -1,6 +1,6 @@
 # jekyll-theme-krds
 
-> **비공식 테마입니다.** 행정안전부가 공공누리 제1유형으로 개방한 [범정부 UI/UX 디자인시스템(KRDS)](https://www.krds.go.kr)을 바탕으로 만든 개인 프로젝트이며, 정부 및 KRDS 운영 기관과 관련이 없습니다.
+> 행정안전부가 공공누리 제1유형으로 개방한 [범정부 UI/UX 디자인시스템(KRDS)](https://www.krds.go.kr)을 바탕으로 만든 Jekyll 테마입니다.
 > *Jekyll theme based on KRDS (Korea Design System).*
 
 KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블로그 사이트를 만드는 범용 Jekyll 테마입니다.

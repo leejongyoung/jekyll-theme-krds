@@ -2,7 +2,7 @@
 layout: home
 title: 홈
 hero:
-  eyebrow: 비공식 Jekyll 테마
+  eyebrow: Jekyll 테마
   title: 접근성을 갖춘 KRDS 스타일 사이트를 Jekyll로
   lead: 범정부 UI/UX 디자인시스템(KRDS)의 토큰과 컴포넌트를 그대로 가져와, 글자 크기와 화면 모드 설정이 되는 문서·블로그 사이트를 만듭니다.
   actions:
