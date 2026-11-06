@@ -4,8 +4,8 @@
 # GitHub Pages의 기본 빌더(Jekyll 3)는 이 테마를 빌드하지 못하므로, Jekyll 4로 여기서 직접 빌드한다.
 #
 # 사용 방법
-#   1. 이 파일을 .github/workflows/pages.yml 로 복사하고 main에 푸시한다(첫 실행이 gh-pages 브랜치를 만든다).
-#   2. 저장소 Settings → Pages → Source: "Deploy from a branch", Branch: gh-pages / (root)
+#   1. 이 파일을 .github/workflows/pages.yml 로 복사하고 main에 푸시한다.
+#   2. 저장소 Settings → Pages → Source 를 "GitHub Actions"로 지정한다.
 #   3. 프로젝트 사이트라면 _config.yml 에 baseurl: /저장소이름 을 넣는다.
 #
 # 사이트 저장소에는 Gemfile(jekyll ~> 4.4, jekyll-remote-theme 또는 jekyll-theme-krds)이 있어야 한다.
@@ -16,17 +16,23 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+      - uses: actions/configure-pages@v6
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
@@ -35,13 +41,9 @@ jobs:
         env:
           JEKYLL_ENV: production
         run: bundle exec jekyll build --strict_front_matter -d _pages
-      - name: Publish to gh-pages
-        run: |
-          cd _pages
-          touch .nojekyll   # 이미 빌드된 정적 파일이므로 GitHub가 다시 처리하지 않게 한다
-          git init -q -b gh-pages
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -q -m "deploy: ${GITHUB_SHA::7}"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

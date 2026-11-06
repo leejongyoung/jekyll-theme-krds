@@ -17,7 +17,7 @@ plugins:
 
 ## GitHub Pages에 올리기
 
-GitHub Pages의 기본 빌더(Jekyll 3)는 이 테마를 빌드하지 못합니다. GitHub Actions에서 Jekyll 4로 직접 빌드해서 `gh-pages` 브랜치로 올리세요. 이 사이트도 그렇게 배포합니다. 워크플로 템플릿은 저장소의 `templates/pages-deploy.yml`입니다.
+GitHub Pages의 기본 빌더(Jekyll 3)는 이 테마를 빌드하지 못합니다. 저장소의 Pages Source를 **GitHub Actions**로 지정하고, Jekyll 4로 빌드한 정적 파일을 공식 Pages Actions로 배포하세요. 이 사이트도 그렇게 배포합니다. 워크플로 템플릿은 저장소의 `templates/pages-deploy.yml`입니다.
 
 ## gem으로 설치
 

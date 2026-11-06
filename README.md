@@ -57,11 +57,11 @@ theme: jekyll-theme-krds
 
 ### GitHub Pages에 배포하기 (Actions)
 
-1. [`templates/pages-deploy.yml`](templates/pages-deploy.yml)을 사이트 저장소의 `.github/workflows/`에 복사하고 `main`에 푸시합니다. 워크플로가 Jekyll 4로 빌드해서 `gh-pages` 브랜치를 만듭니다.
-2. 저장소 **Settings → Pages**에서 Source를 *Deploy from a branch*, Branch를 `gh-pages` / `(root)`로 지정합니다.
+1. [`templates/pages-deploy.yml`](templates/pages-deploy.yml)을 사이트 저장소의 `.github/workflows/`에 복사하고 `main`에 푸시합니다. 워크플로가 Jekyll 4로 빌드한 정적 파일을 공식 Pages Actions로 배포합니다.
+2. 저장소 **Settings → Pages**에서 Source를 *GitHub Actions*로 지정합니다.
 3. 프로젝트 사이트(`https://사용자.github.io/저장소/`)라면 `_config.yml`에 `baseurl: /저장소`를 넣습니다.
 
-이 저장소의 [데모](https://leejongyoung.github.io/jekyll-theme-krds/)도 같은 방식으로 배포됩니다([`.github/workflows/pages.yml`](.github/workflows/pages.yml)). 워크플로가 올린 뒤 GitHub의 Pages 배포 단계가 몇 분 걸릴 때도 있습니다.
+이 저장소의 [데모](https://leejongyoung.github.io/jekyll-theme-krds/)도 같은 방식으로 배포됩니다([`.github/workflows/pages.yml`](.github/workflows/pages.yml)). 액션은 Node.js 24 버전(`checkout@v7`, `configure-pages@v6`, `upload-pages-artifact@v5`, `deploy-pages@v5`)이고 러너는 `ubuntu-24.04`로 고정했습니다.
 
 ## 시작하기
 

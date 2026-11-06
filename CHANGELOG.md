@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-11-07
+
+### 수정
+- PC 문서 레이아웃에서 사이드 내비게이션과 페이지 목차가 1200px 컨테이너를 함께 차지해 article이 636px까지 줄던 문제. 1440px 이상에서는 문서 컨테이너를 넓히고, 1024~1439px에서는 목차를 숨겨 2열로 표시
+- GitHub Pages 배포를 `gh-pages` 브랜치 기반 자동 워크플로에서 공식 Pages Actions로 전환. Node.js 24 액션(`checkout@v7`, `configure-pages@v6`, `upload-pages-artifact@v5`, `deploy-pages@v5`)과 `ubuntu-24.04` 러너를 사용해 Node.js 20 지원 종료·`ubuntu-latest` 마이그레이션 경고 제거
+- Dependabot PR #1의 `actions/checkout@v7` 업데이트를 CI·라벨·Pages 워크플로에 반영
+
 ## [1.2.0] - 2026-11-07
 
 글에 태그를 달아 모아 볼 수 있고, 사이트 안에서 검색할 수 있습니다. 검색은 서버나 외부 서비스 없이 **브라우저에서만** 동작합니다.

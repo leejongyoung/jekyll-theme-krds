@@ -150,12 +150,22 @@ body {
 }
 
 // ── 문서 레이아웃: 사이드 내비 | 본문 | 이 페이지의 구성 ──
+// 기본 1200px 컨테이너에 세 열을 넣으면 본문이 636px까지 줄어든다.
+// 1440px 이상에서는 문서 컨테이너를 1440px로 넓히고, 1024~1439px에서는 TOC를 숨겨 본문 폭을 확보한다.
+.th-wrap-docs {
+  @media (min-width: 1440px) {
+    max-width: calc(144rem + var(--krds-contents-padding-x) * 2);
+  }
+}
 .th-doc {
   display: grid;
-  grid-template-columns: 26rem minmax(0, 1fr) 24rem;
-  gap: var(--krds-gap-8);
+  grid-template-columns: 24rem minmax(0, 1fr) 22rem;
+  gap: var(--krds-gap-6);
   align-items: start;
-  @include size-large-to-xlarge { grid-template-columns: 24rem minmax(0, 1fr); .th-doc-toc { display: none; } }
+  @media (min-width: 1024px) and (max-width: 1439px) {
+    grid-template-columns: 22rem minmax(0, 1fr);
+    .th-doc-toc { display: none; }
+  }
   @include size-large-less { grid-template-columns: minmax(0, 1fr); .th-doc-toc { display: none; } } // 1fr 만 쓰면 넓은 SVG·표가 열을 밀어내 가로로 넘친다
   &-side { position: sticky; top: var(--krds-gap-6); @include size-large-less { position: static; } }
   &-toc { position: sticky; top: var(--krds-gap-6); }
