@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Chart.js(npm)의 UMD 번들을 내려받아 assets/vendor/chartjs 를 교체한다.
+# 사용: script/vendor-chartjs 4.6.1
+set -euo pipefail
+ver="${1:?사용법: script/vendor-chartjs <npm 버전, 예: 4.6.1>}"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+
+curl -fsSL -o "$tmp/c.tgz" "https://registry.npmjs.org/chart.js/-/chart.js-$ver.tgz"
+tar -xzf "$tmp/c.tgz" -C "$tmp" package/dist/chart.umd.js package/LICENSE.md package/package.json
+got="$(python3 -c "import json;print(json.load(open('$tmp/package/package.json'))['version'])")"
+[ "$got" = "$ver" ] || { echo "버전 불일치: $got != $ver" >&2; exit 1; }
+
+dest="$root/assets/vendor/chartjs"
+rm -rf "$dest"; mkdir -p "$dest"
+cp "$tmp/package/dist/chart.umd.js" "$dest/chart.umd.js"
+cp "$tmp/package/LICENSE.md" "$dest/LICENSE.md"
+chmod -R u=rwX,go=rX "$dest"
+echo "Chart.js $ver 를 가져왔습니다. NOTICE.md 의 버전을 갱신하세요."

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# KaTeX 릴리스를 내려받아 assets/vendor/katex 를 교체한다(수식 렌더링용).
+# 사용: script/vendor-katex v0.19.1
+# 필요: gh CLI(로그인), tar, curl
+set -euo pipefail
+tag="${1:?사용법: script/vendor-katex <KaTeX 태그, 예: v0.19.1>}"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+
+gh release download "$tag" -R KaTeX/KaTeX -p katex.tar.gz -D "$tmp"
+tar -xzf "$tmp/katex.tar.gz" -C "$tmp"
+commit="$(gh api "repos/KaTeX/KaTeX/git/ref/tags/$tag" --jq '.object.sha')"
+k="$tmp/katex"
+dest="$root/assets/vendor/katex"
+
+rm -rf "$dest"
+mkdir -p "$dest/fonts" "$dest/contrib"
+cp "$k/katex.min.js" "$dest/katex.min.js"
+cp "$k/contrib/auto-render.min.js" "$dest/contrib/auto-render.min.js"
+# font-display: swap 이 들어간 변형. 글꼴이 늦게 와도 글자가 먼저 보인다.
+cp "$k/katex-swap.min.css" "$dest/katex-swap.min.css"
+# 최신 브라우저는 모두 woff2를 지원하므로 woff2만 가져온다(CSS의 woff/ttf 대체 경로는 요청되지 않는다).
+cp "$k"/fonts/*.woff2 "$dest/fonts/"
+curl -fsSL "https://raw.githubusercontent.com/KaTeX/KaTeX/$tag/LICENSE" -o "$dest/LICENSE"
+
+chmod -R u=rwX,go=rX "$dest"
+echo "KaTeX $tag (태그 객체 $commit)를 가져왔습니다. NOTICE.md 의 버전을 갱신하세요."

@@ -12,6 +12,9 @@
 </script>
 <link rel="preload" href="{{ '/assets/fonts/PretendardGOV-Regular.subset.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+{%- if th_math %}
+<link rel="stylesheet" href="{{ '/assets/vendor/katex/katex-swap.min.css' | relative_url }}">
+{%- endif %}
 {%- if site.krds.favicon %}
 <link rel="icon" href="{{ site.krds.favicon | relative_url }}">
 {%- endif %}

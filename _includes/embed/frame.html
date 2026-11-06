@@ -1,0 +1,30 @@
+{%- comment -%}
+  외부 콘텐츠(iframe)를 '재생하기' 버튼 뒤에 두는 공통 틀. 버튼을 누르기 전에는 외부 서비스에 연결하지 않는다.
+  직접 쓰지 않고 youtube.html, vimeo.html, iframe.html 이 불러 쓴다.
+  매개변수: src(필수, https), title(필수), provider, link, caption, ratio, thumb, allow, sandbox, button, load(click|eager)
+{%- endcomment -%}
+{%- assign ratio = include.ratio | default: '16 / 9' -%}
+{%- assign provider = include.provider | default: '외부 서비스' -%}
+{%- assign title = include.title | default: provider -%}
+{%- assign src_head = include.src | slice: 0, 8 -%}
+{%- if src_head != 'https://' %}
+<p class="th-embed-error" role="alert">임베드 주소는 https:// 로 시작해야 합니다: {{ include.src | escape }}</p>
+{%- else %}
+<figure class="th-embed"{% if include.load != 'eager' %} data-th-embed data-embed-src="{{ include.src | escape }}" data-embed-title="{{ title | escape }}"{% if include.allow %} data-embed-allow="{{ include.allow | escape }}"{% endif %}{% if include.sandbox %} data-embed-sandbox="{{ include.sandbox | escape }}"{% endif %}{% endif %}>
+  <div class="th-embed-frame" style="--th-embed-ratio: {{ ratio | escape }}">
+    {%- if include.load == 'eager' %}
+    <iframe src="{{ include.src | escape }}" title="{{ title | escape }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen{% if include.allow %} allow="{{ include.allow | escape }}"{% endif %}{% if include.sandbox %} sandbox="{{ include.sandbox | escape }}"{% endif %}></iframe>
+    {%- else %}
+      {%- if include.thumb %}<img class="th-embed-thumb" src="{{ include.thumb | escape }}" alt="" loading="lazy">{% endif %}
+    <div class="th-embed-cover">
+      <button type="button" class="krds-btn large primary th-embed-play">{{ include.button | default: '재생하기' }}<span class="th-sr-only">: {{ title }}</span></button>
+      <p class="th-embed-note">{{ provider }} 서버에 연결됩니다. 버튼을 누르기 전에는 연결하지 않습니다.</p>
+    </div>
+    {%- endif %}
+  </div>
+  <figcaption class="th-embed-caption">
+    {%- if include.caption %}{{ include.caption }}{% if include.link %} · {% endif %}{% endif -%}
+    {%- if include.link %}<a href="{{ include.link | escape }}" target="_blank" rel="noopener">{{ provider }}에서 보기<span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
+  </figcaption>
+</figure>
+{%- endif %}

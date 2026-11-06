@@ -1,0 +1,15 @@
+{%- comment -%}
+  Vimeo 동영상. dnt=1(추적 안 함)을 붙이고, 재생 버튼을 누를 때만 연결한다.
+  사용: {% include embed/vimeo.html id="76979871" title="영상 제목" caption="설명" %}
+  매개변수: id(숫자), hash(비공개 영상의 h 값), title, caption, ratio, start(초)
+{%- endcomment -%}
+{%- assign vid = include.id | append: '' -%}
+{%- assign vid_num = vid | plus: 0 -%}
+{%- assign vid_round = vid_num | append: '' -%}
+{%- if vid_num <= 0 or vid_round != vid %}
+<p class="th-embed-error" role="alert">Vimeo 영상 ID(숫자)를 확인해 주세요: {{ vid | escape }}</p>
+{%- else -%}
+  {%- capture vm_src -%}https://player.vimeo.com/video/{{ vid_num }}?autoplay=1&dnt=1{% if include.hash %}&h={{ include.hash | url_encode }}{% endif %}{% if include.start %}#t={{ include.start | plus: 0 }}s{% endif %}{%- endcapture -%}
+  {%- capture vm_link -%}https://vimeo.com/{{ vid_num }}{%- endcapture -%}
+  {%- include embed/frame.html src=vm_src title=include.title provider="Vimeo" link=vm_link caption=include.caption ratio=include.ratio allow="autoplay; fullscreen; picture-in-picture; clipboard-write" button="동영상 재생" -%}
+{%- endif -%}

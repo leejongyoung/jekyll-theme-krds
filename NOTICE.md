@@ -35,6 +35,32 @@ Re-vendor with `script/vendor-krds <tag>`.
 - License: **SIL Open Font License 1.1** — full text in `assets/fonts/PRETENDARD-LICENSE.txt`.
   The font files are redistributed unmodified.
 
-## 3. This theme's own code
+## 3. KaTeX (math rendering)
+
+- Source: <https://github.com/KaTeX/KaTeX> · Version vendored: **v0.19.1**
+- License: **MIT** — `assets/vendor/katex/LICENSE`
+- Files: `katex.min.js`, `contrib/auto-render.min.js`, `katex-swap.min.css` (the `font-display: swap` variant) and the 20 `fonts/*.woff2`
+  files, unmodified. The `.woff`/`.ttf` fallbacks referenced by the CSS are not included (every current browser supports woff2).
+- Loaded only on pages that contain math. Re-vendor with `script/vendor-katex <tag>`.
+
+## 4. Mermaid (diagrams)
+
+- Source: <https://github.com/mermaid-js/mermaid> (npm `mermaid`) · Version vendored: **12.3.0**
+- License: **MIT** — `assets/vendor/mermaid/LICENSE`
+- Files: the ESM build `mermaid.esm.min.mjs` and its lazily loaded `chunks/mermaid.esm.min/*.mjs`, unmodified.
+  Two optional chunks are **not** included to save about 1.9 MB: `elk-*` (ELK layout engine, only for `layout: elk`) and
+  `katex-*` (math inside diagrams). Source maps are omitted. The theme therefore sets `layout: 'dagre'`.
+- The bundle contains Mermaid's dependencies (for example d3, DOMPurify, Cytoscape, dagre-d3-es, roughjs, marked, dayjs, khroma),
+  each under its own license (MIT, ISC, BSD-3-Clause, Apache-2.0 / MPL-2.0 for DOMPurify, ...). See the `mermaid` package metadata on npm.
+- Loaded only on pages that contain a `mermaid` code block. Re-vendor with `script/vendor-mermaid <version>`.
+
+## 5. Chart.js (charts)
+
+- Source: <https://github.com/chartjs/Chart.js> (npm `chart.js`) · Version vendored: **4.6.1**
+- License: **MIT** — `assets/vendor/chartjs/LICENSE.md`
+- File: `chart.umd.js`, unmodified. It bundles `@kurkle/color` (MIT).
+- Loaded only on pages that contain a `chart` code block. Re-vendor with `script/vendor-chartjs <version>`.
+
+## 6. This theme's own code
 
 MIT License, see `LICENSE`.

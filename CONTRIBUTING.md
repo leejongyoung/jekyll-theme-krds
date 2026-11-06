@@ -22,7 +22,7 @@ bundle exec jekyll serve        # http://127.0.0.1:4000
 
 ## 지켜야 할 원칙
 
-1. **KRDS vendor 파일은 직접 고치지 않습니다.** `_sass/vendor/krds`, `assets/js/vendor`, `assets/fonts`, `assets/img/component`는 KRDS 원본입니다. 바꾸고 싶은 값은 CSS 변수 재선언(`_sass/krds-theme/_tokens.scss`)이나 테마 스타일(`_sass/krds-theme`)에서 덮어씁니다. 원본을 새 버전으로 바꿀 때만 `script/vendor-krds <태그>`를 사용하고 [NOTICE.md](NOTICE.md)의 버전·커밋을 고칩니다.
+1. **KRDS vendor 파일은 직접 고치지 않습니다.** `_sass/vendor/krds`, `assets/js/vendor`, `assets/fonts`, `assets/img/component`는 KRDS 원본입니다(`assets/vendor/*`는 외부 라이브러리 원본). 바꾸고 싶은 값은 CSS 변수 재선언(`_sass/krds-theme/_tokens.scss`)이나 테마 스타일(`_sass/krds-theme`)에서 덮어씁니다. 원본을 새 버전으로 바꿀 때만 `script/vendor-krds <태그>`를 사용하고 [NOTICE.md](NOTICE.md)의 버전·커밋을 고칩니다. 수식·다이어그램·차트 라이브러리(`assets/vendor/katex`, `mermaid`, `chartjs`)도 같은 원칙이며 `script/vendor-katex`, `script/vendor-mermaid`, `script/vendor-chartjs`로 바꿉니다.
 2. **푸터의 KRDS 출처 표시를 지우지 않습니다.** KRDS 이용 조건(공공누리 제1유형)상 출처 표시가 필수입니다.
 3. **KRDS 로고·정부 상징·"공식 누리집" 배너 같은 식별 요소를 넣지 않습니다.**
 4. **의존성을 늘리지 않습니다.** 테마 JS는 순수 JavaScript(프레임워크 없음)이고, 런타임 gem은 `jekyll`과 `jekyll-seo-tag`뿐입니다.

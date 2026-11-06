@@ -91,6 +91,34 @@
     });
 
     buildToc();
+    watchScrollables();
+  }
+
+  // 가로로 넘치는 코드·수식 블록은 키보드로 스크롤할 수 있어야 한다(WCAG 2.1.1). 넘칠 때만 포커스를 받게 한다.
+  var SCROLLABLES = [
+    { selector: '.th-prose pre', label: '코드 (가로로 스크롤할 수 있음)' },
+    { selector: '.th-prose .katex-display', label: '수식 (가로로 스크롤할 수 있음)' }
+  ];
+  function markScrollables() {
+    SCROLLABLES.forEach(function (kind) {
+      document.querySelectorAll(kind.selector).forEach(function (el) {
+        if (el.scrollWidth > el.clientWidth + 1) {
+          el.setAttribute('tabindex', '0');
+          el.setAttribute('role', 'region');
+          el.setAttribute('aria-label', kind.label);
+        } else if (el.getAttribute('aria-label') === kind.label) {
+          el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label');
+        }
+      });
+    });
+  }
+  function watchScrollables() {
+    var t;
+    var run = function () { clearTimeout(t); t = setTimeout(markScrollables, 100); };
+    markScrollables();
+    window.addEventListener('resize', run);
+    document.addEventListener('toggle', run, true); // 접혀 있던 details 안의 코드가 펼쳐질 때
+    window.addEventListener('load', run);
   }
 
   // 이 페이지의 구성 ----------------------------------------------------------

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Mermaid(npm)의 ESM 빌드를 내려받아 assets/vendor/mermaid 를 교체한다.
+# 사용: script/vendor-mermaid 12.3.0
+# 다이어그램 종류별 조각을 필요할 때만 불러오는 ESM 빌드를 쓴다(단일 번들은 5.4MB).
+# 용량을 줄이려고 두 조각은 가져오지 않는다. 필요하면 아래 EXCLUDE 에서 빼고 다시 실행한다.
+#   - elk-*    : ELK 레이아웃 엔진(약 1.5MB). 설정에서 layout: elk 를 쓸 때만 필요
+#   - katex-*  : 다이어그램 안의 수식(약 270KB). 다이어그램 안에서 $$ 수식을 쓸 때만 필요
+# 소스맵(.map)도 제외한다.
+set -euo pipefail
+ver="${1:?사용법: script/vendor-mermaid <npm 버전, 예: 12.3.0>}"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+EXCLUDE='^(elk|katex)-'
+
+curl -fsSL -o "$tmp/m.tgz" "https://registry.npmjs.org/mermaid/-/mermaid-$ver.tgz"
+tar -xzf "$tmp/m.tgz" -C "$tmp" package/dist/mermaid.esm.min.mjs package/dist/chunks/mermaid.esm.min package/LICENSE package/package.json
+got="$(python3 -c "import json,sys;print(json.load(open('$tmp/package/package.json'))['version'])")"
+[ "$got" = "$ver" ] || { echo "버전 불일치: $got != $ver" >&2; exit 1; }
+
+dest="$root/assets/vendor/mermaid"
+rm -rf "$dest"; mkdir -p "$dest/chunks/mermaid.esm.min"
+cp "$tmp/package/dist/mermaid.esm.min.mjs" "$dest/mermaid.esm.min.mjs"
+cp "$tmp/package/LICENSE" "$dest/LICENSE"
+for f in "$tmp"/package/dist/chunks/mermaid.esm.min/*.mjs; do
+  b="$(basename "$f")"
+  if [[ "$b" =~ $EXCLUDE ]]; then echo "제외: $b"; continue; fi
+  cp "$f" "$dest/chunks/mermaid.esm.min/$b"
+done
+chmod -R u=rwX,go=rX "$dest"
+echo "Mermaid $ver 를 가져왔습니다($(du -sh "$dest" | cut -f1)). NOTICE.md 의 버전을 갱신하세요."

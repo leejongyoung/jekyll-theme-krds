@@ -1,0 +1,28 @@
+{%- comment -%}
+  YouTube 동영상. 개인정보 보호 도메인(youtube-nocookie.com)을 쓰고, 재생 버튼을 누를 때만 연결한다.
+  사용: {% include embed/youtube.html id="jNQXAC9IVRw" title="영상 제목" start=30 caption="설명" %}
+  매개변수: id 또는 url(watch?v=, youtu.be/, /embed/, /shorts/ 형식), title(필수에 가까움: 스크린리더가 읽는다),
+           start(초), caption, ratio(기본 16 / 9), thumbnail=true(미리보기 이미지를 불러온다: 페이지를 열 때 Google에 연결됨)
+{%- endcomment -%}
+{%- assign yid = include.id -%}
+{%- if yid == nil and include.url -%}
+  {%- if include.url contains 'youtu.be/' -%}
+    {%- assign yid = include.url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first -%}
+  {%- elsif include.url contains '/shorts/' -%}
+    {%- assign yid = include.url | split: '/shorts/' | last | split: '?' | first -%}
+  {%- elsif include.url contains '/embed/' -%}
+    {%- assign yid = include.url | split: '/embed/' | last | split: '?' | first -%}
+  {%- elsif include.url contains 'v=' -%}
+    {%- assign yid = include.url | split: 'v=' | last | split: '&' | first -%}
+  {%- endif -%}
+{%- endif -%}
+{%- assign yid_safe = yid | url_encode -%}
+{%- if yid == nil or yid_safe != yid or yid.size != 11 %}
+<p class="th-embed-error" role="alert">YouTube 동영상 ID를 확인해 주세요(11자리 영문·숫자·-·_): {{ yid | escape }}</p>
+{%- else -%}
+  {%- assign start = include.start | default: 0 | plus: 0 -%}
+  {%- capture yt_src -%}https://www.youtube-nocookie.com/embed/{{ yid }}?autoplay=1&rel=0&playsinline=1{% if start > 0 %}&start={{ start }}{% endif %}{%- endcapture -%}
+  {%- capture yt_link -%}https://www.youtube.com/watch?v={{ yid }}{% if start > 0 %}&t={{ start }}s{% endif %}{%- endcapture -%}
+  {%- if include.thumbnail %}{% capture yt_thumb %}https://i.ytimg.com/vi/{{ yid }}/hqdefault.jpg{% endcapture %}{% endif -%}
+  {%- include embed/frame.html src=yt_src title=include.title provider="YouTube" link=yt_link caption=include.caption ratio=include.ratio thumb=yt_thumb allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" button="동영상 재생" -%}
+{%- endif -%}

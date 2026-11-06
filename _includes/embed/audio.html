@@ -1,0 +1,18 @@
+{%- comment -%}
+  자체 호스팅 오디오(HTML5 <audio>). 대본(transcript) 링크를 함께 넣을 것을 권한다.
+  사용: {% include embed/audio.html src="/assets/media/talk.mp3" title="발표 녹음" transcript="/talk-transcript/" %}
+  매개변수: src(필수), type(기본 audio/mpeg), title(필수에 가까움), caption, transcript(대본 페이지 주소)
+{%- endcomment -%}
+{%- assign src = include.src -%}
+{%- assign src_head = src | slice: 0, 4 -%}
+{%- if src_head != 'http' %}{% assign src = src | relative_url %}{% endif -%}
+<figure class="th-embed th-embed-media th-embed-audio">
+  <audio controls preload="metadata"{% if include.title %} aria-label="{{ include.title | escape }}"{% endif %}>
+    <source src="{{ src }}" type="{{ include.type | default: 'audio/mpeg' }}">
+    <a href="{{ src }}">오디오 내려받기</a>
+  </audio>
+  <figcaption class="th-embed-caption">
+    {%- if include.caption %}{{ include.caption }}{% elsif include.title %}{{ include.title }}{% endif -%}
+    {%- if include.transcript %} · <a href="{{ include.transcript | relative_url }}">대본 보기</a>{% endif -%}
+  </figcaption>
+</figure>

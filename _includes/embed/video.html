@@ -1,0 +1,19 @@
+{%- comment -%}
+  자체 호스팅 동영상(HTML5 <video>). 외부 연결이 없다. 자막(WebVTT)을 함께 넣을 것을 권한다.
+  사용: {% include embed/video.html src="/assets/media/demo.mp4" captions="/assets/media/demo.ko.vtt" title="설명" poster="/assets/media/demo.jpg" %}
+  매개변수: src(필수), type(기본 video/mp4), src2/type2(대체 형식), poster, captions(.vtt), lang(기본 ko), label(기본 한국어),
+           title(스크린리더용 이름), caption(화면에 보이는 설명), ratio
+{%- endcomment -%}
+{%- assign src = include.src -%}
+{%- assign src_head = src | slice: 0, 4 -%}
+{%- if src_head != 'http' %}{% assign src = src | relative_url %}{% endif -%}
+{%- assign lang = include.lang | default: 'ko' -%}
+<figure class="th-embed th-embed-media">
+  <video class="th-embed-video" controls preload="metadata" playsinline{% if include.poster %} poster="{{ include.poster | relative_url }}"{% endif %}{% if include.title %} aria-label="{{ include.title | escape }}"{% endif %}{% if include.ratio %} style="--th-embed-ratio: {{ include.ratio | escape }}"{% endif %}>
+    <source src="{{ src }}" type="{{ include.type | default: 'video/mp4' }}">
+    {%- if include.src2 %}<source src="{{ include.src2 | relative_url }}" type="{{ include.type2 | default: 'video/webm' }}">{% endif %}
+    {%- if include.captions %}<track kind="captions" src="{{ include.captions | relative_url }}" srclang="{{ lang }}" label="{{ include.label | default: '한국어' }}" default>{% endif %}
+    <a href="{{ src }}">동영상 내려받기</a>
+  </video>
+  {%- if include.caption %}<figcaption class="th-embed-caption">{{ include.caption }}</figcaption>{% endif %}
+</figure>

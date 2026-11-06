@@ -1,0 +1,12 @@
+{%- comment -%}
+  그 밖의 외부 페이지(지도, CodePen, 슬라이드 등)를 iframe으로 넣는다. 기본은 재생(불러오기) 버튼 뒤에 두고,
+  sandbox 속성으로 권한을 제한한다.
+  사용: {% include embed/iframe.html url="https://www.openstreetmap.org/export/embed.html?..." title="지도" provider="OpenStreetMap" %}
+  매개변수: url(필수, https), title(필수), provider(표시 이름, 기본은 도메인), link(원본 주소), caption, ratio(기본 4 / 3),
+           load=eager(버튼 없이 바로 불러오기, lazy 로딩), sandbox(기본 allow-scripts allow-same-origin allow-popups allow-forms), allow
+{%- endcomment -%}
+{%- assign host = include.url | split: '/' | slice: 2 | first -%}
+{%- assign provider = include.provider | default: host -%}
+{%- assign sandbox = include.sandbox | default: 'allow-scripts allow-same-origin allow-popups allow-forms' -%}
+{%- assign link = include.link | default: include.url -%}
+{%- include embed/frame.html src=include.url title=include.title provider=provider link=link caption=include.caption ratio=include.ratio sandbox=sandbox allow=include.allow load=include.load button="불러오기" -%}

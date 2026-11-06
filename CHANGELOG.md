@@ -4,6 +4,27 @@
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-07
+
+수식, 다이어그램, 차트, 동영상과 외부 콘텐츠를 본문에 넣을 수 있습니다. 모두 **필요한 페이지에서만** 해당 라이브러리를 불러오고, 외부 서비스는 **사용자가 버튼을 누르기 전에는 연결하지 않습니다.**
+
+### 추가
+- **수식:** `$$ ... $$`를 KaTeX로 렌더링(인라인·블록, MathML 포함). 달러 기호를 쓴 일반 문장은 수식으로 바뀌지 않는다
+- **Mermaid:** `mermaid` 코드 블록을 다이어그램으로(flowchart, sequence, pie 등). 화면 모드를 바꾸면 색을 다시 그리고, "다이어그램 원문 보기"를 함께 제공
+- **차트:** `chart` 코드 블록(Chart.js 설정 JSON)을 KRDS 색의 차트로. 접근 가능한 "데이터 표로 보기"를 자동으로 만들고, 선·점 모양으로 색 외에도 계열을 구분
+- **임베드 include:** `embed/youtube.html`(youtube-nocookie), `embed/vimeo.html`(dnt=1), `embed/iframe.html`(sandbox 기본 적용), `embed/video.html`(자막 지원), `embed/audio.html`(대본 링크). 외부 임베드는 재생 버튼을 눌러야 연결
+- 페이지/사이트 단위 스위치: front matter의 `math`·`mermaid`·`chart`, `_config.yml`의 `krds.math`·`krds.mermaid`·`krds.chart`
+- `script/vendor-katex`, `script/vendor-mermaid`, `script/vendor-chartjs`, 예제 페이지 `docs/embeds/`
+
+### 수정
+- 모바일(360px)에서 넓은 다이어그램·수식이 문서 레이아웃을 가로로 밀어내던 문제
+- 가로로 넘치는 코드 블록과 블록 수식을 키보드로 스크롤할 수 없던 문제(넘칠 때만 포커스를 받음)
+
+### 알려진 한계
+- Mermaid의 ELK 레이아웃과 다이어그램 안의 수식은 용량 때문에 포함하지 않았다(`layout: dagre` 고정)
+- 단일 `$ ... $` 수식은 지원하지 않는다(가격 표기와 구분할 수 없음). `$$ ... $$`를 쓴다
+- 외부 영상·지도는 각 서비스의 정책에 따르며, 이 테마가 영상의 자막이나 접근성을 보장하지 않는다
+
 ## [1.0.0] - 2026-11-07
 
 첫 안정 릴리스입니다. 레이아웃 이름, `_data/navigation.yml` 구조, `_config.yml`의 `krds.*` 키는 1.x 동안 호환을 유지합니다.

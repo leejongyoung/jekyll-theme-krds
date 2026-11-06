@@ -134,22 +134,47 @@ sass:
 
 테마의 `_includes`·`_layouts` 파일과 같은 이름으로 사이트에 파일을 두면 그것이 우선합니다. `<head>`에 태그를 더하려면 `_includes/head-custom.html`을 만드세요.
 
+## 수식·다이어그램·차트·임베드
+
+모두 **필요한 페이지에서만** 해당 라이브러리를 불러옵니다(일반 페이지에는 추가 요청이 없습니다). 외부 서비스는 **사용자가 버튼을 누르기 전에는 연결하지 않습니다.** 예제는 [데모의 "임베드와 수식"](https://leejongyoung.github.io/jekyll-theme-krds/docs/embeds/)과 [`example/docs/embeds.md`](example/docs/embeds.md)입니다.
+
+| 기능 | 쓰는 법 | 라이브러리 |
+| :--- | :--- | :--- |
+| 수식 | 본문에 `$$ ... $$` (문장 안은 인라인, 따로 한 문단은 블록) | KaTeX |
+| 다이어그램 | `mermaid` 코드 블록 | Mermaid |
+| 차트 | `chart` 코드 블록에 Chart.js 설정을 **JSON**으로 | Chart.js |
+| YouTube | `{% raw %}{% include embed/youtube.html id="영상ID" title="제목" %}{% endraw %}` | 없음(iframe) |
+| Vimeo | `{% raw %}{% include embed/vimeo.html id="123456" title="제목" %}{% endraw %}` | 없음(iframe) |
+| 그 밖의 페이지 | `{% raw %}{% include embed/iframe.html url="https://..." title="제목" %}{% endraw %}` | 없음(iframe, sandbox) |
+| 자체 호스팅 영상·오디오 | `embed/video.html`(자막 `captions="….vtt"`), `embed/audio.html`(`transcript`) | 없음(HTML5) |
+
+- **수식:** 달러 기호가 든 일반 문장(`$4와 $6`)은 수식으로 바뀌지 않습니다. 단일 `$ ... $`는 지원하지 않습니다. KaTeX가 MathML도 함께 내보냅니다.
+- **다이어그램:** 화면 모드를 바꾸면 현재 색으로 다시 그리고, "다이어그램 원문 보기"를 제공합니다. 색은 KRDS 토큰에서 가져옵니다.
+- **차트:** 색은 KRDS 색을 자동으로 쓰고 점 모양도 달리합니다. "데이터 표로 보기"가 자동으로 생깁니다. JSON만 받으므로 함수(콜백)는 쓸 수 없습니다. `title`·`description`은 접근성용 추가 키입니다.
+- **개인정보:** YouTube는 `youtube-nocookie.com`, Vimeo는 `dnt=1`을 씁니다. 재생 버튼을 누르기 전에는 외부에 요청하지 않으며(미리보기 이미지는 `thumbnail=true`를 줄 때만 불러옵니다), 일반 iframe에는 `sandbox`가 기본으로 걸립니다.
+- **끄기:** 페이지 front matter의 `math`·`mermaid`·`chart`를 `true`/`false`로 지정하거나, `_config.yml`의 `krds.math`·`krds.mermaid`·`krds.chart`를 `false`로 둡니다.
+- **접근성:** `title`(영상 제목)을 꼭 적으세요. 스크린리더가 iframe 이름으로 읽습니다. 자체 호스팅 영상에는 자막을 함께 넣는 것을 권합니다.
+
+용량: Mermaid(약 3.7MB, 다이어그램 종류별로 필요한 조각만 불러옴), Chart.js 205KB, KaTeX 약 600KB(글꼴 포함)이며 해당 코드 블록·수식이 있는 페이지에서만 받습니다.
+
 ## 접근성과 검증
 
 KRDS 컴포넌트가 접근성을 고려해 만들어져 있고, 이 테마가 더한 부분은 아래처럼 확인했습니다.
 
-- axe-core 4.13: 예제 7개 페이지 × (밝은 모드, 고대비 모드) = 14회 모두 위반 0건. 수동 검토 대상(`incomplete`)이 1~2건 남는데, 메뉴 트리거의 `aria-controls`(KRDS 스크립트가 숨겨진 패널을 가리킴)와 일부 대비 판정 보류입니다.
-- 주요 글자·배경 16개 조합의 대비를 직접 계산: 두 모드 모두 4.5:1 이상(최저 6.83:1).
-- 키보드: 첫 Tab이 "본문 바로가기"에 가고 Enter로 본문에 이동.
+- axe-core 4.13: 예제 10개 페이지 × 화면 모드(밝은 모드, 선명하게 모드, 시스템 설정) 모두 위반 0건. 수동 검토 대상(`incomplete`)이 1~2건 남는데, 메뉴 트리거의 `aria-controls`(KRDS 스크립트가 숨겨진 패널을 가리킴)와 일부 대비 판정 보류입니다.
+- 주요 글자·배경 16개 조합의 대비를 직접 계산: 두 모드 모두 4.5:1 이상(최저 6.83:1). 차트 색은 흰 배경 대비 4.5:1 이상(밝은 모드), 검정 배경 대비 6:1 이상(선명한 모드)입니다.
+- 키보드: 첫 Tab이 "본문 바로가기"에 가고 Enter로 본문에 이동. 재생 버튼은 키보드로 활성화되고 포커스가 영상으로 이동. 가로로 넘치는 코드·수식은 포커스를 받아 스크롤할 수 있습니다.
 - 시스템 설정 모드: OS 다크 모드일 때 어두운 팔레트, 라이트일 때 밝은 팔레트.
-- 360px 모바일 레이아웃과 전체메뉴.
+- 360px 모바일 레이아웃(임베드 페이지 포함, 가로 넘침 없음)과 전체메뉴.
 
 실제 스크린리더, Safari·Firefox, Windows 고대비 모드 같은 조합은 확인하지 못했습니다. 접근성 인증을 받은 테마가 아닙니다.
 
 ## 알려진 한계
 
 - 메인메뉴는 2단계까지입니다(KRDS의 3단계 메가메뉴는 데이터 모델에 넣지 않았습니다). 모바일 전체메뉴에서 하위가 없는 항목은 "바로가기" 탭에 모입니다.
-- 번들이 큰 편입니다. CSS 375KB(gzip 33KB), KRDS 스크립트 91KB(gzip 18KB, 비축소본). 컴포넌트를 줄이려면 `assets/css/main.scss`의 `@import` 목록을 줄이세요.
+- 번들이 큰 편입니다. CSS 375KB(gzip 33KB), KRDS 스크립트 91KB(gzip 18KB, 비축소본). 컴포넌트를 줄이려면 `assets/css/main.scss`의 `@import` 목록을 줄이세요. 저장소·gem에는 Mermaid(3.7MB)도 들어 있어 gem이 약 2.2MB(압축), 저장소 작업 사본이 약 6MB입니다(페이지 로딩에는 영향이 없습니다).
+- Mermaid의 ELK 레이아웃과 다이어그램 안의 수식은 용량 때문에 포함하지 않았습니다(`layout: dagre`로 고정). 필요하면 `script/vendor-mermaid`의 제외 목록을 고치고 다시 가져오세요.
+- 외부 영상·지도의 접근성(자막, 키보드 조작)은 각 서비스에 달려 있고, 이 테마는 보장하지 않습니다. 실제 영상 재생은 자동으로 확인하지 못했습니다(iframe이 올바른 주소로 만들어지는 것까지 확인).
 - KRDS 스크립트는 body에 CSS `zoom`을 적용해 글자 크기를 바꿉니다(KRDS 방식).
 - GitHub Pages의 기본 빌더(Jekyll 3)는 지원하지 않습니다(위 설치 안내). `remote_theme`은 Jekyll 4로 직접 빌드할 때 동작하는 것을 임시 사이트로 확인했습니다.
 - Sass `@import`는 Dart Sass에서 더는 권장되지 않습니다. KRDS 원본이 `@import`를 쓰므로 경고를 끄고 쓰며, KRDS가 바뀌면 같이 바꿔야 합니다.
