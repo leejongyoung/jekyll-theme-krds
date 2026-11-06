@@ -22,8 +22,8 @@
 .th-post-item .th-meta { margin-bottom: 0; }
 
 // ── 검색 ──
-.th-search { max-width: 52rem; }
-.th-search-form { margin: 0 0 var(--krds-gap-6); }
+.th-search { max-width: none; }
+.th-search-form { max-width: 72rem; margin: 0 0 var(--krds-gap-6); }
 .th-search-tags { margin: 0 0 var(--krds-gap-6); }
 .th-search-tags-title { margin: 0 0 var(--krds-gap-3); font-weight: var(--krds-font-weight-bold); color: var(--th-text-bolder); }
 .th-search-tags-link { margin: var(--krds-gap-3) 0 0; font-size: var(--krds-pc-font-size-body-small); a { color: var(--th-text-primary); } }

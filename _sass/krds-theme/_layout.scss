@@ -44,6 +44,9 @@ body {
   margin: 0 auto;
   padding: 0 var(--krds-contents-padding-x);
   box-sizing: border-box;
+  @media (min-width: 1440px) {
+    max-width: calc(144rem + var(--krds-contents-padding-x) * 2);
+  }
 }
 
 .th-main {
@@ -152,11 +155,6 @@ body {
 // ── 문서 레이아웃: 사이드 내비 | 본문 | 이 페이지의 구성 ──
 // 기본 1200px 컨테이너에 세 열을 넣으면 본문이 636px까지 줄어든다.
 // 1440px 이상에서는 문서 컨테이너를 1440px로 넓히고, 1024~1439px에서는 TOC를 숨겨 본문 폭을 확보한다.
-.th-wrap-docs {
-  @media (min-width: 1440px) {
-    max-width: calc(144rem + var(--krds-contents-padding-x) * 2);
-  }
-}
 .th-doc {
   display: grid;
   grid-template-columns: 24rem minmax(0, 1fr) 22rem;
@@ -198,6 +196,15 @@ body {
   .f-copy { margin: 0; }
   .info-cs .span { margin-left: var(--krds-gap-2); }
 }
+// 1440px 이상 PC에서는 모든 레이아웃의 header·navbar·main·footer 정렬선을 통일한다.
+@media (min-width: 1440px) {
+  #krds-header .header-container .inner,
+  .krds-main-menu > .inner,
+  #krds-footer > .inner {
+    max-width: calc(144rem + var(--krds-contents-padding-x) * 2);
+  }
+}
+
 
 // ── 보정 ──
 // 화면 모드 드롭다운은 긴 항목 이름이 줄바꿈되지 않게 한다.
