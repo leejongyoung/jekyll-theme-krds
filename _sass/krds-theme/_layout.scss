@@ -212,3 +212,8 @@ body {
   .utility-list { display: flex; flex-wrap: nowrap; gap: 0 var(--krds-gap-2); }
   .krds-btn { white-space: nowrap; }
 }
+
+// 선명하게(고대비)·시스템 설정 모드에서도 KRDS 로고 이미지를 요청하지 않는다(로고는 쓰지 않으므로 파일도 없다).
+// KRDS의 모드별 로고 규칙보다 선택자가 구체적이어야 덮어쓴다.
+html[data-krds-mode] #krds-header .header-container .logo a,
+html[data-krds-mode] #krds-footer .f-logo { background-image: none; }
