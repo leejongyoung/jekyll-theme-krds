@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.9.1 -->
+<title>임베드와 수식 | KRDS 테마 예제</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="임베드와 수식" />
+<meta property="og:locale" content="ko" />
+<meta name="description" content="범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다." />
+<meta name="twitter:description" property="og:description" content="범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다." />
+<link rel="canonical" href="https://leejongyoung.github.io/jekyll-theme-krds/docs/embeds/" />
+<meta property="og:url" content="https://leejongyoung.github.io/jekyll-theme-krds/docs/embeds/" />
+<meta property="og:site_name" content="KRDS 테마 예제" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="임베드와 수식" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다.","headline":"임베드와 수식","url":"https://leejongyoung.github.io/jekyll-theme-krds/docs/embeds/"}</script>
+<!-- End Jekyll SEO tag -->
+<script>
+  // 깜빡임 방지: 저장된 화면 모드(light | high-contrast | theme)를 렌더 전에 적용한다.
+  (function () {
+    var mode = 'light';
+    try { mode = localStorage.getItem('krds-mode') || 'light'; } catch (e) {}
+    if (['light', 'high-contrast', 'theme'].indexOf(mode) < 0) mode = 'light';
+    document.documentElement.setAttribute('data-krds-mode', mode);
+  })();
+</script>
+<link rel="preload" href="/jekyll-theme-krds/assets/fonts/PretendardGOV-Regular.subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/jekyll-theme-krds/assets/css/main.css">
+<link rel="stylesheet" href="/jekyll-theme-krds/assets/vendor/katex/katex-swap.min.css"><!-- 사이트에서 이 파일을 덮어써서 <head>에 태그를 더할 수 있습니다. -->
+
+
+</head>
+<body>
+  <script>
+    // 저장된 글자 크기(KRDS는 body의 zoom으로 조절)를 렌더 전에 적용한다.
+    (function () { try { var z = parseFloat(localStorage.getItem('krds-scale')); if (z >= 0.5 && z <= 2) document.body.style.zoom = z; } catch (e) {} })();
+  </script>
+  <div id="krds-skip-link">
+  <a href="#content">본문 바로가기</a>
+</div>
+
+  <header id="krds-header">
+  <div class="header-in">
+    <div class="header-container">
+      <div class="inner">
+        <div class="header-utility">
+          <ul class="utility-list">
+            <li>
+              <a href="https://github.com/leejongyoung/jekyll-theme-krds" class="krds-btn small text" target="_blank" rel="noopener" title="새 창 열기">GitHub <i class="svg-icon ico-go"></i></a>
+            </li>
+            <li>
+              <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+                <button type="button" class="krds-btn small text drop-btn">글자 크기 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link sm" data-adjust-scale="sm">작게</button></li>
+                      <li><button type="button" class="item-link md active" data-adjust-scale="md">보통</button></li>
+                      <li><button type="button" class="item-link lg" data-adjust-scale="lg">조금 크게</button></li>
+                      <li><button type="button" class="item-link xlg" data-adjust-scale="xlg">크게</button></li>
+                      <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg">가장 크게</button></li>
+                    </ul>
+                    <div class="drop-bottom">
+                      <button type="button" class="krds-btn medium text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="krds-drop-wrap th-mode">
+                <button type="button" class="krds-btn small text drop-btn">화면 모드 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link active" data-th-mode="light">기본 (밝은 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="high-contrast">선명하게 (어두운 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="theme">시스템 설정</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="header-branding">
+          <h2 class="logo"><a href="/jekyll-theme-krds/">KRDS 테마 예제</a></h2>
+          <div class="header-actions">
+            <a href="/jekyll-theme-krds/search/" class="btn-navi sch">검색</a>
+            <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<nav class="krds-main-menu" aria-label="주 메뉴">
+  <div class="inner">
+    <ul class="gnb-menu">
+      <li>
+        <a href="/jekyll-theme-krds/about/" class="gnb-main-trigger is-link" data-trigger="gnb">소개</a>
+      </li>
+      <li>
+        <button type="button" class="gnb-main-trigger is-dropdown selected" data-trigger="gnb">문서</button>
+        <div class="gnb-toggle-wrap">
+          <div class="gnb-main-list" data-has-submenu="false">
+            <ul>
+              <li><a href="/jekyll-theme-krds/docs/getting-started/" class="gnb-sub-trigger is-link" data-trigger="gnb">시작하기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/configuration/" class="gnb-sub-trigger is-link" data-trigger="gnb">설정</a></li>
+              <li><a href="/jekyll-theme-krds/docs/typography/" class="gnb-sub-trigger is-link" data-trigger="gnb">마크다운 보기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/embeds/" class="gnb-sub-trigger is-link" data-trigger="gnb" aria-current="page">임베드와 수식</a></li>
+              <li><a href="/jekyll-theme-krds/docs/search-tags/" class="gnb-sub-trigger is-link" data-trigger="gnb">태그와 검색</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a href="/jekyll-theme-krds/blog/" class="gnb-main-trigger is-link" data-trigger="gnb">블로그</a>
+      </li>
+      <li>
+        <a href="/jekyll-theme-krds/tags/" class="gnb-main-trigger is-link" data-trigger="gnb">태그</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  </div>
+</header>
+
+<div id="mobile-nav" class="krds-main-menu-mobile" role="dialog" aria-modal="true" aria-label="전체 메뉴">
+  <div class="gnb-wrap">
+    <div class="gnb-header">
+      <div class="gnb-utils">
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="-1">글자 작게</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="0">글자 보통</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="1">글자 크게</button></li>
+        </ul>
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="light">밝은 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="high-contrast">어두운 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="theme">시스템 설정</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="gnb-body">
+      <div class="gnb-menu">
+        <div class="menu-wrap">
+          <ul>
+            <li><a href="#mGnb-anchor-links" class="gnb-main-trigger">바로가기</a></li>
+            <li><a href="#mGnb-anchor-2" class="gnb-main-trigger">문서</a></li>
+          </ul>
+        </div>
+        <div class="submenu-wrap">
+          <div class="gnb-sub-list" id="mGnb-anchor-links">
+            <h2 class="sub-title">바로가기</h2>
+            <ul>
+              <li><a href="/jekyll-theme-krds/about/" class="gnb-sub-trigger">소개</a></li>
+              <li><a href="/jekyll-theme-krds/blog/" class="gnb-sub-trigger">블로그</a></li>
+              <li><a href="/jekyll-theme-krds/tags/" class="gnb-sub-trigger">태그</a></li>
+            </ul>
+          </div>
+          <div class="gnb-sub-list" id="mGnb-anchor-2">
+            <h2 class="sub-title">문서</h2>
+            <ul>
+              <li><a href="/jekyll-theme-krds/docs/getting-started/" class="gnb-sub-trigger">시작하기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/configuration/" class="gnb-sub-trigger">설정</a></li>
+              <li><a href="/jekyll-theme-krds/docs/typography/" class="gnb-sub-trigger">마크다운 보기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/embeds/" class="gnb-sub-trigger">임베드와 수식</a></li>
+              <li><a href="/jekyll-theme-krds/docs/search-tags/" class="gnb-sub-trigger">태그와 검색</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="krds-btn medium icon" id="close-nav">
+      <span class="sr-only">전체메뉴 닫기</span>
+      <i class="svg-icon ico-popup-close"></i>
+    </button>
+  </div>
+</div>
+
+
+  <main id="content" class="th-main" tabindex="-1">
+    <div class="th-wrap">
+  <nav class="krds-breadcrumb-wrap" aria-label="현재 경로" id="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="home"><a href="/jekyll-theme-krds/" class="txt">홈</a></li>
+    <li><a href="/jekyll-theme-krds/docs/" class="txt">문서</a></li>
+    <li><span class="txt" aria-current="page">임베드와 수식</span></li>
+  </ol>
+</nav>
+
+  <div class="th-doc">
+    <div class="th-doc-side">
+      
+<nav class="krds-side-navigation" aria-label="문서 메뉴">
+  <h2 class="lnb-tit">문서</h2>
+  <ul class="lnb-list">
+    <li class="lnb-item">
+      <button type="button" class="lnb-btn lnb-toggle" aria-controls="lnbmenu-1" aria-expanded="false">시작하기</button>
+      <div class="lnb-submenu">
+        <ul id="lnbmenu-1">
+          <li class="lnb-subitem">
+            <a href="/jekyll-theme-krds/docs/" class="lnb-btn lnb-link">소개</a>
+          </li>
+          <li class="lnb-subitem">
+            <a href="/jekyll-theme-krds/docs/getting-started/" class="lnb-btn lnb-link">설치와 시작</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="lnb-item active">
+      <button type="button" class="lnb-btn lnb-toggle active" aria-controls="lnbmenu-2" aria-expanded="true">사용법</button>
+      <div class="lnb-submenu">
+        <ul id="lnbmenu-2">
+          <li class="lnb-subitem">
+            <a href="/jekyll-theme-krds/docs/configuration/" class="lnb-btn lnb-link">설정</a>
+          </li>
+          <li class="lnb-subitem">
+            <a href="/jekyll-theme-krds/docs/typography/" class="lnb-btn lnb-link">마크다운 보기</a>
+          </li>
+          <li class="lnb-subitem active">
+            <a href="/jekyll-theme-krds/docs/embeds/" class="lnb-btn lnb-link" aria-current="page">임베드와 수식</a>
+          </li>
+          <li class="lnb-subitem">
+            <a href="/jekyll-theme-krds/docs/search-tags/" class="lnb-btn lnb-link">태그와 검색</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+    </div>
+    <article>
+      <h1 class="th-page-title">임베드와 수식</h1><p class="th-page-lead">수식, 다이어그램, 차트, 동영상과 외부 콘텐츠를 본문에 넣는 방법입니다.</p>
+      <div class="th-prose">
+        <p>이 페이지의 모든 항목은 <strong>필요한 페이지에서만</strong> 해당 라이브러리를 불러옵니다. 외부 서비스(YouTube, Vimeo, 지도 등)는 <strong>불러오기 버튼을 누르기 전에는 연결하지 않습니다.</strong></p>
+
+<h2 id="수식">수식</h2>
+
+<p>본문에 <code class="language-plaintext highlighter-rouge">$$ ... $$</code>를 쓰면 <a href="https://katex.org">KaTeX</a>로 그립니다. 문장 안에서는 인라인, 따로 한 문단이면 블록 수식입니다. 이차방정식의 해는 \(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\) 입니다.</p>
+
+\[\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+\qquad
+\sum_{k=1}^{n} k = \frac{n(n+1)}{2}\]
+
+\[A = \begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix},\quad
+\det A = ad - bc\]
+
+<p>가격처럼 달러 기호를 쓰는 문장은 수식으로 바뀌지 않습니다: 커피 $4와 케이크 $6은 합쳐서 $10입니다.</p>
+
+<h2 id="mermaid-다이어그램">Mermaid 다이어그램</h2>
+
+<p><code class="language-plaintext highlighter-rouge">mermaid</code> 언어의 코드 블록을 쓰면 다이어그램으로 바뀝니다. 화면 모드(기본/선명하게)를 바꾸면 색도 같이 바뀌고, “다이어그램 원문 보기”로 원문을 볼 수 있습니다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+  A[글 작성] --&gt; B{수식·도표 있음?}
+  B --&gt;|예| C[필요한 라이브러리만 불러오기]
+  B --&gt;|아니오| D[기본 페이지]
+  C --&gt; E[완성]
+  D --&gt; E
+</code></pre>
+
+<pre><code class="language-mermaid">sequenceDiagram
+  autonumber
+  participant 방문자
+  participant 페이지
+  participant 외부서비스
+  방문자-&gt;&gt;페이지: 페이지 열기
+  페이지--&gt;&gt;방문자: 재생 버튼만 표시(연결 없음)
+  방문자-&gt;&gt;페이지: 재생 버튼 누르기
+  페이지-&gt;&gt;외부서비스: 그때 연결
+</code></pre>
+
+<pre><code class="language-mermaid">pie showData
+  title 사용한 도구 비율
+  "KRDS 컴포넌트" : 55
+  "테마 코드" : 30
+  "외부 라이브러리" : 15
+</code></pre>
+
+<h2 id="차트">차트</h2>
+
+<p><code class="language-plaintext highlighter-rouge">chart</code> 언어의 코드 블록에 <a href="https://www.chartjs.org">Chart.js</a> 설정을 <strong>JSON</strong>으로 씁니다. 색은 KRDS 색을 자동으로 쓰고, “데이터 표로 보기”로 같은 값을 표로 읽을 수 있습니다. <code class="language-plaintext highlighter-rouge">title</code>과 <code class="language-plaintext highlighter-rouge">description</code>은 접근성을 위한 추가 키입니다.</p>
+
+<pre><code class="language-chart">{
+  "type": "bar",
+  "title": "분기별 방문자",
+  "description": "1분기부터 4분기까지 방문자 수(천 명)",
+  "data": {
+    "labels": ["1분기", "2분기", "3분기", "4분기"],
+    "datasets": [
+      { "label": "2025", "data": [12, 19, 8, 15] },
+      { "label": "2026", "data": [14, 22, 17, 25] }
+    ]
+  }
+}
+</code></pre>
+
+<pre><code class="language-chart">{
+  "type": "line",
+  "title": "월별 접근성 점수",
+  "description": "점수는 0~100",
+  "data": {
+    "labels": ["1월", "2월", "3월", "4월", "5월", "6월"],
+    "datasets": [
+      { "label": "밝은 모드", "data": [78, 82, 88, 91, 94, 97] },
+      { "label": "선명하게 모드", "data": [70, 76, 85, 90, 95, 98] }
+    ]
+  },
+  "options": { "scales": { "y": { "min": 0, "max": 100 } } }
+}
+</code></pre>
+
+<pre><code class="language-chart">{
+  "type": "doughnut",
+  "title": "의존성 크기 비율",
+  "height": "30rem",
+  "data": {
+    "labels": ["KRDS", "Mermaid", "Chart.js", "KaTeX"],
+    "datasets": [{ "data": [1.2, 3.6, 0.2, 0.6] }]
+  }
+}
+</code></pre>
+
+<h2 id="동영상">동영상</h2>
+
+<h3 id="youtube">YouTube</h3>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>embed/youtube.html<span class="w"> </span><span class="na">id</span><span class="o">=</span><span class="s2">"jNQXAC9IVRw"</span><span class="w"> </span><span class="na">title</span><span class="o">=</span><span class="s2">"Me at the zoo (YouTube 최초의 영상)"</span><span class="w"> </span><span class="na">caption</span><span class="o">=</span><span class="s2">"YouTube 최초로 올라온 영상"</span><span class="w"> </span><span class="cp">%}</span>
+</code></pre></div></div>
+
+<figure class="th-embed" data-th-embed="" data-embed-src="https://www.youtube-nocookie.com/embed/jNQXAC9IVRw?autoplay=1&amp;rel=0&amp;playsinline=1" data-embed-title="Me at the zoo (YouTube 최초의 영상)" data-embed-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share">
+  <div class="th-embed-frame" style="--th-embed-ratio: 16 / 9">
+    <div class="th-embed-cover">
+      <button type="button" class="krds-btn large primary th-embed-play">동영상 재생<span class="th-sr-only">: Me at the zoo (YouTube 최초의 영상)</span></button>
+      <p class="th-embed-note">YouTube 서버에 연결됩니다. 버튼을 누르기 전에는 연결하지 않습니다.</p>
+    </div>
+  </div>
+  <figcaption class="th-embed-caption">YouTube 최초로 올라온 영상 · <a href="https://www.youtube.com/watch?v=jNQXAC9IVRw" target="_blank" rel="noopener">YouTube에서 보기<span class="th-sr-only"> (새 창 열림)</span></a></figcaption>
+</figure>
+
+<p><code class="language-plaintext highlighter-rouge">youtube-nocookie.com</code> 도메인을 쓰고, 버튼을 누를 때만 연결합니다. <code class="language-plaintext highlighter-rouge">start=30</code>처럼 시작 시간(초), <code class="language-plaintext highlighter-rouge">url="https://youtu.be/..."</code>로 주소 전체를 쓸 수도 있습니다.</p>
+
+<h3 id="vimeo">Vimeo</h3>
+
+<figure class="th-embed" data-th-embed="" data-embed-src="https://player.vimeo.com/video/76979871?autoplay=1&amp;dnt=1" data-embed-title="The New Vimeo Player" data-embed-allow="autoplay; fullscreen; picture-in-picture; clipboard-write">
+  <div class="th-embed-frame" style="--th-embed-ratio: 16 / 9">
+    <div class="th-embed-cover">
+      <button type="button" class="krds-btn large primary th-embed-play">동영상 재생<span class="th-sr-only">: The New Vimeo Player</span></button>
+      <p class="th-embed-note">Vimeo 서버에 연결됩니다. 버튼을 누르기 전에는 연결하지 않습니다.</p>
+    </div>
+  </div>
+  <figcaption class="th-embed-caption">Vimeo 플레이어 소개 영상 · <a href="https://vimeo.com/76979871" target="_blank" rel="noopener">Vimeo에서 보기<span class="th-sr-only"> (새 창 열림)</span></a></figcaption>
+</figure>
+
+<h3 id="자체-호스팅-영상자막-포함과-오디오">자체 호스팅 영상(자막 포함)과 오디오</h3>
+
+<p>외부 연결이 없는 <code class="language-plaintext highlighter-rouge">&lt;video&gt;</code>·<code class="language-plaintext highlighter-rouge">&lt;audio&gt;</code>입니다. 자막(WebVTT)과 대본 링크를 함께 넣을 것을 권합니다.</p>
+
+<figure class="th-embed th-embed-media">
+  <video class="th-embed-video" controls="" preload="metadata" playsinline="" aria-label="움직이는 색 상자 예제" style="--th-embed-ratio: 16 / 9">
+    <source src="/jekyll-theme-krds/assets/media/demo.webm" type="video/webm" /><track kind="captions" src="/jekyll-theme-krds/assets/media/demo.ko.vtt" srclang="ko" label="한국어" default="" />
+    <a href="/jekyll-theme-krds/assets/media/demo.webm">동영상 내려받기</a>
+  </video><figcaption class="th-embed-caption">자막이 있는 자체 호스팅 영상</figcaption>
+</figure>
+
+<figure class="th-embed th-embed-media th-embed-audio">
+  <audio controls="" preload="metadata" aria-label="440Hz 기준음">
+    <source src="/jekyll-theme-krds/assets/media/tone.wav" type="audio/wav" />
+    <a href="/jekyll-theme-krds/assets/media/tone.wav">오디오 내려받기</a>
+  </audio>
+  <figcaption class="th-embed-caption">440Hz 기준음 1초</figcaption>
+</figure>
+
+<h2 id="그-밖의-외부-페이지iframe">그 밖의 외부 페이지(iframe)</h2>
+
+<p>지도, 슬라이드, CodePen 같은 페이지를 넣을 때는 <code class="language-plaintext highlighter-rouge">iframe.html</code>을 씁니다. 기본으로 <code class="language-plaintext highlighter-rouge">sandbox</code>가 걸리고 불러오기 버튼 뒤에 있습니다.</p>
+
+<figure class="th-embed" data-th-embed="" data-embed-src="https://www.openstreetmap.org/export/embed.html?bbox=126.9700%2C37.5600%2C126.9850%2C37.5700&amp;layer=mapnik" data-embed-title="서울 시청 주변 지도" data-embed-sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
+  <div class="th-embed-frame" style="--th-embed-ratio: 16 / 9">
+    <div class="th-embed-cover">
+      <button type="button" class="krds-btn large primary th-embed-play">불러오기<span class="th-sr-only">: 서울 시청 주변 지도</span></button>
+      <p class="th-embed-note">OpenStreetMap 서버에 연결됩니다. 버튼을 누르기 전에는 연결하지 않습니다.</p>
+    </div>
+  </div>
+  <figcaption class="th-embed-caption">서울 시청 주변 · <a href="https://www.openstreetmap.org/?bbox=126.9700%2C37.5600%2C126.9850%2C37.5700" target="_blank" rel="noopener">OpenStreetMap에서 보기<span class="th-sr-only"> (새 창 열림)</span></a></figcaption>
+</figure>
+
+<h2 id="설정">설정</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">키</th>
+      <th style="text-align: left">설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">페이지 <code class="language-plaintext highlighter-rouge">math</code>, <code class="language-plaintext highlighter-rouge">mermaid</code>, <code class="language-plaintext highlighter-rouge">chart</code></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">true</code>면 항상, <code class="language-plaintext highlighter-rouge">false</code>면 절대 불러오지 않습니다. 지정하지 않으면 본문에 해당 내용이 있을 때만 불러옵니다</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">krds.math</code>, <code class="language-plaintext highlighter-rouge">krds.mermaid</code>, <code class="language-plaintext highlighter-rouge">krds.chart</code></td>
+      <td style="text-align: left">사이트 전체에서 <code class="language-plaintext highlighter-rouge">false</code>로 끌 수 있습니다</td>
+    </tr>
+  </tbody>
+</table>
+
+      </div>
+    </article>
+    <div class="th-doc-toc">
+      <div class="krds-in-page-navigation-type" data-th-toc hidden>
+  <div class="krds-in-page-navigation-area">
+    <div class="in-page-navigation-header">
+      <p class="quick-caption">이 페이지의 구성</p>
+      <p class="quick-title">임베드와 수식</p>
+    </div>
+    <nav class="in-page-navigation-list" aria-label="이 페이지의 구성">
+      <ul></ul>
+    </nav>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+  </main>
+  <footer id="krds-footer">
+  <div class="inner">
+    <div class="f-logo">KRDS 테마 예제</div>
+    <div class="f-cnt">
+      <div class="f-info"><p class="info-addr">jekyll-theme-krds 예제 사이트입니다.</p>
+        <ul class="info-cs">
+          <li><strong class="strong">저장소</strong><span class="span">github.com/leejongyoung/jekyll-theme-krds</span></li>
+        </ul>
+      </div>
+      <div class="f-link">
+        <div class="link-go">
+          <a href="https://www.krds.go.kr" class="krds-btn medium text" target="_blank" rel="noopener" title="새 창 열기">KRDS 누리집 <i class="svg-icon ico-angle right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="f-btm">
+      <div class="f-btm-text">
+        <p class="f-copy">© 2026 jekyll-theme-krds</p>
+        <p class="th-disclaimer">
+          이 사이트의 디자인은 행정안전부가 2024년 제작하여 공공누리 제1유형으로 개방한
+          <a href="https://www.krds.go.kr" target="_blank" rel="noopener">범정부 UI/UX 디자인시스템(KRDS)<span class="th-sr-only"> (새 창 열림)</span></a>을
+          바탕으로 한 Jekyll 테마 <a href="https://github.com/leejongyoung/jekyll-theme-krds" target="_blank" rel="noopener">jekyll-theme-krds<span class="th-sr-only"> (새 창 열림)</span></a>를 사용합니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script src="/jekyll-theme-krds/assets/vendor/katex/katex.min.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/vendor/katex/contrib/auto-render.min.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/js/math.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/vendor/chartjs/chart.umd.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/js/embeds.js" defer data-mermaid="/jekyll-theme-krds/assets/vendor/mermaid/mermaid.esm.min.mjs"></script>
+  <script src="/jekyll-theme-krds/assets/js/theme.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/js/vendor/krds-ui-script.js" defer></script>
+</body>
+</html>

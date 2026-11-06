@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.9.1 -->
+<title>홈 | KRDS 테마 예제</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="홈" />
+<meta property="og:locale" content="ko" />
+<meta name="description" content="범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다." />
+<meta name="twitter:description" property="og:description" content="범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다." />
+<link rel="canonical" href="https://leejongyoung.github.io/jekyll-theme-krds/" />
+<meta property="og:url" content="https://leejongyoung.github.io/jekyll-theme-krds/" />
+<meta property="og:site_name" content="KRDS 테마 예제" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="홈" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Jekyll 테마의 예제 사이트입니다.","headline":"홈","name":"KRDS 테마 예제","url":"https://leejongyoung.github.io/jekyll-theme-krds/"}</script>
+<!-- End Jekyll SEO tag -->
+<script>
+  // 깜빡임 방지: 저장된 화면 모드(light | high-contrast | theme)를 렌더 전에 적용한다.
+  (function () {
+    var mode = 'light';
+    try { mode = localStorage.getItem('krds-mode') || 'light'; } catch (e) {}
+    if (['light', 'high-contrast', 'theme'].indexOf(mode) < 0) mode = 'light';
+    document.documentElement.setAttribute('data-krds-mode', mode);
+  })();
+</script>
+<link rel="preload" href="/jekyll-theme-krds/assets/fonts/PretendardGOV-Regular.subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/jekyll-theme-krds/assets/css/main.css"><!-- 사이트에서 이 파일을 덮어써서 <head>에 태그를 더할 수 있습니다. -->
+
+
+</head>
+<body>
+  <script>
+    // 저장된 글자 크기(KRDS는 body의 zoom으로 조절)를 렌더 전에 적용한다.
+    (function () { try { var z = parseFloat(localStorage.getItem('krds-scale')); if (z >= 0.5 && z <= 2) document.body.style.zoom = z; } catch (e) {} })();
+  </script>
+  <div id="krds-skip-link">
+  <a href="#content">본문 바로가기</a>
+</div>
+
+  <header id="krds-header">
+  <div class="header-in">
+    <div class="header-container">
+      <div class="inner">
+        <div class="header-utility">
+          <ul class="utility-list">
+            <li>
+              <a href="https://github.com/leejongyoung/jekyll-theme-krds" class="krds-btn small text" target="_blank" rel="noopener" title="새 창 열기">GitHub <i class="svg-icon ico-go"></i></a>
+            </li>
+            <li>
+              <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+                <button type="button" class="krds-btn small text drop-btn">글자 크기 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link sm" data-adjust-scale="sm">작게</button></li>
+                      <li><button type="button" class="item-link md active" data-adjust-scale="md">보통</button></li>
+                      <li><button type="button" class="item-link lg" data-adjust-scale="lg">조금 크게</button></li>
+                      <li><button type="button" class="item-link xlg" data-adjust-scale="xlg">크게</button></li>
+                      <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg">가장 크게</button></li>
+                    </ul>
+                    <div class="drop-bottom">
+                      <button type="button" class="krds-btn medium text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="krds-drop-wrap th-mode">
+                <button type="button" class="krds-btn small text drop-btn">화면 모드 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link active" data-th-mode="light">기본 (밝은 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="high-contrast">선명하게 (어두운 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="theme">시스템 설정</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="header-branding">
+          <h2 class="logo"><a href="/jekyll-theme-krds/">KRDS 테마 예제</a></h2>
+          <div class="header-actions">
+            <a href="/jekyll-theme-krds/search/" class="btn-navi sch">검색</a>
+            <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<nav class="krds-main-menu" aria-label="주 메뉴">
+  <div class="inner">
+    <ul class="gnb-menu">
+      <li>
+        <a href="/jekyll-theme-krds/about/" class="gnb-main-trigger is-link" data-trigger="gnb">소개</a>
+      </li>
+      <li>
+        <button type="button" class="gnb-main-trigger is-dropdown" data-trigger="gnb">문서</button>
+        <div class="gnb-toggle-wrap">
+          <div class="gnb-main-list" data-has-submenu="false">
+            <ul>
+              <li><a href="/jekyll-theme-krds/docs/getting-started/" class="gnb-sub-trigger is-link" data-trigger="gnb">시작하기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/configuration/" class="gnb-sub-trigger is-link" data-trigger="gnb">설정</a></li>
+              <li><a href="/jekyll-theme-krds/docs/typography/" class="gnb-sub-trigger is-link" data-trigger="gnb">마크다운 보기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/embeds/" class="gnb-sub-trigger is-link" data-trigger="gnb">임베드와 수식</a></li>
+              <li><a href="/jekyll-theme-krds/docs/search-tags/" class="gnb-sub-trigger is-link" data-trigger="gnb">태그와 검색</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a href="/jekyll-theme-krds/blog/" class="gnb-main-trigger is-link" data-trigger="gnb">블로그</a>
+      </li>
+      <li>
+        <a href="/jekyll-theme-krds/tags/" class="gnb-main-trigger is-link" data-trigger="gnb">태그</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  </div>
+</header>
+
+<div id="mobile-nav" class="krds-main-menu-mobile" role="dialog" aria-modal="true" aria-label="전체 메뉴">
+  <div class="gnb-wrap">
+    <div class="gnb-header">
+      <div class="gnb-utils">
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="-1">글자 작게</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="0">글자 보통</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="1">글자 크게</button></li>
+        </ul>
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="light">밝은 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="high-contrast">어두운 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="theme">시스템 설정</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="gnb-body">
+      <div class="gnb-menu">
+        <div class="menu-wrap">
+          <ul>
+            <li><a href="#mGnb-anchor-links" class="gnb-main-trigger">바로가기</a></li>
+            <li><a href="#mGnb-anchor-2" class="gnb-main-trigger">문서</a></li>
+          </ul>
+        </div>
+        <div class="submenu-wrap">
+          <div class="gnb-sub-list" id="mGnb-anchor-links">
+            <h2 class="sub-title">바로가기</h2>
+            <ul>
+              <li><a href="/jekyll-theme-krds/about/" class="gnb-sub-trigger">소개</a></li>
+              <li><a href="/jekyll-theme-krds/blog/" class="gnb-sub-trigger">블로그</a></li>
+              <li><a href="/jekyll-theme-krds/tags/" class="gnb-sub-trigger">태그</a></li>
+            </ul>
+          </div>
+          <div class="gnb-sub-list" id="mGnb-anchor-2">
+            <h2 class="sub-title">문서</h2>
+            <ul>
+              <li><a href="/jekyll-theme-krds/docs/getting-started/" class="gnb-sub-trigger">시작하기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/configuration/" class="gnb-sub-trigger">설정</a></li>
+              <li><a href="/jekyll-theme-krds/docs/typography/" class="gnb-sub-trigger">마크다운 보기</a></li>
+              <li><a href="/jekyll-theme-krds/docs/embeds/" class="gnb-sub-trigger">임베드와 수식</a></li>
+              <li><a href="/jekyll-theme-krds/docs/search-tags/" class="gnb-sub-trigger">태그와 검색</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="krds-btn medium icon" id="close-nav">
+      <span class="sr-only">전체메뉴 닫기</span>
+      <i class="svg-icon ico-popup-close"></i>
+    </button>
+  </div>
+</div>
+
+
+  <main id="content" class="th-main" tabindex="-1">
+    <div class="th-wrap">
+  <section class="th-hero" aria-labelledby="hero-title"><p class="th-hero-eyebrow">Jekyll 테마</p>
+    <h1 id="hero-title" class="th-hero-title">접근성을 갖춘 KRDS 스타일 사이트를 Jekyll로</h1><p class="th-hero-lead">범정부 UI/UX 디자인시스템(KRDS)의 토큰과 컴포넌트를 그대로 가져와, 글자 크기와 화면 모드 설정이 되는 문서·블로그 사이트를 만듭니다.</p>
+    <div class="th-hero-actions">
+      <a href="/jekyll-theme-krds/docs/getting-started/" class="krds-btn large primary">시작하기</a>
+      <a href="/jekyll-theme-krds/docs/typography/" class="krds-btn large secondary">마크다운 보기</a>
+    </div>
+  </section>
+  <section class="th-section" aria-labelledby="features-title">
+    <h2 id="features-title" class="th-section-title">주요 기능</h2>
+    <ul class="th-cards">
+      <li class="th-card">
+        <h3 class="th-card-title">KRDS 원본 그대로</h3>
+        <p class="th-card-text">토큰과 SCSS 원본은 고치지 않고 가져오며, 색과 글꼴은 CSS 변수 재선언으로 바꿉니다.</p><a class="krds-btn medium text th-card-link" href="/jekyll-theme-krds/docs/configuration/">자세히 보기 <i class="svg-icon ico-angle right"></i></a>
+      </li>
+      <li class="th-card">
+        <h3 class="th-card-title">글자 크기·화면 모드</h3>
+        <p class="th-card-text">글자 크기 5단계와 기본·선명하게·시스템 설정 모드를 지원하고, 선택은 기억됩니다.</p>
+      </li>
+      <li class="th-card">
+        <h3 class="th-card-title">문서와 블로그</h3>
+        <p class="th-card-text">사이드 내비게이션, 이 페이지의 구성, 페이지네이션, 브레드크럼을 갖춘 레이아웃을 제공합니다.</p><a class="krds-btn medium text th-card-link" href="/jekyll-theme-krds/blog/">자세히 보기 <i class="svg-icon ico-angle right"></i></a>
+      </li>
+    </ul>
+  </section>
+  <section class="th-section"><div class="th-prose">
+</div></section>
+  <section class="th-section" aria-labelledby="recent-title">
+    <h2 id="recent-title" class="th-section-title">최근 글</h2>
+    <ul class="th-post-list">
+      <li class="th-post-item">
+        <h3 class="th-post-title"><a href="/jekyll-theme-krds/2026/11/06/accessibility-checklist/">접근성 점검 체크리스트</a></h3>
+        <div class="th-meta">
+  <time datetime="2026-11-06T00:00:00+00:00">2026.11.06</time><span>jekyll-theme-krds</span>
+<div class="krds-tag-wrap small" role="group" aria-label="태그">
+  <a href="/jekyll-theme-krds/tags/#접근성" class="krds-btn-tag link">접근성</a>
+  <a href="/jekyll-theme-krds/tags/#가이드" class="krds-btn-tag link">가이드</a>
+</div>
+
+</div>
+
+      </li>
+      <li class="th-post-item">
+        <h3 class="th-post-title"><a href="/jekyll-theme-krds/2026/11/05/sample-post-5/">차트로 데이터 보여 주기</a></h3>
+        <div class="th-meta">
+  <time datetime="2026-11-05T00:00:00+00:00">2026.11.05</time><span>jekyll-theme-krds</span>
+<div class="krds-tag-wrap small" role="group" aria-label="태그">
+  <a href="/jekyll-theme-krds/tags/#예제" class="krds-btn-tag link">예제</a>
+  <a href="/jekyll-theme-krds/tags/#차트" class="krds-btn-tag link">차트</a>
+  <a href="/jekyll-theme-krds/tags/#접근성" class="krds-btn-tag link">접근성</a>
+</div>
+
+</div>
+
+      </li>
+      <li class="th-post-item">
+        <h3 class="th-post-title"><a href="/jekyll-theme-krds/2026/11/04/sample-post-4/">키보드만으로 사이트 쓰기</a></h3>
+        <div class="th-meta">
+  <time datetime="2026-11-04T00:00:00+00:00">2026.11.04</time><span>jekyll-theme-krds</span>
+<div class="krds-tag-wrap small" role="group" aria-label="태그">
+  <a href="/jekyll-theme-krds/tags/#예제" class="krds-btn-tag link">예제</a>
+  <a href="/jekyll-theme-krds/tags/#접근성" class="krds-btn-tag link">접근성</a>
+  <a href="/jekyll-theme-krds/tags/#가이드" class="krds-btn-tag link">가이드</a>
+</div>
+
+</div>
+
+      </li>
+    </ul>
+  </section>
+</div>
+
+  </main>
+  <footer id="krds-footer">
+  <div class="inner">
+    <div class="f-logo">KRDS 테마 예제</div>
+    <div class="f-cnt">
+      <div class="f-info"><p class="info-addr">jekyll-theme-krds 예제 사이트입니다.</p>
+        <ul class="info-cs">
+          <li><strong class="strong">저장소</strong><span class="span">github.com/leejongyoung/jekyll-theme-krds</span></li>
+        </ul>
+      </div>
+      <div class="f-link">
+        <div class="link-go">
+          <a href="https://www.krds.go.kr" class="krds-btn medium text" target="_blank" rel="noopener" title="새 창 열기">KRDS 누리집 <i class="svg-icon ico-angle right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="f-btm">
+      <div class="f-btm-text">
+        <p class="f-copy">© 2026 jekyll-theme-krds</p>
+        <p class="th-disclaimer">
+          이 사이트의 디자인은 행정안전부가 2024년 제작하여 공공누리 제1유형으로 개방한
+          <a href="https://www.krds.go.kr" target="_blank" rel="noopener">범정부 UI/UX 디자인시스템(KRDS)<span class="th-sr-only"> (새 창 열림)</span></a>을
+          바탕으로 한 Jekyll 테마 <a href="https://github.com/leejongyoung/jekyll-theme-krds" target="_blank" rel="noopener">jekyll-theme-krds<span class="th-sr-only"> (새 창 열림)</span></a>를 사용합니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <script src="/jekyll-theme-krds/assets/js/theme.js" defer></script>
+  <script src="/jekyll-theme-krds/assets/js/vendor/krds-ui-script.js" defer></script>
+</body>
+</html>
