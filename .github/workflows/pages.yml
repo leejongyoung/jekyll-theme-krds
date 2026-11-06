@@ -1,0 +1,45 @@
+name: pages
+# 예제 사이트(example/)를 빌드해서 gh-pages 브랜치에 올린다. GitHub Pages는 이 브랜치를 서비스한다.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "_layouts/**"
+      - "_includes/**"
+      - "_sass/**"
+      - "assets/**"
+      - "example/**"
+      - "jekyll-theme-krds.gemspec"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          working-directory: example
+      - name: Build demo site
+        working-directory: example
+        run: bundle exec jekyll build --config _config.yml,_config.pages.yml --strict_front_matter -d ../_pages
+      - name: Publish to gh-pages
+        run: |
+          cd _pages
+          touch .nojekyll   # 이미 빌드된 정적 파일이므로 GitHub가 다시 Jekyll로 처리하지 않게 한다
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "deploy: ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gh-pages

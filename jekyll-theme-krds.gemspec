@@ -5,8 +5,7 @@ Gem::Specification.new do |spec|
   spec.version       = "0.1.0"
   spec.authors       = ["Lee Jongyoung"]
   spec.summary       = "Jekyll theme based on KRDS (Korea Design System)"
-  spec.description   = "A general-purpose Jekyll theme built on the Korean government design system (KRDS). " \
-                       "Not affiliated with or endorsed by the Government of the Republic of Korea."
+  spec.description   = "A general-purpose Jekyll theme built on the Korean government design system (KRDS)."
   spec.homepage      = "https://github.com/leejongyoung/jekyll-theme-krds"
   spec.license       = "MIT"
 

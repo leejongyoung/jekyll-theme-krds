@@ -1,7 +1,7 @@
 # jekyll-theme-krds
 
 > **비공식 테마입니다.** 행정안전부가 공공누리 제1유형으로 개방한 [범정부 UI/UX 디자인시스템(KRDS)](https://www.krds.go.kr)을 바탕으로 만든 개인 프로젝트이며, 정부 및 KRDS 운영 기관과 관련이 없습니다.
-> *Jekyll theme based on KRDS (Korea Design System). Not affiliated with the Government of the Republic of Korea.*
+> *Jekyll theme based on KRDS (Korea Design System).*
 
 KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블로그 사이트를 만드는 범용 Jekyll 테마입니다.
 
@@ -11,7 +11,7 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 - **컴포넌트:** 건너뛰기 링크, 헤더·메인메뉴(PC)·전체메뉴(모바일), 브레드크럼, 사이드 내비게이션, 페이지네이션, 푸터, 버튼·배지
 - **서체:** Pretendard GOV 셀프 호스팅(외부 CDN 없음)
 
-예제 사이트: [`example/`](example) (`bundle exec jekyll serve`로 확인)
+**데모:** <https://leejongyoung.github.io/jekyll-theme-krds/> · 소스: [`example/`](example) (`bundle exec jekyll serve`로 확인)
 
 ## 설치
 
@@ -143,6 +143,13 @@ bundle exec jekyll serve     # http://127.0.0.1:4000
 테마 파일은 gem 경로로 연결되어 있어서 `jekyll serve`가 변경을 감지하지 못합니다. 테마를 고쳤다면 `bundle exec jekyll build`를 다시 실행하세요.
 
 KRDS 원본을 새 버전으로 바꾸려면 `script/vendor-krds <태그>`를 실행하고 `NOTICE.md`의 버전·커밋을 고칩니다.
+
+## 기여와 지원
+
+- 버그·접근성 문제·기능 제안·질문: [이슈 작성](https://github.com/leejongyoung/jekyll-theme-krds/issues/new/choose) (템플릿이 있습니다)
+- 기여 방법과 원칙: [CONTRIBUTING.md](CONTRIBUTING.md) · 행동강령: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- 보안 취약점: 공개 이슈 대신 [SECURITY.md](SECURITY.md)의 비공개 신고
+- 도움 받는 곳: [SUPPORT.md](SUPPORT.md) · 변경 이력: [CHANGELOG.md](CHANGELOG.md)
 
 ## 라이선스와 출처
 

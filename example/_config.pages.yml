@@ -1,0 +1,3 @@
+# GitHub Pages(프로젝트 사이트)용 덮어쓰기: bundle exec jekyll build --config _config.yml,_config.pages.yml
+url: https://leejongyoung.github.io
+baseurl: /jekyll-theme-krds
