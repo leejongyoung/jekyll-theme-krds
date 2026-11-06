@@ -1,0 +1,148 @@
+// 코드 블록: Hugo(Chroma github-dark)와 같은 어두운 스타일.
+// 팔레트는 `hugo gen chromastyles --style=github-dark`과 동일하고,
+// 클래스명은 Pygments 호환(Rouge와 Chroma 공통)이라 그대로 쓴다.
+// Hugo는 인라인 스타일로, Jekyll은 이 스타일시트로 같은 색을 낸다.
+.th-prose {
+  // PreWrapper
+  .highlighter-rouge pre.highlight { color:#e6edf3;background-color:#0d1117;-webkit-text-size-adjust:none; }
+  // Error
+  .highlighter-rouge .err { color:#f85149 }
+  // Keyword
+  .highlighter-rouge .k { color:#ff7b72 }
+  // KeywordConstant
+  .highlighter-rouge .kc { color:#79c0ff }
+  // KeywordDeclaration
+  .highlighter-rouge .kd { color:#ff7b72 }
+  // KeywordNamespace
+  .highlighter-rouge .kn { color:#ff7b72 }
+  // KeywordPseudo
+  .highlighter-rouge .kp { color:#79c0ff }
+  // KeywordReserved
+  .highlighter-rouge .kr { color:#ff7b72 }
+  // KeywordType
+  .highlighter-rouge .kt { color:#ff7b72 }
+  // NameClass
+  .highlighter-rouge .nc { color:#f0883e;font-weight:bold }
+  // NameConstant
+  .highlighter-rouge .no { color:#79c0ff;font-weight:bold }
+  // NameDecorator
+  .highlighter-rouge .nd { color:#d2a8ff;font-weight:bold }
+  // NameEntity
+  .highlighter-rouge .ni { color:#ffa657 }
+  // NameException
+  .highlighter-rouge .ne { color:#f0883e;font-weight:bold }
+  // NameLabel
+  .highlighter-rouge .nl { color:#79c0ff;font-weight:bold }
+  // NameNamespace
+  .highlighter-rouge .nn { color:#ff7b72 }
+  // NameOther
+  .highlighter-rouge .nx { color:#e6edf3 }
+  // NameProperty
+  .highlighter-rouge .py { color:#79c0ff }
+  // NameTag
+  .highlighter-rouge .nt { color:#7ee787 }
+  // NameVariable
+  .highlighter-rouge .nv { color:#79c0ff }
+  // NameVariableClass
+  .highlighter-rouge .vc { color:#79c0ff }
+  // NameVariableGlobal
+  .highlighter-rouge .vg { color:#79c0ff }
+  // NameVariableInstance
+  .highlighter-rouge .vi { color:#79c0ff }
+  // NameVariableMagic
+  .highlighter-rouge .vm { color:#79c0ff }
+  // NameFunction
+  .highlighter-rouge .nf { color:#d2a8ff;font-weight:bold }
+  // NameFunctionMagic
+  .highlighter-rouge .fm { color:#d2a8ff;font-weight:bold }
+  // Literal
+  .highlighter-rouge .l { color:#a5d6ff }
+  // LiteralDate
+  .highlighter-rouge .ld { color:#79c0ff }
+  // LiteralString
+  .highlighter-rouge .s { color:#a5d6ff }
+  // LiteralStringAffix
+  .highlighter-rouge .sa { color:#79c0ff }
+  // LiteralStringBacktick
+  .highlighter-rouge .sb { color:#a5d6ff }
+  // LiteralStringChar
+  .highlighter-rouge .sc { color:#a5d6ff }
+  // LiteralStringDelimiter
+  .highlighter-rouge .dl { color:#79c0ff }
+  // LiteralStringDoc
+  .highlighter-rouge .sd { color:#a5d6ff }
+  // LiteralStringDouble
+  .highlighter-rouge .s2 { color:#a5d6ff }
+  // LiteralStringEscape
+  .highlighter-rouge .se { color:#79c0ff }
+  // LiteralStringHeredoc
+  .highlighter-rouge .sh { color:#79c0ff }
+  // LiteralStringInterpol
+  .highlighter-rouge .si { color:#a5d6ff }
+  // LiteralStringOther
+  .highlighter-rouge .sx { color:#a5d6ff }
+  // LiteralStringRegex
+  .highlighter-rouge .sr { color:#79c0ff }
+  // LiteralStringSingle
+  .highlighter-rouge .s1 { color:#a5d6ff }
+  // LiteralStringSymbol
+  .highlighter-rouge .ss { color:#a5d6ff }
+  // LiteralNumber
+  .highlighter-rouge .m { color:#a5d6ff }
+  // LiteralNumberBin
+  .highlighter-rouge .mb { color:#a5d6ff }
+  // LiteralNumberFloat
+  .highlighter-rouge .mf { color:#a5d6ff }
+  // LiteralNumberHex
+  .highlighter-rouge .mh { color:#a5d6ff }
+  // LiteralNumberInteger
+  .highlighter-rouge .mi { color:#a5d6ff }
+  // LiteralNumberIntegerLong
+  .highlighter-rouge .il { color:#a5d6ff }
+  // LiteralNumberOct
+  .highlighter-rouge .mo { color:#a5d6ff }
+  // Operator
+  .highlighter-rouge .o { color:#ff7b72;font-weight:bold }
+  // OperatorWord
+  .highlighter-rouge .ow { color:#ff7b72;font-weight:bold }
+  // OperatorReserved
+  .highlighter-rouge .or { color:#ff7b72;font-weight:bold }
+  // Comment
+  .highlighter-rouge .c { color:#8b949e;font-style:italic }
+  // CommentHashbang
+  .highlighter-rouge .ch { color:#8b949e;font-style:italic }
+  // CommentMultiline
+  .highlighter-rouge .cm { color:#8b949e;font-style:italic }
+  // CommentSingle
+  .highlighter-rouge .c1 { color:#8b949e;font-style:italic }
+  // CommentSpecial
+  .highlighter-rouge .cs { color:#8b949e;font-weight:bold;font-style:italic }
+  // CommentPreproc
+  .highlighter-rouge .cp { color:#8b949e;font-weight:bold;font-style:italic }
+  // CommentPreprocFile
+  .highlighter-rouge .cpf { color:#8b949e;font-weight:bold;font-style:italic }
+  // GenericDeleted
+  .highlighter-rouge .gd { color:#ffa198;background-color:#490202 }
+  // GenericEmph
+  .highlighter-rouge .ge { font-style:italic }
+  // GenericError
+  .highlighter-rouge .gr { color:#ffa198 }
+  // GenericHeading
+  .highlighter-rouge .gh { color:#79c0ff;font-weight:bold }
+  // GenericInserted
+  .highlighter-rouge .gi { color:#56d364;background-color:#0f5323 }
+  // GenericOutput
+  .highlighter-rouge .go { color:#8b949e }
+  // GenericPrompt
+  .highlighter-rouge .gp { color:#8b949e }
+  // GenericStrong
+  .highlighter-rouge .gs { font-weight:bold }
+  // GenericSubheading
+  .highlighter-rouge .gu { color:#79c0ff }
+  // GenericTraceback
+  .highlighter-rouge .gt { color:#ff7b72 }
+  // GenericUnderline
+  .highlighter-rouge .gl { text-decoration:underline }
+  // TextWhitespace
+  .highlighter-rouge .w { color:#6e7681 }
+}

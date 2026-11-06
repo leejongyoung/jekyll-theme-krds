@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-07
+
+### 변경
+- 코드 블록(`pre`)을 Hugo(Chroma `github-dark`)와 같은 어두운 스타일로 변경. 배경 `#0d1117`, 기본 글자색 `#e6edf3`, 토큰 색상은 Chroma 팔레트와 동일(`hugo gen chromastyles --style=github-dark` 기준, Rouge 클래스 호환). 밝은 모드·선명하게 모드 모두 같은 색으로 표시
+
 ## [1.2.3] - 2026-11-07
 
 ### 수정
