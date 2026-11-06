@@ -1,0 +1,90 @@
+name: 버그 신고
+description: 테마가 기대와 다르게 동작합니다 (레이아웃 깨짐, 오류, 잘못된 링크 등)
+title: "[버그] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        신고 전에 [README](../blob/main/README.md)의 설정과 [예제 사이트](../tree/main/example)를 확인해 주세요.
+        접근성 문제는 **접근성 문제** 템플릿, 보안 취약점은 [비공개 신고](../security/advisories/new)를 사용해 주세요.
+  - type: textarea
+    id: summary
+    attributes:
+      label: 무엇이 문제인가요?
+      description: 한두 문장으로 요약해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 방법
+      description: 최소한의 설정·페이지(front matter)·메뉴 데이터를 붙여 주세요. 저장소 링크가 있으면 가장 좋습니다.
+      placeholder: |
+        1. `_config.yml`에 ... 를 설정
+        2. `layout: docs` 페이지를 만들고 ...
+        3. 브라우저에서 ... 를 클릭
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대한 동작
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 동작
+      description: 오류 메시지, 콘솔 로그, 스크린샷을 붙여 주세요.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 테마 버전 또는 커밋
+      placeholder: "예: 0.1.0 또는 2f75f45"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: 설치 방법
+      options:
+        - GitHub Pages remote_theme
+        - gem (Gemfile)
+        - 저장소를 복사해서 사용
+        - 기타
+    validations:
+      required: true
+  - type: input
+    id: jekyll
+    attributes:
+      label: Jekyll / Ruby 버전
+      placeholder: "예: Jekyll 4.4.1, Ruby 3.4.12"
+  - type: input
+    id: browser
+    attributes:
+      label: 브라우저와 OS
+      placeholder: "예: Chrome 130, macOS 15"
+  - type: dropdown
+    id: mode
+    attributes:
+      label: 문제가 보이는 화면 모드
+      multiple: true
+      options:
+        - 기본 (밝은 배경)
+        - 선명하게 (어두운 배경)
+        - 시스템 설정
+        - 모두 / 모르겠음
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 확인했습니다
+      options:
+        - label: 같은 문제의 기존 이슈를 검색했습니다.
+          required: true
+        - label: 사이트에서 vendor 파일(`_sass/vendor`, `assets/js/vendor`)을 직접 고치지 않았습니다.
+          required: true
+        - label: "[행동강령](../blob/main/CODE_OF_CONDUCT.md)에 동의합니다."
+          required: true

@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""`.github/labels.json`을 GitHub 저장소 라벨과 맞춘다(없으면 만들고, 있으면 색·설명을 갱신).
+
+사용: script/sync-labels [--repo owner/name] [--prune]
+  --prune  labels.json에 없는 라벨을 삭제한다(이슈에서도 사라지므로 주의).
+필요: gh CLI 로그인(또는 GH_TOKEN).
+"""
+import argparse, json, pathlib, subprocess, sys
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--repo", help="owner/name (기본: 현재 디렉터리의 저장소)")
+ap.add_argument("--prune", action="store_true")
+a = ap.parse_args()
+
+want = json.loads((pathlib.Path(__file__).resolve().parent.parent / ".github" / "labels.json").read_text(encoding="utf-8"))
+repo = ["-R", a.repo] if a.repo else []
+
+def gh(*args, check=True):
+    r = subprocess.run(["gh", *args], capture_output=True, text=True)
+    if check and r.returncode:
+        sys.exit(f"gh {' '.join(args)} 실패: {r.stderr.strip()}")
+    return r.stdout
+
+for l in want:
+    gh("label", "create", l["name"], "--color", l["color"], "--description", l["description"], "--force", *repo)
+    print(f"동기화: {l['name']}")
+
+if a.prune:
+    have = json.loads(gh("label", "list", "--limit", "200", "--json", "name", *repo))
+    keep = {l["name"] for l in want}
+    for l in have:
+        if l["name"] not in keep:
+            gh("label", "delete", l["name"], "--yes", *repo)
+            print(f"삭제: {l['name']}")

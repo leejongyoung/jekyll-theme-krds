@@ -1,0 +1,21 @@
+# GitHub의 '릴리스 노트 자동 생성'이 쓰는 분류 (PR 라벨 기준)
+changelog:
+  exclude:
+    labels: ["skip-changelog"]
+  categories:
+    - title: 호환성이 깨지는 변경
+      labels: ["breaking-change"]
+    - title: 새 기능·개선
+      labels: ["enhancement"]
+    - title: 접근성
+      labels: ["accessibility"]
+    - title: 버그 수정
+      labels: ["bug"]
+    - title: KRDS 원본 갱신
+      labels: ["vendor"]
+    - title: 문서
+      labels: ["documentation"]
+    - title: 의존성·빌드
+      labels: ["dependencies", "ci"]
+    - title: 기타 변경
+      labels: ["*"]

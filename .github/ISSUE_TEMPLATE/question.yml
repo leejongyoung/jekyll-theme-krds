@@ -1,0 +1,25 @@
+name: 질문
+description: 사용법이 궁금합니다
+title: "[질문] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: "먼저 [README](../blob/main/README.md)와 [예제 사이트](../tree/main/example)를 확인해 주세요."
+  - type: textarea
+    id: question
+    attributes:
+      label: 질문
+      description: 하려는 일과 시도한 방법을 함께 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: 관련 설정
+      description: "`_config.yml`, 메뉴 데이터, front matter 중 관련된 부분"
+      render: yaml
+  - type: input
+    id: version
+    attributes:
+      label: 테마 버전 또는 커밋

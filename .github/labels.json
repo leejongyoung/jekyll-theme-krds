@@ -1,0 +1,29 @@
+[
+  {"name": "bug", "color": "d73a4a", "description": "동작이 기대와 다름"},
+  {"name": "enhancement", "color": "a2eeef", "description": "새 기능이나 개선"},
+  {"name": "accessibility", "color": "f143ab", "description": "접근성 문제나 개선 (키보드·스크린리더·대비·확대)"},
+  {"name": "documentation", "color": "0075ca", "description": "문서 추가·수정"},
+  {"name": "question", "color": "d876e3", "description": "사용법 질문"},
+  {"name": "security", "color": "b60205", "description": "보안 관련 (취약점 자체는 비공개로 신고)"},
+
+  {"name": "layout", "color": "1d76db", "description": "_layouts·_includes (페이지 구조)"},
+  {"name": "scss", "color": "0e8a16", "description": "스타일·토큰 재선언"},
+  {"name": "javascript", "color": "f9d0c4", "description": "assets/js/theme.js 또는 KRDS 스크립트 연동"},
+  {"name": "vendor", "color": "5319e7", "description": "KRDS 원본(vendor) 갱신·관련 문제"},
+  {"name": "upstream-krds", "color": "fbca04", "description": "KRDS 원본의 문제라 KRDS에 알려야 함"},
+  {"name": "ci", "color": "ededed", "description": "빌드·GitHub Actions"},
+  {"name": "dependencies", "color": "0366d6", "description": "의존성 업데이트 (Dependabot 포함)"},
+
+  {"name": "needs-triage", "color": "c5def5", "description": "아직 분류하지 않음"},
+  {"name": "needs-info", "color": "fef2c0", "description": "재현 방법·환경 등 추가 정보 필요"},
+  {"name": "blocked", "color": "000000", "description": "다른 작업이나 결정을 기다리는 중"},
+  {"name": "priority: high", "color": "b60205", "description": "먼저 처리해야 함"},
+  {"name": "breaking-change", "color": "e11d21", "description": "기존 사이트가 깨질 수 있는 변경"},
+
+  {"name": "good first issue", "color": "7057ff", "description": "처음 기여하기에 적합"},
+  {"name": "help wanted", "color": "008672", "description": "도움이 필요함"},
+  {"name": "duplicate", "color": "cfd3d7", "description": "이미 있는 이슈나 PR"},
+  {"name": "invalid", "color": "e4e669", "description": "유효하지 않음"},
+  {"name": "wontfix", "color": "ffffff", "description": "고치지 않기로 함"},
+  {"name": "skip-changelog", "color": "ededed", "description": "릴리스 노트에서 제외"}
+]
