@@ -1,0 +1,21 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+          working-directory: example
+      - name: Build example site
+        working-directory: example
+        run: bundle exec jekyll build --strict_front_matter
+      - name: Build gem
+        run: gem build jekyll-theme-krds.gemspec

@@ -1,0 +1,14 @@
+{%- comment -%}
+  KRDS '이 페이지의 구성'. 본문(.th-prose)의 h2 제목으로 theme.js가 목록을 채운다(자바스크립트가 없으면 비어 있음).
+{%- endcomment -%}
+<div class="krds-in-page-navigation-type" data-th-toc hidden>
+  <div class="krds-in-page-navigation-area">
+    <div class="in-page-navigation-header">
+      <p class="quick-caption">이 페이지의 구성</p>
+      <p class="quick-title">{{ page.title }}</p>
+    </div>
+    <nav class="in-page-navigation-list" aria-label="이 페이지의 구성">
+      <ul></ul>
+    </nav>
+  </div>
+</div>

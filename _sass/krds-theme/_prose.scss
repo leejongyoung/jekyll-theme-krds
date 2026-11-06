@@ -1,0 +1,61 @@
+// 마크다운 본문(.th-prose) 스타일. kramdown이 만든 평범한 HTML에 KRDS 토큰을 입힌다.
+.th-prose {
+  font-size: var(--krds-pc-font-size-body-large);
+  line-height: 1.7;
+  color: var(--th-text);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  @include size-medium { font-size: var(--krds-mobile-font-size-body-large); }
+
+  > :first-child { margin-top: 0; }
+
+  h1, h2, h3, h4, h5, h6 { font-weight: var(--krds-font-weight-bold); line-height: 1.35; color: var(--th-text-bolder); scroll-margin-top: var(--krds-gap-8); }
+  h1 { margin: var(--krds-gap-10) 0 var(--krds-gap-5); font-size: var(--krds-pc-font-size-heading-xlarge); }
+  h2 { margin: var(--krds-gap-10) 0 var(--krds-gap-4); padding-top: var(--krds-padding-5); border-top: 1px solid var(--th-border-strong); font-size: var(--krds-pc-font-size-heading-large); }
+  h3 { margin: var(--krds-gap-8) 0 var(--krds-gap-3); font-size: var(--krds-pc-font-size-heading-medium); }
+  h4 { margin: var(--krds-gap-7) 0 var(--krds-gap-3); font-size: var(--krds-pc-font-size-heading-small); }
+  h5, h6 { margin: var(--krds-gap-6) 0 var(--krds-gap-2); font-size: var(--krds-pc-font-size-heading-xsmall); }
+  @include size-medium {
+    h1 { font-size: var(--krds-mobile-font-size-heading-xlarge); }
+    h2 { font-size: var(--krds-mobile-font-size-heading-large); }
+    h3 { font-size: var(--krds-mobile-font-size-heading-medium); }
+    h4 { font-size: var(--krds-mobile-font-size-heading-small); }
+    h5, h6 { font-size: var(--krds-mobile-font-size-heading-xsmall); }
+  }
+
+  p { margin: 0 0 var(--krds-gap-5); }
+  a { color: var(--th-text-primary); text-decoration: underline; text-underline-offset: var(--krds-font-underline-offset); &:hover { text-decoration-thickness: 2px; } &:focus-visible { box-shadow: var(--krds-box-shadow-outline); border-radius: 2px; } }
+  strong { font-weight: var(--krds-font-weight-bold); color: var(--th-text-bolder); }
+
+  // KRDS reset이 list-style 을 없애므로 본문에서는 다시 켠다.
+  ul, ol { margin: 0 0 var(--krds-gap-5); padding-left: 2.4rem; }
+  ul { list-style: disc; ul { list-style: circle; ul { list-style: square; } } }
+  ol { list-style: decimal; ol { list-style: lower-alpha; } }
+  li { margin: 0 0 var(--krds-gap-2); }
+  li > ul, li > ol { margin: var(--krds-gap-2) 0 0; }
+
+  blockquote {
+    margin: 0 0 var(--krds-gap-5);
+    padding: var(--krds-padding-4) var(--krds-padding-6);
+    border-left: 0.4rem solid var(--th-border-primary);
+    background-color: var(--th-surface-primary);
+    border-radius: 0 var(--krds-radius-medium2) var(--krds-radius-medium2) 0;
+    > :last-child { margin-bottom: 0; }
+  }
+
+  hr { margin: var(--krds-gap-8) 0; border: 0; border-top: 1px solid var(--th-border-strong); }
+  img, video { max-width: 100%; height: auto; border-radius: var(--krds-radius-medium2); }
+  figure { margin: 0 0 var(--krds-gap-5); figcaption { margin-top: var(--krds-gap-2); font-size: var(--krds-pc-font-size-body-small); color: var(--th-text-subtle); } }
+
+  code { padding: 0.2rem 0.6rem; border-radius: var(--krds-radius-small2); background-color: var(--th-bg-subtle); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.9em; }
+  pre { margin: 0 0 var(--krds-gap-5); padding: var(--krds-padding-5); overflow-x: auto; border: 1px solid var(--th-border); border-radius: var(--krds-radius-medium2); background-color: var(--th-bg-subtle); line-height: 1.5;
+    code { padding: 0; background: none; font-size: var(--krds-pc-font-size-body-small); } }
+
+  // 마크다운 표: KRDS 표 컴포넌트의 모양(머리글 배경, 가는 가로선)을 따른다.
+  .th-table-wrap { margin: 0 0 var(--krds-gap-5); overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; border-top: 2px solid var(--th-border-strong); font-size: var(--krds-pc-font-size-body-medium); }
+  th, td { padding: var(--krds-padding-3) var(--krds-padding-4); border-bottom: 1px solid var(--th-border); text-align: left; vertical-align: top; }
+  th { background-color: var(--th-bg-subtle); font-weight: var(--krds-font-weight-bold); color: var(--th-text-bolder); }
+
+  .footnotes { margin-top: var(--krds-gap-10); font-size: var(--krds-pc-font-size-body-medium); color: var(--th-text-subtle); }
+}

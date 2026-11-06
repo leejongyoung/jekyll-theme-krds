@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'ko' }}">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <script>
+    // 저장된 글자 크기(KRDS는 body의 zoom으로 조절)를 렌더 전에 적용한다.
+    (function () { try { var z = parseFloat(localStorage.getItem('krds-scale')); if (z >= 0.5 && z <= 2) document.body.style.zoom = z; } catch (e) {} })();
+  </script>
+  {% include skip-link.html %}
+  {% include header.html %}
+  <main id="content" class="th-main" tabindex="-1">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  <script src="{{ '/assets/js/theme.js' | relative_url }}" defer></script>
+  <script src="{{ '/assets/js/vendor/krds-ui-script.js' | relative_url }}" defer></script>
+</body>
+</html>

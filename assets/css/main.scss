@@ -1,0 +1,39 @@
+---
+---
+// KRDS 원본 SCSS는 _sass/vendor/krds 아래에 그대로 두고, 여기서 필요한 부분만 가져온다.
+// 이미지 경로는 이 CSS(/assets/css/main.css) 기준 상대 경로다.
+$url: "..";
+
+@import "vendor/krds/common/path";
+@import "vendor/krds/krds_tokens";
+@import "krds-theme/fonts";
+@import "vendor/krds/common/include";
+@import "vendor/krds/common/root";
+@import "vendor/krds/common/icon";
+@import "vendor/krds/common/dropdown";
+@import "vendor/krds/common/reset";
+
+// 사용하는 KRDS 컴포넌트만 가져온다(키트의 component.scss 순서를 따름).
+@import "vendor/krds/component/button";
+@import "vendor/krds/component/tab";
+@import "vendor/krds/component/table";
+@import "vendor/krds/component/text_list";
+@import "vendor/krds/component/accordion";
+@import "vendor/krds/component/disclosure";
+@import "vendor/krds/component/skip_link";
+@import "vendor/krds/component/header";
+@import "vendor/krds/component/main_menu";
+@import "vendor/krds/component/footer";
+@import "vendor/krds/component/side_navigation";
+@import "vendor/krds/component/critical_alerts";
+@import "vendor/krds/component/in_page_navigation";
+@import "vendor/krds/component/pagination";
+@import "vendor/krds/component/breadcrumb";
+@import "vendor/krds/component/badge";
+@import "vendor/krds/component/tag";
+@import "vendor/krds/component/resize";
+
+// 이 테마의 토큰 재선언과 레이아웃(KRDS 컴포넌트 뒤에 와야 덮어쓴다).
+@import "krds-theme/tokens";
+@import "krds-theme/layout";
+@import "krds-theme/prose";

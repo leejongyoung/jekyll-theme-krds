@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <article>
+    <h1 class="th-page-title">{{ page.title }}</h1>
+    {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+    <div class="th-prose">
+      {{ content }}
+    </div>
+  </article>
+</div>

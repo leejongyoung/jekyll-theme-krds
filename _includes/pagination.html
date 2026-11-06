@@ -1,0 +1,31 @@
+{%- comment -%}
+  KRDS 페이지네이션. jekyll-paginate 의 paginator 가 있을 때만 그린다.
+  (설정: paginate: 10, paginate_path: "/blog/page:num/" 가 필요하며 목록 페이지는 index.html 이어야 한다.)
+{%- endcomment -%}
+{%- if paginator and paginator.total_pages > 1 %}
+<nav aria-label="페이지 이동">
+  <div class="krds-pagination">
+    {%- if paginator.previous_page %}
+    <a class="page-navi prev" href="{{ paginator.previous_page_path | relative_url }}">이전</a>
+    {%- else %}
+    <a class="page-navi prev disabled" role="link" aria-disabled="true">이전</a>
+    {%- endif %}
+    <div class="page-links">
+      {%- for i in (1..paginator.total_pages) %}
+        {%- if i == paginator.page %}
+      <a class="page-link active" href="{{ page.url | relative_url }}" aria-current="page"><span class="sr-only">현재페이지 </span>{{ i }}</a>
+        {%- elsif i == 1 %}
+      <a class="page-link" href="{{ site.krds.blog_url | default: '/' | relative_url }}">{{ i }}</a>
+        {%- else %}
+      <a class="page-link" href="{{ site.paginate_path | replace: ':num', i | relative_url }}">{{ i }}</a>
+        {%- endif %}
+      {%- endfor %}
+    </div>
+    {%- if paginator.next_page %}
+    <a class="page-navi next" href="{{ paginator.next_page_path | relative_url }}">다음</a>
+    {%- else %}
+    <a class="page-navi next disabled" role="link" aria-disabled="true">다음</a>
+    {%- endif %}
+  </div>
+</nav>
+{%- endif %}

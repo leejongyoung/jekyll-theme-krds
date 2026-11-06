@@ -1,0 +1,24 @@
+---
+layout: default
+---
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <h1 class="th-page-title">{{ page.title }}</h1>
+  {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+  {%- if content != '' %}<div class="th-prose">{{ content }}</div>{% endif %}
+  {%- assign list = paginator.posts | default: site.posts %}
+  {%- if list.size > 0 %}
+  <ul class="th-post-list">
+    {%- for post in list %}
+    <li class="th-post-item">
+      <h2 class="th-post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+      {% include post-meta.html post=post %}
+      <p class="th-excerpt">{{ post.excerpt | strip_html | truncate: 140 }}</p>
+    </li>
+    {%- endfor %}
+  </ul>
+  {%- else %}
+  <p>아직 글이 없습니다.</p>
+  {%- endif %}
+  {% include pagination.html %}
+</div>

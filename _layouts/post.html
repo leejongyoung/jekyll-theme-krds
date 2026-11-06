@@ -1,0 +1,19 @@
+---
+layout: default
+---
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <article>
+    <h1 class="th-page-title">{{ page.title }}</h1>
+    {% include post-meta.html %}
+    <div class="th-prose">
+      {{ content }}
+    </div>
+  </article>
+  {%- if page.previous or page.next %}
+  <nav class="th-post-nav" aria-label="이전·다음 글">
+    {%- if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><small>이전 글</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+    {%- if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>다음 글</small>{{ page.next.title }}</a>{% endif %}
+  </nav>
+  {%- endif %}
+</div>

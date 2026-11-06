@@ -1,0 +1,64 @@
+{%- comment -%}
+  KRDS 헤더. 구조와 클래스는 KRDS HTML Component Kit의 header 샘플을 따른다.
+  메뉴는 _data/navigation.yml 의 main(최대 2단계)을 쓴다. 로고 이미지는 쓰지 않고 사이트 이름을 텍스트로 보여 준다.
+{%- endcomment -%}
+<header id="krds-header">
+  <div class="header-in">
+    <div class="header-container">
+      <div class="inner">
+        <div class="header-utility">
+          <ul class="utility-list">
+            {%- for link in site.data.navigation.utility %}
+            <li>
+              <a href="{{ link.url | relative_url }}" class="krds-btn small text"{% if link.external %} target="_blank" rel="noopener" title="새 창 열기"{% endif %}>
+                {{- link.title }}{% if link.external %} <i class="svg-icon ico-go"></i>{% endif -%}
+              </a>
+            </li>
+            {%- endfor %}
+            <li>
+              <div class="krds-drop-wrap krds-resize" data-adjust="scale">
+                <button type="button" class="krds-btn small text drop-btn">글자 크기 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link sm" data-adjust-scale="sm">작게</button></li>
+                      <li><button type="button" class="item-link md active" data-adjust-scale="md">보통</button></li>
+                      <li><button type="button" class="item-link lg" data-adjust-scale="lg">조금 크게</button></li>
+                      <li><button type="button" class="item-link xlg" data-adjust-scale="xlg">크게</button></li>
+                      <li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg">가장 크게</button></li>
+                    </ul>
+                    <div class="drop-bottom">
+                      <button type="button" class="krds-btn medium text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="krds-drop-wrap th-mode">
+                <button type="button" class="krds-btn small text drop-btn">화면 모드 <i class="svg-icon ico-toggle"></i></button>
+                <div class="drop-menu">
+                  <div class="drop-in">
+                    <ul class="drop-list">
+                      <li><button type="button" class="item-link active" data-th-mode="light">기본 (밝은 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="high-contrast">선명하게 (어두운 배경)</button></li>
+                      <li><button type="button" class="item-link" data-th-mode="theme">시스템 설정</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="header-branding">
+          <h2 class="logo"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h2>
+          <div class="header-actions">
+            <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include main-menu.html %}
+  </div>
+</header>
+{% include main-menu-mobile.html %}

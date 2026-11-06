@@ -1,0 +1,18 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{%- seo -%}
+<script>
+  // 깜빡임 방지: 저장된 화면 모드(light | high-contrast | theme)를 렌더 전에 적용한다.
+  (function () {
+    var mode = 'light';
+    try { mode = localStorage.getItem('krds-mode') || 'light'; } catch (e) {}
+    if (['light', 'high-contrast', 'theme'].indexOf(mode) < 0) mode = 'light';
+    document.documentElement.setAttribute('data-krds-mode', mode);
+  })();
+</script>
+<link rel="preload" href="{{ '/assets/fonts/PretendardGOV-Regular.subset.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+{%- if site.krds.favicon %}
+<link rel="icon" href="{{ site.krds.favicon | relative_url }}">
+{%- endif %}
+{%- include head-custom.html %}

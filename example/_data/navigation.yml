@@ -1,0 +1,42 @@
+# 상단 메뉴(최대 2단계). 하위가 없으면 바로 이동하는 링크다.
+main:
+  - title: 소개
+    url: /about/
+  - title: 문서
+    url: /docs/
+    children:
+      - title: 시작하기
+        url: /docs/getting-started/
+      - title: 설정
+        url: /docs/configuration/
+      - title: 마크다운 보기
+        url: /docs/typography/
+  - title: 블로그
+    url: /blog/
+
+# 헤더 맨 위의 보조 링크
+utility:
+  - title: GitHub
+    url: https://github.com/leejongyoung/jekyll-theme-krds
+    external: true
+
+# docs 레이아웃의 왼쪽 메뉴
+docs:
+  - title: 시작하기
+    children:
+      - title: 소개
+        url: /docs/
+      - title: 설치와 시작
+        url: /docs/getting-started/
+  - title: 사용법
+    children:
+      - title: 설정
+        url: /docs/configuration/
+      - title: 마크다운 보기
+        url: /docs/typography/
+
+# 푸터 링크
+footer:
+  - title: KRDS 누리집
+    url: https://www.krds.go.kr
+    external: true

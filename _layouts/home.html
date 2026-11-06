@@ -1,0 +1,51 @@
+---
+layout: default
+---
+{%- assign hero = page.hero -%}
+<div class="th-wrap">
+  <section class="th-hero" aria-labelledby="hero-title">
+    {%- if hero.eyebrow %}<p class="th-hero-eyebrow">{{ hero.eyebrow }}</p>{% endif %}
+    <h1 id="hero-title" class="th-hero-title">{{ hero.title | default: page.title | default: site.title }}</h1>
+    {%- if hero.lead or site.description %}<p class="th-hero-lead">{{ hero.lead | default: site.description }}</p>{% endif %}
+    {%- if hero.actions %}
+    <div class="th-hero-actions">
+      {%- for a in hero.actions %}
+      <a href="{{ a.url | relative_url }}" class="krds-btn large {{ a.style | default: 'primary' }}">{{ a.text }}</a>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+  </section>
+
+  {%- if page.features %}
+  <section class="th-section" aria-labelledby="features-title">
+    <h2 id="features-title" class="th-section-title">{{ page.features_title | default: '주요 내용' }}</h2>
+    <ul class="th-cards">
+      {%- for f in page.features %}
+      <li class="th-card">
+        <h3 class="th-card-title">{{ f.title }}</h3>
+        <p class="th-card-text">{{ f.text }}</p>
+        {%- if f.url %}<a class="krds-btn medium text th-card-link" href="{{ f.url | relative_url }}">{{ f.link_text | default: '자세히 보기' }} <i class="svg-icon ico-angle right"></i></a>{% endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  {%- if content != '' %}
+  <section class="th-section"><div class="th-prose">{{ content }}</div></section>
+  {%- endif %}
+
+  {%- if page.recent_posts and site.posts.size > 0 %}
+  <section class="th-section" aria-labelledby="recent-title">
+    <h2 id="recent-title" class="th-section-title">{{ page.recent_posts_title | default: '최근 글' }}</h2>
+    <ul class="th-post-list">
+      {%- for post in site.posts limit: page.recent_posts %}
+      <li class="th-post-item">
+        <h3 class="th-post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% include post-meta.html post=post %}
+      </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+</div>

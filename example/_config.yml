@@ -1,0 +1,31 @@
+title: KRDS 테마 예제
+description: 범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 비공식 Jekyll 테마의 예제 사이트입니다.
+lang: ko
+theme: jekyll-theme-krds
+url: ""
+baseurl: ""
+permalink: pretty
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-paginate
+
+paginate: 3
+paginate_path: "/blog/page:num/"
+
+krds:
+  blog_url: /blog/
+  blog_title: 블로그
+  docs_title: 문서
+  footer:
+    description: jekyll-theme-krds 예제 사이트입니다.
+    contact:
+      - label: 저장소
+        value: github.com/leejongyoung/jekyll-theme-krds
+    copyright: jekyll-theme-krds
+
+sass:
+  quiet_deps: true
+  silence_deprecations: [import, global-builtin, color-functions]
+
+exclude: [Gemfile, Gemfile.lock, vendor, node_modules]

@@ -1,0 +1,67 @@
+{%- comment -%}
+  KRDS 메인메뉴(모바일 전체메뉴). 왼쪽 탭(1단계)과 오른쪽 목록(2단계) 구조다.
+  하위가 있는 1단계 항목은 각각 탭이 되고, 하위가 없는 항목은 '바로가기' 탭에 모은다.
+{%- endcomment -%}
+{%- assign nav = site.data.navigation.main -%}
+{%- if nav and nav.size > 0 %}
+<div id="mobile-nav" class="krds-main-menu-mobile" role="dialog" aria-modal="true" aria-label="전체 메뉴">
+  <div class="gnb-wrap">
+    <div class="gnb-header">
+      <div class="gnb-utils">
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="-1">글자 작게</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="0">글자 보통</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-scale-step="1">글자 크게</button></li>
+        </ul>
+        <ul class="utility-list">
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="light">밝은 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="high-contrast">어두운 배경</button></li>
+          <li><button type="button" class="krds-btn xsmall text" data-th-mode="theme">시스템 설정</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="gnb-body">
+      <div class="gnb-menu">
+        <div class="menu-wrap">
+          <ul>
+            {%- assign has_links = false -%}
+            {%- for item in nav %}{% unless item.children and item.children.size > 0 %}{% assign has_links = true %}{% endunless %}{% endfor %}
+            {%- if has_links %}
+            <li><a href="#mGnb-anchor-links" class="gnb-main-trigger">바로가기</a></li>
+            {%- endif %}
+            {%- for item in nav %}{% if item.children and item.children.size > 0 %}
+            <li><a href="#mGnb-anchor-{{ forloop.index }}" class="gnb-main-trigger">{{ item.title }}</a></li>
+            {%- endif %}{% endfor %}
+          </ul>
+        </div>
+        <div class="submenu-wrap">
+          {%- if has_links %}
+          <div class="gnb-sub-list" id="mGnb-anchor-links">
+            <h2 class="sub-title">바로가기</h2>
+            <ul>
+              {%- for item in nav %}{% unless item.children and item.children.size > 0 %}
+              <li><a href="{{ item.url | relative_url }}" class="gnb-sub-trigger">{{ item.title }}</a></li>
+              {%- endunless %}{% endfor %}
+            </ul>
+          </div>
+          {%- endif %}
+          {%- for item in nav %}{% if item.children and item.children.size > 0 %}
+          <div class="gnb-sub-list" id="mGnb-anchor-{{ forloop.index }}">
+            <h2 class="sub-title">{{ item.title }}</h2>
+            <ul>
+              {%- for child in item.children %}
+              <li><a href="{{ child.url | relative_url }}" class="gnb-sub-trigger">{{ child.title }}</a></li>
+              {%- endfor %}
+            </ul>
+          </div>
+          {%- endif %}{% endfor %}
+        </div>
+      </div>
+    </div>
+    <button type="button" class="krds-btn medium icon" id="close-nav">
+      <span class="sr-only">전체메뉴 닫기</span>
+      <i class="svg-icon ico-popup-close"></i>
+    </button>
+  </div>
+</div>
+{%- endif %}

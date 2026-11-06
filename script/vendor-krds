@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# KRDS HTML Component Kit 의 지정한 태그를 내려받아 이 저장소의 vendor 파일을 교체한다.
+# 사용: script/vendor-krds 1.1.0
+set -euo pipefail
+tag="${1:?사용법: script/vendor-krds <KRDS 키트 태그, 예: 1.1.0>}"
+root="$(cd "$(dirname "$0")/.." && pwd)"
+tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
+
+git clone --quiet --depth 1 --branch "$tag" https://github.com/KRDS-uiux/krds-uiux.git "$tmp/kit"
+commit="$(git -C "$tmp/kit" rev-parse HEAD)"
+k="$tmp/kit/resources"
+
+rm -rf "$root/_sass/vendor/krds" "$root/assets/img/component" 
+mkdir -p "$root/_sass/vendor/krds" "$root/assets/img/component" "$root/assets/js/vendor" "$root/assets/fonts"
+cp -R "$k/scss/common"    "$root/_sass/vendor/krds/common"
+cp -R "$k/scss/component" "$root/_sass/vendor/krds/component"
+cp    "$k/css/token/krds_tokens.css" "$root/_sass/vendor/krds/_krds_tokens.scss"
+cp -R "$k/img/component/icon" "$root/assets/img/component/icon"
+rm -f "$root"/assets/img/component/icon/ico_logo_krds*.svg   # KRDS 식별 요소는 쓰지 않는다
+cp "$k/js/component/ui-script.js" "$root/assets/js/vendor/krds-ui-script.js"
+cp "$k"/fonts/PretendardGOV-{Regular,Medium,Bold}.subset.woff2 "$root/assets/fonts/"
+
+echo "KRDS 키트 $tag (커밋 $commit)를 가져왔습니다."
+echo "NOTICE.md 의 버전·커밋을 갱신하고, 예제 사이트를 빌드해 확인하세요."

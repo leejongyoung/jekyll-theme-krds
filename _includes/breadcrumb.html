@@ -1,0 +1,37 @@
+{%- comment -%}
+  KRDS 브레드크럼.
+  - front matter에 breadcrumb: [{title, url}, ...] 가 있으면 그대로 쓴다.
+  - 글(post)은 홈 > 블로그 > 제목.
+  - 그 밖에는 URL 경로를 따라 올라가며 실제로 있는 페이지의 제목을 쓴다.
+{%- endcomment -%}
+<nav class="krds-breadcrumb-wrap" aria-label="현재 경로" id="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="home"><a href="{{ '/' | relative_url }}" class="txt">홈</a></li>
+    {%- if page.breadcrumb %}
+      {%- for crumb in page.breadcrumb %}
+    <li><a href="{{ crumb.url | relative_url }}" class="txt">{{ crumb.title }}</a></li>
+      {%- endfor %}
+    {%- elsif page.layout == 'post' and site.krds.blog_url %}
+    <li><a href="{{ site.krds.blog_url | relative_url }}" class="txt">{{ site.krds.blog_title | default: '블로그' }}</a></li>
+    {%- else %}
+      {%- assign parts = page.url | split: '/' -%}
+      {%- assign acc = '' -%}
+      {%- for part in parts -%}
+        {%- if part != '' and part contains '.' -%}{%- continue -%}{%- endif -%}
+        {%- if part != '' -%}
+          {%- assign acc = acc | append: '/' | append: part -%}
+          {%- assign dir = acc | append: '/' -%}
+          {%- unless dir == page.url -%}
+            {%- assign found = site.pages | where: 'url', dir | first -%}
+            {%- if found and found.title %}
+    <li><a href="{{ dir | relative_url }}" class="txt">{{ found.title }}</a></li>
+            {%- endif -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor %}
+    {%- endif %}
+    {%- if page.url != '/' %}
+    <li><span class="txt" aria-current="page">{{ page.title }}</span></li>
+    {%- endif %}
+  </ol>
+</nav>

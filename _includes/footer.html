@@ -1,0 +1,42 @@
+{%- comment -%}
+  KRDS 푸터. _data/navigation.yml 의 footer(링크 목록)와 _config.yml 의 krds.footer 를 쓴다.
+  맨 아래 출처 표시는 KRDS 이용 조건(공공누리 제1유형: 출처 표시)에 따른 것이므로 지우지 않는다.
+{%- endcomment -%}
+{%- assign f = site.krds.footer -%}
+<footer id="krds-footer">
+  <div class="inner">
+    <div class="f-logo">{{ site.title }}</div>
+    <div class="f-cnt">
+      <div class="f-info">
+        {%- if f.description %}<p class="info-addr">{{ f.description }}</p>{% elsif site.description %}<p class="info-addr">{{ site.description }}</p>{% endif %}
+        {%- if f.contact %}
+        <ul class="info-cs">
+          {%- for c in f.contact %}
+          <li><strong class="strong">{{ c.label }}</strong>{% if c.value %}<span class="span">{{ c.value }}</span>{% endif %}</li>
+          {%- endfor %}
+        </ul>
+        {%- endif %}
+      </div>
+      {%- if site.data.navigation.footer %}
+      <div class="f-link">
+        <div class="link-go">
+          {%- for link in site.data.navigation.footer %}
+          <a href="{{ link.url | relative_url }}" class="krds-btn medium text"{% if link.external %} target="_blank" rel="noopener" title="새 창 열기"{% endif %}>{{ link.title }} <i class="svg-icon ico-angle right"></i></a>
+          {%- endfor %}
+        </div>
+      </div>
+      {%- endif %}
+    </div>
+    <div class="f-btm">
+      <div class="f-btm-text">
+        <p class="f-copy">© {{ site.time | date: '%Y' }} {{ f.copyright | default: site.title }}</p>
+        <p class="th-disclaimer">
+          이 사이트의 디자인은 행정안전부가 2024년 제작하여 공공누리 제1유형으로 개방한
+          <a href="https://www.krds.go.kr" target="_blank" rel="noopener">범정부 UI/UX 디자인시스템(KRDS)<span class="th-sr-only"> (새 창 열림)</span></a>을
+          바탕으로 한 비공식 Jekyll 테마 <a href="https://github.com/leejongyoung/jekyll-theme-krds" target="_blank" rel="noopener">jekyll-theme-krds<span class="th-sr-only"> (새 창 열림)</span></a>를 사용합니다.
+          정부 및 KRDS 운영 기관과 관련 없는 개인 사이트입니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

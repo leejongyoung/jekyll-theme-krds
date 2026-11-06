@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <div class="th-doc">
+    <div class="th-doc-side">
+      {% include side-nav.html %}
+    </div>
+    <article>
+      <h1 class="th-page-title">{{ page.title }}</h1>
+      {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+      <div class="th-prose">
+        {{ content }}
+      </div>
+    </article>
+    <div class="th-doc-toc">
+      {% include toc.html %}
+    </div>
+  </div>
+</div>

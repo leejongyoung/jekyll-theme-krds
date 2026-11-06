@@ -1,0 +1,47 @@
+{%- comment -%}
+  KRDS 메인메뉴(데스크톱). _data/navigation.yml 의 main:
+    - title, url        하위가 없으면 바로 이동하는 링크
+    - children[]        title, url 목록(드롭다운)
+  현재 페이지가 속한 메뉴는 selected 로 표시한다.
+{%- endcomment -%}
+{%- assign nav = site.data.navigation.main -%}
+{%- if nav and nav.size > 0 %}
+<nav class="krds-main-menu" aria-label="주 메뉴">
+  <div class="inner">
+    <ul class="gnb-menu">
+      {%- for item in nav %}
+        {%- assign item_url = item.url | default: '' -%}
+        {%- assign selected = false -%}
+        {%- if item_url != '' -%}
+          {%- if item_url == '/' -%}
+            {%- if page.url == '/' %}{% assign selected = true %}{% endif -%}
+          {%- else -%}
+            {%- assign head = page.url | slice: 0, item_url.size -%}
+            {%- if head == item_url %}{% assign selected = true %}{% endif -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- for child in item.children %}
+          {%- assign head = page.url | slice: 0, child.url.size -%}
+          {%- if head == child.url %}{% assign selected = true %}{% endif -%}
+        {%- endfor %}
+      <li>
+        {%- if item.children and item.children.size > 0 %}
+        <button type="button" class="gnb-main-trigger is-dropdown{% if selected %} selected{% endif %}" data-trigger="gnb">{{ item.title }}</button>
+        <div class="gnb-toggle-wrap">
+          <div class="gnb-main-list" data-has-submenu="false">
+            <ul>
+              {%- for child in item.children %}
+              <li><a href="{{ child.url | relative_url }}" class="gnb-sub-trigger is-link" data-trigger="gnb"{% if page.url == child.url %} aria-current="page"{% endif %}>{{ child.title }}</a></li>
+              {%- endfor %}
+            </ul>
+          </div>
+        </div>
+        {%- else %}
+        <a href="{{ item.url | relative_url }}" class="gnb-main-trigger is-link{% if selected %} selected{% endif %}" data-trigger="gnb"{% if selected %} aria-current="page"{% endif %}>{{ item.title }}</a>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+</nav>
+{%- endif %}

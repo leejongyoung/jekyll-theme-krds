@@ -1,0 +1,36 @@
+{%- comment -%}
+  KRDS 사이드 내비게이션. _data/navigation.yml 의 docs:
+    - title: 그룹 이름
+      children: [{title, url}, ...]
+    - title, url          (하위 없는 단독 링크)
+  현재 페이지가 속한 그룹은 펼쳐서 보여 준다. 페이지에서 nav: <키> 로 다른 목록을 고를 수 있다.
+{%- endcomment -%}
+{%- assign key = page.nav | default: 'docs' -%}
+{%- assign side = site.data.navigation[key] -%}
+{%- if side and side.size > 0 %}
+<nav class="krds-side-navigation" aria-label="{{ page.nav_title | default: site.krds.docs_title | default: '문서' }} 메뉴">
+  <h2 class="lnb-tit">{{ page.nav_title | default: site.krds.docs_title | default: '문서' }}</h2>
+  <ul class="lnb-list">
+    {%- for group in side %}
+      {%- assign open = false -%}
+      {%- for child in group.children %}{% if child.url == page.url %}{% assign open = true %}{% endif %}{% endfor %}
+    <li class="lnb-item{% if open %} active{% endif %}">
+      {%- if group.children and group.children.size > 0 %}
+      <button type="button" class="lnb-btn lnb-toggle{% if open %} active{% endif %}" aria-controls="lnbmenu-{{ forloop.index }}" aria-expanded="{{ open }}">{{ group.title }}</button>
+      <div class="lnb-submenu">
+        <ul id="lnbmenu-{{ forloop.index }}">
+          {%- for child in group.children %}
+          <li class="lnb-subitem{% if child.url == page.url %} active{% endif %}">
+            <a href="{{ child.url | relative_url }}" class="lnb-btn lnb-link"{% if child.url == page.url %} aria-current="page"{% endif %}>{{ child.title }}</a>
+          </li>
+          {%- endfor %}
+        </ul>
+      </div>
+      {%- else %}
+      <a href="{{ group.url | relative_url }}" class="lnb-btn lnb-link"{% if group.url == page.url %} aria-current="page"{% endif %}>{{ group.title }}</a>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ul>
+</nav>
+{%- endif %}

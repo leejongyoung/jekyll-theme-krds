@@ -1,0 +1,43 @@
+// KRDS 토큰은 원본을 고치지 않고 CSS 변수를 다시 선언해서 바꾼다(KRDS 개발자 가이드의 방식).
+// 사이트에서는 assets/css/main.scss 뒤에 :root { --krds-... } 를 덧붙여 같은 방식으로 바꿀 수 있다.
+
+:root {
+  // 서브셋에 없는 글자는 시스템 한글 글꼴로 대체한다.
+  --krds-typo-font-type: "Pretendard GOV", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+
+// 화면 모드: KRDS는 기본(밝음), high-contrast(어두운 선명 모드), theme(시스템 설정이 어두우면 high-contrast)를 쓴다.
+// 이 테마의 레이아웃은 아래 --th-* 변수만 참조하고, 값은 모드에 맞는 KRDS 시맨틱 토큰으로 연결한다.
+@mixin th-vars($m) {
+  --th-text: var(--krds-#{$m}-color-text-basic);
+  --th-text-bolder: var(--krds-#{$m}-color-text-bolder);
+  --th-text-subtle: var(--krds-#{$m}-color-text-subtle);
+  --th-text-primary: var(--krds-#{$m}-color-text-primary);
+  --th-bg: var(--krds-#{$m}-color-background-white);
+  --th-bg-subtle: var(--krds-#{$m}-color-background-gray-subtle);
+  --th-surface-primary: var(--krds-#{$m}-color-surface-primary-subtler);
+  --th-border: var(--krds-#{$m}-color-border-gray-light);
+  --th-border-strong: var(--krds-#{$m}-color-border-gray);
+  --th-border-primary: var(--krds-#{$m}-color-border-primary);
+}
+
+:root {
+  @include th-vars(light);
+}
+
+html[data-krds-mode="high-contrast"] {
+  @include th-vars(high-contrast);
+  color-scheme: dark;
+  // KRDS 원본은 :root 에 모드별 값을 거는 규칙을 '[data-krds-mode] :root' 로 써서 html 자신에는 적용되지 않는다.
+  --krds-box-shadow-outline: 0 0 0 0.4rem var(--krds-high-contrast-color-border-primary);
+  --krds-box-shadow-outline-inset: inset 0 0 0 0.2rem var(--krds-high-contrast-color-border-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-krds-mode="theme"] {
+    @include th-vars(high-contrast);
+    color-scheme: dark;
+    --krds-box-shadow-outline: 0 0 0 0.4rem var(--krds-high-contrast-color-border-primary);
+    --krds-box-shadow-outline-inset: inset 0 0 0 0.2rem var(--krds-high-contrast-color-border-primary);
+  }
+}
