@@ -203,6 +203,11 @@ body {
   #krds-footer > .inner {
     max-width: calc(144rem + var(--krds-contents-padding-x) * 2);
   }
+  // KRDS 원본은 드롭다운만 --krds-contents-size(1200px)에 고정한다.
+  // 상단 메뉴와 같은 1440px 정렬선을 쓰도록 넓힌다.
+  .krds-main-menu .gnb-toggle-wrap .gnb-main-list {
+    max-width: 144rem;
+  }
 }
 
 

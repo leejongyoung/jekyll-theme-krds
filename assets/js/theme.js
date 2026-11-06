@@ -63,6 +63,27 @@
       }, 0);
     });
 
+    // 데스크톱 GNB 안에서 Escape로 메뉴를 닫으면 키트가 포커스를 body로 보낸다.
+    // 키트는 keyup에서 닫으므로 keydown에서 trigger를 기억하고, keyup 처리 뒤 되돌린다.
+    var escapeReturn = null;
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var menu = document.activeElement && document.activeElement.closest('.gnb-toggle-wrap.is-open');
+      if (!menu) return;
+      escapeReturn = {
+        menu: menu,
+        trigger: menu.parentElement && menu.parentElement.querySelector('.gnb-main-trigger')
+      };
+    });
+    document.addEventListener('keyup', function (e) {
+      if (e.key !== 'Escape' || !escapeReturn) return;
+      var pending = escapeReturn;
+      escapeReturn = null;
+      setTimeout(function () {
+        if (pending.trigger && !pending.menu.classList.contains('is-open')) pending.trigger.focus();
+      }, 0);
+    }, true);
+
     // 모바일 전체메뉴의 글자 크기 단계 버튼(키트의 크기 조절은 드롭다운 안에서만 동작한다)
     var order = Object.keys(SCALES).map(function (k) { return SCALES[k]; });
     document.querySelectorAll('[data-th-scale-step]').forEach(function (btn) {
