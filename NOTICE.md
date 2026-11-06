@@ -1,6 +1,6 @@
 # NOTICE
 
-`jekyll-theme-krds` is an **unofficial** theme. It is not affiliated with, endorsed by, or sponsored by the
+`jekyll-theme-krds` is not affiliated with, endorsed by, or sponsored by the
 Government of the Republic of Korea, the Ministry of the Interior and Safety, or the operators of KRDS.
 
 ## 1. KRDS (Korea Design System) — 범정부 UI/UX 디자인시스템
