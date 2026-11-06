@@ -3,9 +3,5 @@
 <div class="th-meta">
   <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%Y.%m.%d" }}</time>
   {%- if p.author %}<span>{{ p.author }}</span>{% endif %}
-  {%- if p.tags and p.tags.size > 0 %}
-  <span class="krds-badge-wrap">
-    {%- for tag in p.tags %}<span class="krds-badge outline-gray">{{ tag }}</span>{% endfor %}
-  </span>
-  {%- endif %}
+  {%- if p.tags and p.tags.size > 0 %}{% include tag-list.html tags=p.tags size="small" %}{% endif %}
 </div>

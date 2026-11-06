@@ -1,0 +1,48 @@
+---
+layout: default
+---
+{%- include tags-data.html -%}
+{%- assign th_search_page = site.pages | where: 'layout', 'search' | first -%}
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <h1 class="th-page-title">{{ page.title | default: '태그' }}</h1>
+  {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+  {%- if content != '' %}<div class="th-prose">{{ content }}</div>{% endif %}
+
+  {%- if th_tag_names.size == 0 %}
+  <p>아직 태그가 달린 글이 없습니다.</p>
+  {%- else %}
+  <nav class="th-tag-index" aria-label="태그 목록">
+    <div class="krds-tag-wrap large">
+      {%- for tag in th_tag_names %}
+        {%- assign th_count = th_docs | where_exp: 'd', 'd.tags contains tag' | size %}
+      <a href="#{{ tag | slugify }}" class="krds-btn-tag link">{{ tag }}<span class="th-tag-count"><span class="th-sr-only"> </span>{{ th_count }}<span class="th-sr-only">개</span></span></a>
+      {%- endfor %}
+    </div>
+  </nav>
+
+  <div class="th-tag-sections">
+    {%- for tag in th_tag_names %}
+      {%- assign th_matches = th_docs | where_exp: 'd', 'd.tags contains tag' | sort: 'date' | reverse %}
+    <section id="{{ tag | slugify }}" class="th-tag-section" aria-labelledby="{{ tag | slugify }}-title">
+      <h2 id="{{ tag | slugify }}-title" class="th-tag-title">{{ tag }} <span class="th-tag-title-count">{{ th_matches.size }}개</span></h2>
+      <ul class="th-post-list">
+        {%- for d in th_matches %}
+        <li class="th-post-item">
+          <h3 class="th-post-title"><a href="{{ d.url | relative_url }}">{{ d.title }}</a></h3>
+          <div class="th-meta">
+            {%- if d.date %}<time datetime="{{ d.date | date_to_xmlschema }}">{{ d.date | date: "%Y.%m.%d" }}</time>{% else %}<span>문서</span>{% endif %}
+            {%- assign th_others = d.tags | where_exp: 'x', 'x != tag' %}
+            {%- if th_others.size > 0 %}{% include tag-list.html tags=th_others size="small" %}{% endif %}
+          </div>
+        </li>
+        {%- endfor %}
+      </ul>
+      {%- if th_search_page %}
+      <p class="th-tag-more"><a href="{{ th_search_page.url | relative_url }}?tag={{ tag | url_encode }}">검색에서 이 태그로 찾기<span class="th-sr-only">: {{ tag }}</span></a></p>
+      {%- endif %}
+    </section>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+</div>

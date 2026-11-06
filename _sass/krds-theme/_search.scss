@@ -1,0 +1,56 @@
+// 태그 페이지(layout: tags)와 검색 페이지(layout: search).
+// 입력·칩·태그는 KRDS 컴포넌트(krds-input, krds-form-chip, krds-btn-tag)를 그대로 쓰고, 여기서는 배치와 하이라이트만 더한다.
+
+// ── 태그 ──
+.th-tag-index { margin: var(--krds-gap-8) 0; }
+.th-tag-count { margin-left: var(--krds-gap-2); font-weight: var(--krds-font-weight-bold); }
+.th-tag-sections { margin-top: var(--krds-gap-10); }
+.th-tag-section {
+  margin: 0 0 var(--krds-gap-10);
+  padding: var(--krds-padding-4) var(--krds-padding-5);
+  scroll-margin-top: var(--krds-gap-8);
+  border-left: 4px solid transparent;
+  // 태그 링크(#슬러그)로 들어오면 해당 구역을 표시한다. 색뿐 아니라 굵은 왼쪽 선으로도 구분한다.
+  &:target {
+    border-left-color: var(--th-border-primary);
+    background: var(--th-surface-primary);
+  }
+}
+.th-tag-title { margin: 0 0 var(--krds-gap-4); font-size: var(--krds-pc-font-size-heading-medium); color: var(--th-text-bolder); }
+.th-tag-title-count { margin-left: var(--krds-gap-2); font-size: var(--krds-pc-font-size-body-medium); font-weight: normal; color: var(--th-text-subtle); }
+.th-tag-more { margin: var(--krds-gap-4) 0 0; font-size: var(--krds-pc-font-size-body-small); a { color: var(--th-text-primary); } }
+.th-post-item .th-meta { margin-bottom: 0; }
+
+// ── 검색 ──
+.th-search { max-width: 52rem; }
+.th-search-form { margin: 0 0 var(--krds-gap-6); }
+.th-search-tags { margin: 0 0 var(--krds-gap-6); }
+.th-search-tags-title { margin: 0 0 var(--krds-gap-3); font-weight: var(--krds-font-weight-bold); color: var(--th-text-bolder); }
+.th-search-tags-link { margin: var(--krds-gap-3) 0 0; font-size: var(--krds-pc-font-size-body-small); a { color: var(--th-text-primary); } }
+.th-search-status { margin: 0 0 var(--krds-gap-4); min-height: 1.5em; color: var(--th-text-subtle); }
+.th-search-results { margin: 0; padding: 0; list-style: none; }
+.th-search-item {
+  padding: var(--krds-padding-6) 0;
+  border-bottom: 1px solid var(--th-border);
+  &:first-child { border-top: 1px solid var(--th-border-strong); }
+}
+.th-search-title {
+  margin: 0 0 var(--krds-gap-2);
+  font-size: var(--krds-pc-font-size-heading-small);
+  font-weight: var(--krds-font-weight-bold);
+  a { color: var(--th-text-bolder); text-decoration: none; &:hover { text-decoration: underline; } }
+}
+.th-search-kind { padding: 0 var(--krds-gap-3); border: 1px solid var(--th-border-strong); border-radius: var(--krds-radius-small, 4px); font-size: var(--krds-pc-font-size-body-xsmall, .8rem); }
+.th-search-snippet { margin: var(--krds-gap-2) 0 0; color: var(--th-text); overflow-wrap: anywhere; }
+.th-search-more { margin: var(--krds-gap-6) 0 0; text-align: center; }
+// 검색어 강조: 배경색만으로 구분하지 않도록 굵게·밑줄도 함께 쓴다.
+.th-search mark {
+  padding: 0 .1em;
+  background: var(--th-surface-primary);
+  color: var(--th-text-bolder);
+  font-weight: var(--krds-font-weight-bold);
+  text-decoration: underline;
+  text-underline-offset: .15em;
+}
+.th-search-tags .krds-form-chip-outline { white-space: nowrap; }
+.th-search-tags .krds-check-area { flex-wrap: wrap; }

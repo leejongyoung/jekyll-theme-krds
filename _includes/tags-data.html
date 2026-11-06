@@ -1,0 +1,25 @@
+{%- comment -%}
+  태그가 달린 글과 페이지를 모아 태그별 개수를 계산한다(태그 페이지 레이아웃이 쓴다).
+  결과 변수: th_docs(태그가 있는 문서 전체), th_tag_names(개수 많은 순, 같으면 이름 순으로 정렬한 태그 이름 배열)
+  글(site.posts)과, front matter 에 tags 가 있는 페이지(site.html_pages)를 함께 센다. 태그 페이지 자신은 제외한다.
+{%- endcomment -%}
+{%- assign th_tagged_pages = site.html_pages | where_exp: 'p', 'p.tags and p.tags.size > 0 and p.layout != "tags"' -%}
+{%- assign th_docs = site.posts | concat: th_tagged_pages -%}
+{%- assign th_all = '' | split: '' -%}
+{%- for d in th_docs %}{% for t in d.tags %}{% assign th_all = th_all | push: t %}{% endfor %}{% endfor -%}
+{%- assign th_uniq = th_all | uniq | sort_natural -%}
+{%- comment -%} 정렬 키 = (1000000 - 개수) + '|' + 이름. 문자열 오름차순이면 개수가 많은 태그가 먼저, 같은 개수는 이름 순이다. {%- endcomment -%}
+{%- assign th_ranked = '' | split: '' -%}
+{%- for tag in th_uniq -%}
+  {%- assign th_n = th_docs | where_exp: 'd', 'd.tags contains tag' | size -%}
+  {%- assign th_rank = 1000000 | minus: th_n -%}
+  {%- assign th_key = th_rank | append: '|' | append: tag -%}
+  {%- assign th_ranked = th_ranked | push: th_key -%}
+{%- endfor -%}
+{%- assign th_ranked = th_ranked | sort -%}
+{%- assign th_tag_names = '' | split: '' -%}
+{%- for key in th_ranked -%}
+  {%- assign th_parts = key | split: '|' -%}
+  {%- assign th_name = key | remove_first: th_parts[0] | remove_first: '|' -%}
+  {%- assign th_tag_names = th_tag_names | push: th_name -%}
+{%- endfor -%}

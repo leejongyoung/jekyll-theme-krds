@@ -13,8 +13,12 @@ main:
         url: /docs/typography/
       - title: 임베드와 수식
         url: /docs/embeds/
+      - title: 태그와 검색
+        url: /docs/search-tags/
   - title: 블로그
     url: /blog/
+  - title: 태그
+    url: /tags/
 
 # 헤더 맨 위의 보조 링크
 utility:
@@ -38,6 +42,8 @@ docs:
         url: /docs/typography/
       - title: 임베드와 수식
         url: /docs/embeds/
+      - title: 태그와 검색
+        url: /docs/search-tags/
 
 # 푸터 링크
 footer:

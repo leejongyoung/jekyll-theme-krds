@@ -31,6 +31,10 @@ $url: "..";
 @import "vendor/krds/component/breadcrumb";
 @import "vendor/krds/component/badge";
 @import "vendor/krds/component/tag";
+@import "vendor/krds/component/form_layout";
+@import "vendor/krds/component/input";
+@import "vendor/krds/component/form_check";
+@import "vendor/krds/component/form_chip";
 @import "vendor/krds/component/resize";
 
 // 이 테마의 토큰 재선언과 레이아웃(KRDS 컴포넌트 뒤에 와야 덮어쓴다).
@@ -38,3 +42,4 @@ $url: "..";
 @import "krds-theme/layout";
 @import "krds-theme/prose";
 @import "krds-theme/embed";
+@import "krds-theme/search";

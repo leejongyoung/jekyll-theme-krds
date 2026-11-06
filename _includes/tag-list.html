@@ -1,0 +1,18 @@
+{%- comment -%}
+  태그 링크 목록(KRDS 태그: krds-tag-wrap / krds-btn-tag link).
+  사용: {% include tag-list.html tags=post.tags size="small" %}
+  태그 페이지(layout: tags 를 쓴 페이지)가 있으면 그 페이지의 해당 태그 구역(#슬러그)으로 연결하고, 없으면 글자로만 보여 준다.
+  매개변수: tags(배열), size(small | medium | large, 기본 medium)
+{%- endcomment -%}
+{%- assign th_tags_page = site.pages | where: 'layout', 'tags' | first -%}
+{%- if include.tags and include.tags.size > 0 %}
+<div class="krds-tag-wrap {{ include.size | default: 'medium' }}" role="group" aria-label="태그">
+  {%- for tag in include.tags %}
+    {%- if th_tags_page %}
+  <a href="{{ th_tags_page.url | relative_url }}#{{ tag | slugify }}" class="krds-btn-tag link">{{ tag }}</a>
+    {%- else %}
+  <span class="krds-btn-tag">{{ tag }}</span>
+    {%- endif %}
+  {%- endfor %}
+</div>
+{%- endif %}
