@@ -15,7 +15,19 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 
 ## 설치
 
-### GitHub Pages (원격 테마)
+이 테마는 **Jekyll 4**(Dart Sass)가 필요합니다.
+
+> **GitHub Pages의 기본 빌더로는 빌드되지 않습니다.** *Deploy from a branch*에서 GitHub가 직접 빌드하는 방식은 Jekyll 3과 Ruby Sass 3.7을 쓰는데, KRDS SCSS를 컴파일하지 못합니다. 임시 저장소로 확인했고 `Invalid null operation` 오류로 빌드가 실패했습니다. GitHub Pages에 올릴 때는 아래처럼 **GitHub Actions에서 Jekyll 4로 직접 빌드**하세요.
+
+### 방법 1. 원격 테마 (`jekyll-remote-theme`)
+
+```ruby
+# Gemfile
+gem "jekyll", "~> 4.4"
+gem "jekyll-remote-theme"
+gem "jekyll-seo-tag"
+gem "jekyll-paginate"   # 블로그 페이지네이션을 쓸 때
+```
 
 ```yaml
 # _config.yml
@@ -23,14 +35,16 @@ remote_theme: leejongyoung/jekyll-theme-krds
 plugins:
   - jekyll-remote-theme
   - jekyll-seo-tag
-  - jekyll-paginate   # 블로그 페이지네이션을 쓸 때
+  - jekyll-paginate
 ```
 
-### gem
+Jekyll 4로 직접 빌드(`bundle exec jekyll build`)해서 동작하는 것을 확인했습니다. `owner/repo@v1.0.0`처럼 태그를 붙여 버전을 고정할 수 있습니다.
+
+### 방법 2. gem
 
 ```ruby
 # Gemfile
-gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds"
+gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds", tag: "v1.0.0"
 ```
 
 ```yaml
@@ -38,7 +52,15 @@ gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds"
 theme: jekyll-theme-krds
 ```
 
-> RubyGems에는 아직 올리지 않았습니다. 올리기 전까지는 위처럼 GitHub에서 설치합니다.
+> RubyGems에는 올리지 않았습니다. 위처럼 GitHub에서 설치합니다.
+
+### GitHub Pages에 배포하기 (Actions)
+
+1. [`templates/pages-deploy.yml`](templates/pages-deploy.yml)을 사이트 저장소의 `.github/workflows/`에 복사하고 `main`에 푸시합니다. 워크플로가 Jekyll 4로 빌드해서 `gh-pages` 브랜치를 만듭니다.
+2. 저장소 **Settings → Pages**에서 Source를 *Deploy from a branch*, Branch를 `gh-pages` / `(root)`로 지정합니다.
+3. 프로젝트 사이트(`https://사용자.github.io/저장소/`)라면 `_config.yml`에 `baseurl: /저장소`를 넣습니다.
+
+이 저장소의 [데모](https://leejongyoung.github.io/jekyll-theme-krds/)도 같은 방식으로 배포됩니다([`.github/workflows/pages.yml`](.github/workflows/pages.yml)). 워크플로가 올린 뒤 GitHub의 Pages 배포 단계가 몇 분 걸릴 때도 있습니다.
 
 ## 시작하기
 
@@ -129,7 +151,7 @@ KRDS 컴포넌트가 접근성을 고려해 만들어져 있고, 이 테마가 �
 - 메인메뉴는 2단계까지입니다(KRDS의 3단계 메가메뉴는 데이터 모델에 넣지 않았습니다). 모바일 전체메뉴에서 하위가 없는 항목은 "바로가기" 탭에 모입니다.
 - 번들이 큰 편입니다. CSS 375KB(gzip 33KB), KRDS 스크립트 91KB(gzip 18KB, 비축소본). 컴포넌트를 줄이려면 `assets/css/main.scss`의 `@import` 목록을 줄이세요.
 - KRDS 스크립트는 body에 CSS `zoom`을 적용해 글자 크기를 바꿉니다(KRDS 방식).
-- GitHub Pages `remote_theme`으로의 실제 배포는 아직 확인하지 않았습니다(이 저장소를 공개한 뒤 확인 필요).
+- GitHub Pages의 기본 빌더(Jekyll 3)는 지원하지 않습니다(위 설치 안내). `remote_theme`은 Jekyll 4로 직접 빌드할 때 동작하는 것을 임시 사이트로 확인했습니다.
 - Sass `@import`는 Dart Sass에서 더는 권장되지 않습니다. KRDS 원본이 `@import`를 쓰므로 경고를 끄고 쓰며, KRDS가 바뀌면 같이 바꿔야 합니다.
 
 ## 개발

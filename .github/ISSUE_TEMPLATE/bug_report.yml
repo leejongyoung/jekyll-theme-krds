@@ -51,7 +51,7 @@ body:
     attributes:
       label: 설치 방법
       options:
-        - GitHub Pages remote_theme
+        - 원격 테마 (remote_theme)
         - gem (Gemfile)
         - 저장소를 복사해서 사용
         - 기타
