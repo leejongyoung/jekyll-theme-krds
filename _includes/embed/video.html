@@ -7,9 +7,19 @@
 {%- assign src = include.src -%}
 {%- assign src_head = src | slice: 0, 4 -%}
 {%- if src_head != 'http' %}{% assign src = src | relative_url %}{% endif -%}
-{%- assign lang = include.lang | default: 'ko' -%}
+{%- assign ratio = '' -%}
+{%- assign rparts = include.ratio | split: '/' -%}
+{%- if rparts.size == 2 -%}
+  {%- assign ra = rparts[0] | strip -%}
+  {%- assign rb = rparts[1] | strip -%}
+  {%- assign na = ra | plus: 0 -%}
+  {%- assign nb = rb | plus: 0 -%}
+  {%- assign sa = na | append: '' -%}
+  {%- assign sb = nb | append: '' -%}
+  {%- if ra == sa and rb == sb and na > 0 and nb > 0 -%}{%- assign ratio = include.ratio -%}{%- endif -%}
+{%- endif -%}
 <figure class="th-embed th-embed-media">
-  <video class="th-embed-video" controls preload="metadata" playsinline{% if include.poster %} poster="{{ include.poster | relative_url }}"{% endif %}{% if include.title %} aria-label="{{ include.title | escape }}"{% endif %}{% if include.ratio %} style="--th-embed-ratio: {{ include.ratio | escape }}"{% endif %}>
+  <video class="th-embed-video" controls preload="metadata" playsinline{% if include.poster %} poster="{{ include.poster | relative_url }}"{% endif %}{% if include.title %} aria-label="{{ include.title | escape }}"{% endif %}{% if ratio != '' %} style="--th-embed-ratio: {{ ratio | escape }}"{% endif %}>
     <source src="{{ src }}" type="{{ include.type | default: 'video/mp4' }}">
     {%- if include.src2 %}<source src="{{ include.src2 | relative_url }}" type="{{ include.type2 | default: 'video/webm' }}">{% endif %}
     {%- if include.captions %}<track kind="captions" src="{{ include.captions | relative_url }}" srclang="{{ lang }}" label="{{ include.label | default: '한국어' }}" default>{% endif %}

@@ -131,6 +131,8 @@ pie showData
 
 지도, 슬라이드, CodePen 같은 페이지를 넣을 때는 `iframe.html`을 씁니다. 기본으로 `sandbox`가 걸리고 불러오기 버튼 뒤에 있습니다.
 
+`url`·`link`·`thumb`는 `https://`로 시작하는 주소만 사용합니다. 다른 scheme(`javascript:` 등)은 출력하지 않고, `ratio`는 숫자·슬래시 형식이 아니면 `16 / 9`로 바뀝니다.
+
 {% include embed/iframe.html url="https://www.openstreetmap.org/export/embed.html?bbox=126.9700%2C37.5600%2C126.9850%2C37.5700&layer=mapnik" title="서울 시청 주변 지도" provider="OpenStreetMap" link="https://www.openstreetmap.org/?bbox=126.9700%2C37.5600%2C126.9850%2C37.5700" caption="서울 시청 주변" ratio="16 / 9" %}
 
 ## 설정
