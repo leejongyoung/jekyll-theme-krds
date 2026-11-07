@@ -9,6 +9,7 @@ layout: default
     <div class="th-prose">
       {{ content }}
     </div>
+    {% include attachments.html %}
   </article>
   {%- if page.previous or page.next %}
   <nav class="th-post-nav" aria-label="이전·다음 글">

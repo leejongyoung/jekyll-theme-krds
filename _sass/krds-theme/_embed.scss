@@ -92,6 +92,65 @@
   .th-embed:not(.th-embed-media)::before { content: "(온라인 콘텐츠 — 아래 링크에서 볼 수 있습니다)"; display: block; font-size: var(--krds-pc-font-size-body-small); }
 }
 
+// 첨부 파일(미리보기 + 내려받기 목록). 미리보기는 내부 렌더(pdf·이미지)만 쓰고,
+// 오피스 문서는 PDF 변환본이나 클릭 후 연결되는 외부 뷰어로 보여준다.
+.th-attachment { margin: 0 0 var(--krds-gap-6); }
+.th-attachment-preview {
+  overflow: hidden;
+  border: 1px solid var(--th-border-strong);
+  border-radius: var(--krds-radius-medium2);
+  background-color: var(--th-bg-subtle);
+  object {
+    display: block;
+    width: 100%;
+    height: 48rem;
+    max-height: 70vh;
+    border: 0;
+    background-color: var(--th-bg);
+  }
+  img { display: block; width: 100%; height: auto; }
+}
+.th-attachment-fallback { padding: var(--krds-padding-4); }
+.th-attachment-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--krds-gap-2);
+  margin-top: var(--krds-gap-2);
+  font-size: var(--krds-pc-font-size-body-small);
+  color: var(--th-text-subtle);
+  .th-attachment-title { font-weight: var(--krds-font-weight-bold); color: var(--th-text); }
+  .th-attachment-kind {
+    padding: 0 var(--krds-padding-2);
+    border: 1px solid var(--th-border);
+    border-radius: var(--krds-radius-small2);
+  }
+  .th-attachment-download { margin-left: auto; }
+}
+.th-attachments {
+  margin: var(--krds-gap-6) 0 0;
+  border-top: 1px solid var(--th-border);
+  padding-top: var(--krds-padding-4);
+}
+.th-attachments-title {
+  margin: 0 0 var(--krds-gap-3);
+  font-size: var(--krds-pc-font-size-heading-small);
+}
+.th-attachments-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.th-attachments-item + .th-attachments-item { margin-top: var(--krds-gap-2); }
+.th-attachments-item .th-attachment {
+  margin: 0;
+  padding: var(--krds-padding-3);
+  border: 1px solid var(--th-border);
+  border-radius: var(--krds-radius-medium2);
+  background-color: var(--th-bg);
+}
+.th-attachments-item .th-attachment-meta { margin-top: 0; }
+
 // 수식: 넓은 블록 수식은 화면을 넘지 않고 가로로 스크롤한다(키보드 접근은 theme.js 가 처리).
 .th-prose .katex-display {
   max-width: 100%;
