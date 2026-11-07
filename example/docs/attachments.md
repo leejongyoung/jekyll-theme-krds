@@ -61,7 +61,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.6.0
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.7.0
   with:
     source: assets/files
 - run: bundle exec jekyll build
