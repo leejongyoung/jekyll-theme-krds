@@ -2,6 +2,11 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
+## [Unreleased]
+
+### 수정
+- 첨부 문서의 hwpx→PDF 변환 안내를 H2Orestart 전제조건 포함으로 정정 (순정 LibreOffice는 hwpx 변환 불가, 실측 확인)
+
 ## [1.4.2] - 2026-11-07
 
 ### 추가
