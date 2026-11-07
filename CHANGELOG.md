@@ -2,6 +2,12 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
+## [Unreleased]
+
+### 추가
+- 첨부 파일에 새 창 미리보기 버튼과 SHA-256 표시(`sha256:`) 추가
+- 예제 파일 확충: 다이어그램 SVG, 보고서 docx(+변환본 pdf), 데이터 xlsx, 안내 txt — 형식별 미리보기를 문서에서 확인
+
 ## [1.4.0] - 2026-11-07
 
 ### 추가
