@@ -92,8 +92,8 @@
   .th-embed:not(.th-embed-media)::before { content: "(온라인 콘텐츠 — 아래 링크에서 볼 수 있습니다)"; display: block; font-size: var(--krds-pc-font-size-body-small); }
 }
 
-// 첨부 파일(미리보기 + 내려받기 목록). 미리보기는 내부 렌더(pdf·이미지)만 쓰고,
-// 오피스 문서는 PDF 변환본이나 클릭 후 연결되는 외부 뷰어로 보여준다.
+// 첨부 파일(미리보기 + 내려받기 목록). pdf·이미지는 내부 렌더, 스프레드시트는
+// 테마 내장 SheetJS 표 미리보기, 문서 파일은 PDF 변환본으로 보여준다. 외부 연결 없음.
 .th-attachment { margin: 0 0 var(--krds-gap-6); }
 .th-attachment-preview {
   overflow: hidden;
@@ -125,7 +125,12 @@
     border: 1px solid var(--th-border);
     border-radius: var(--krds-radius-small2);
   }
-  .th-attachment-download { margin-left: auto; }
+  .th-attachment-preview-link { margin-left: auto; }
+  .th-attachment-sha {
+    flex-basis: 100%;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    word-break: break-all;
+  }
 }
 .th-attachments {
   margin: var(--krds-gap-6) 0 0;
@@ -158,9 +163,4 @@
   overflow-y: hidden;
   padding: var(--krds-padding-1) 0;
   &:focus-visible { box-shadow: var(--krds-box-shadow-outline); }
-}
-
-.th-attachment-sha {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  word-break: break-all;
 }
