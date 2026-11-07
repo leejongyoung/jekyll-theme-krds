@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-08
+
 ### 추가
 - 위키: 문서끼리 `[[문서 링크]]`로 잇는 위키 레이아웃(`_layouts/wiki.html`·`wiki-home.html`, `wiki-*` include, `wiki.js`, `/assets/wiki-index.json`). 분류별 왼쪽 메뉴, 정보 상자(`infobox`), 역링크·관련 문서, 문서 편집·변경 이력·주소 복사·인쇄, 위키 홈의 검색·분류 필터·정렬·무작위 문서·최근 바뀐 문서·작성이 필요한 문서·고아 문서. 메인 메뉴의 태그 옆에 "위키"를 추가한 예제와 예제 문서 10개
 - Font Awesome Free 7.3.1 SVG 아이콘 약 80개(`th-fa` 마스크 아이콘)와 `embed/icon.html`·`embed/icon-gallery.html` include, 문서 "아이콘"(아이콘 목록 포함)
