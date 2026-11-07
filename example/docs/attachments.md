@@ -51,7 +51,7 @@ attachments:
 
 {% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" desc="오피스 문서 + PDF 변환본" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
 
-오피스 문서를 PDF로 바꾸는 예: `libreoffice --headless --convert-to pdf 보고서.hwpx`를 실행해 원본 옆에 같은 이름의 `.pdf`를 두고 `preview_pdf`로 가리키세요.
+오피스 문서를 PDF로 바꾸는 예: `libreoffice --headless --convert-to pdf 보고서.docx`를 실행해 원본 옆에 같은 이름의 `.pdf`를 두고 `preview_pdf`로 가리키세요. `hwpx`·`hwp`는 순정 LibreOffice에서 열리지 않아 H2Orestart 확장이 필요합니다(Linux: `sudo apt install libreoffice-h2orestart`, macOS·Windows: 확장 관리자에 H2Orestart.oxt 추가). 가장 정확한 결과는 한컴오피스에서 PDF로 저장하기입니다.
 
 ## 스프레드시트 미리보기
 
