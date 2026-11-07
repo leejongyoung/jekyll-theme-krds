@@ -22,7 +22,7 @@ runs:
         sudo apt-get install -y --no-install-recommends default-jre-headless libreoffice-java-common libreoffice-writer libreoffice-impress fonts-nanum
         curl -fsSLo "${RUNNER_TEMP}/H2Orestart.oxt" "https://github.com/ebandal/H2Orestart/releases/download/${H2ORESTART_VERSION}/H2Orestart.oxt"
         echo "${H2ORESTART_SHA256}  ${RUNNER_TEMP}/H2Orestart.oxt" | sha256sum -c -
-        sudo unopkg add --shared --force "${RUNNER_TEMP}/H2Orestart.oxt"
+        sudo -H unopkg add --shared --force "${RUNNER_TEMP}/H2Orestart.oxt"
     - name: Convert document previews
       shell: bash
       env:

@@ -19,7 +19,7 @@ while IFS= read -r -d '' source; do
   work_dir=$(mktemp -d)
   trap 'rm -rf "$work_dir"' EXIT
 
-  if ! timeout 180s libreoffice --headless --convert-to pdf --outdir "$work_dir" "$source"; then
+  if ! timeout 180s libreoffice -env:UserInstallation="file://$work_dir/profile" --headless --norestore --convert-to pdf --outdir "$work_dir" "$source"; then
     echo "Failed to convert document preview: $relative" >&2
     exit 1
   fi
