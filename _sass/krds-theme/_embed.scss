@@ -112,27 +112,48 @@
 }
 .th-attachment-fallback { padding: var(--krds-padding-4); }
 .th-attachment-file-icon {
+  --th-file-icon-color: #667085;
   display: inline-flex;
-  flex: 0 0 2rem;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 2px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  &--pdf { background-image: url("../img/component/icon/ico_file_pdf.svg"); }
-  &--hwp { background-image: url("../img/component/icon/ico_file_hwp.svg"); }
-  &--html { background-image: url("../img/component/icon/ico_file_html.svg"); }
-  &--extension {
-    border: 1px solid var(--th-border-strong);
-    background-color: var(--th-bg-subtle);
-    color: var(--th-text);
-    font-size: 0.625rem;
-    font-weight: var(--krds-font-weight-bold);
-    letter-spacing: -0.03em;
+  flex: 0 0 2.5rem;
+  width: 2.5rem;
+  height: 3rem;
+  color: var(--th-file-icon-color);
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 12%));
   }
+  &--pdf { --th-file-icon-color: #d92d20; }
+  &--hwp { --th-file-icon-color: #6938c6; }
+  &--html { --th-file-icon-color: #b54708; }
+  &--sheet { --th-file-icon-color: #17803d; }
+  &--doc { --th-file-icon-color: #246beb; }
+  &--image { --th-file-icon-color: #7a5af8; }
+}
+.th-file-icon-page {
+  fill: var(--th-bg);
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.th-file-icon-fold {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.th-file-icon-label { fill: currentColor; }
+.th-file-icon-text {
+  fill: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: -0.15px;
+}
+[data-krds-mode="high-contrast"] .th-attachment-file-icon {
+  --th-file-icon-color: var(--th-text);
 }
 .th-attachment-meta {
   display: flex;

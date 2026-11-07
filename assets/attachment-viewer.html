@@ -9,20 +9,31 @@
   <style>
     body { margin: 0; background: var(--th-bg); color: var(--th-text); }
     .th-file-viewer { display: flex; min-height: 100vh; flex-direction: column; }
-    .th-file-viewer-header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--krds-gap-3); padding: var(--krds-padding-4); border-bottom: 1px solid var(--th-border); }
-    .th-file-viewer-title { min-width: 0; margin: 0; font-size: var(--krds-pc-font-size-heading-small); overflow-wrap: anywhere; }
-    .th-file-viewer-download { margin-left: auto; }
-    .th-file-viewer-content { flex: 1; min-height: 0; padding: var(--krds-padding-4); }
-    .th-file-viewer-content object { display: block; width: 100%; height: calc(100vh - 8rem); border: 1px solid var(--th-border); }
-    .th-file-viewer-content img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
-    .th-file-viewer-content .th-table-wrap { max-height: calc(100vh - 8rem); overflow: auto; }
+    .th-file-viewer-header { position: sticky; z-index: 10; top: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--krds-gap-4); padding: var(--krds-padding-4) var(--krds-padding-6); border-bottom: 1px solid var(--th-border); background: var(--th-bg); box-shadow: 0 4px 16px rgb(0 0 0 / 8%); }
+    .th-file-viewer-identity { display: flex; min-width: 0; flex: 1 1 24rem; align-items: center; gap: var(--krds-gap-3); }
+    .th-file-viewer-heading { min-width: 0; }
+    .th-file-viewer-kicker { margin: 0 0 0.15rem; color: var(--th-text-subtle); font-size: var(--krds-pc-font-size-body-small); }
+    .th-file-viewer-title { margin: 0; font-size: var(--krds-pc-font-size-heading-small); overflow-wrap: anywhere; }
+    .th-file-viewer-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--krds-gap-2); }
+    .th-file-viewer-content { flex: 1; min-height: 0; padding: var(--krds-padding-5); }
+    .th-file-viewer-content object { display: block; width: 100%; height: calc(100vh - 9rem); border: 1px solid var(--th-border); border-radius: var(--krds-radius-medium2); background: var(--th-bg); }
+    .th-file-viewer-content img { display: block; max-width: 100%; height: auto; margin: 0 auto; border-radius: var(--krds-radius-medium2); }
+    .th-file-viewer-content .th-table-wrap { max-height: calc(100vh - 9rem); overflow: auto; }
+    @media (max-width: 40rem) { .th-file-viewer-header { padding: var(--krds-padding-3); } .th-file-viewer-actions { width: 100%; } .th-file-viewer-actions > * { flex: 1 1 auto; justify-content: center; } .th-file-viewer-content { padding: var(--krds-padding-3); } }
+    @media print { .th-file-viewer-header { display: none; } .th-file-viewer-content { padding: 0; } .th-file-viewer-content object { height: 100vh; border: 0; } .th-file-viewer-content .th-table-wrap { max-height: none; overflow: visible; } }
   </style>
 </head>
 <body>
   <main class="th-file-viewer">
     <header class="th-file-viewer-header">
-      <h1 class="th-file-viewer-title">첨부 파일 미리보기</h1>
-      <a class="krds-btn small text th-file-viewer-download" href="#">원본 내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
+      <div class="th-file-viewer-identity">
+        <span class="th-attachment-file-icon th-attachment-file-icon--file th-file-viewer-icon" aria-hidden="true"><svg viewBox="0 0 40 48" focusable="false"><path class="th-file-icon-page" d="M5 1.5h20l10 10v35H5z"/><path class="th-file-icon-fold" d="M25 1.5v10h10"/><rect class="th-file-icon-label" x="7" y="26" width="26" height="14" rx="3"/><text class="th-file-icon-text" x="20" y="35.5" text-anchor="middle">FILE</text></svg></span>
+        <div class="th-file-viewer-heading"><p class="th-file-viewer-kicker">첨부 파일 미리보기</p><h1 class="th-file-viewer-title">첨부 파일</h1></div>
+      </div>
+      <nav class="th-file-viewer-actions" aria-label="첨부 파일 도구">
+        <button type="button" class="krds-btn small text th-file-viewer-print" disabled>인쇄 <i class="svg-icon ico-print" aria-hidden="true"></i></button>
+        <a class="krds-btn small text th-file-viewer-download" href="#">원본 내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
+      </nav>
     </header>
     <div class="th-file-viewer-content" aria-live="polite"><p class="th-embed-note">미리보기를 불러오는 중…</p></div>
   </main>

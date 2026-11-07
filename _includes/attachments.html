@@ -1,5 +1,5 @@
 {%- comment -%}
-  front matter `attachments:` 목록을 내려받기 목록으로 그린다(카드만, 미리보기 없음).
+  front matter `attachments:` 목록을 미리보기·내려받기 액션이 있는 카드 목록으로 그린다.
   예: attachments: [{src: "/assets/files/자료.pdf", title: "자료", desc: "최종본", size: "1.2MB"}]
 {%- endcomment -%}
 {%- if page.attachments -%}
@@ -8,7 +8,7 @@
   <ul class="th-attachments-list">
     {%- for f in page.attachments -%}
     {%- assign _sz = f['size'] -%}
-    <li class="th-attachments-item">{% include embed/attachment-item.html src=f.src title=f.title desc=f.desc size=_sz sha256=f.sha256 preview=false preview_pdf=f.preview_pdf %}</li>
+    <li class="th-attachments-item">{% include embed/attachment-item.html src=f.src title=f.title desc=f.desc size=_sz sha256=f.sha256 preview=false actions=true preview_pdf=f.preview_pdf %}</li>
     {%- endfor -%}
   </ul>
 </section>
