@@ -1,5 +1,5 @@
 /*
- * jekyll-theme-krds: 임베드(재생 버튼 뒤의 iframe), Mermaid 다이어그램, Chart.js 차트, 첨부 스프레드시트 표.
+ * jekyll-theme-krds: 임베드(재생 버튼 뒤의 iframe), Mermaid 다이어그램, Chart.js 차트, 첨부 파일 미리보기(클릭 펼치기).
  * 필요한 페이지에서만 불러온다(_layouts/default.html). Mermaid·Chart.js 주소는 이 스크립트 태그의 data 속성으로 받는다. SheetJS는 별도 script로 먼저 불러온다.
  *
  * - 외부 서비스(YouTube 등)는 사용자가 버튼을 누르기 전에는 연결하지 않는다.
@@ -332,80 +332,129 @@
     redraw.push(draw);
   }
 
-  // 4) 첨부 스프레드시트(xls·xlsx·ods·csv·tsv) 표 미리보기 -----------------------
-  // 테마에 포함된 SheetJS(xlsx.full.min.js)를 쓴다. 외부 연결 없음.
-  // 첫 시트의 처음 100행만 표로 그리고, 잘리면 안내한다.
+  // 4) 첨부 파일 미리보기(클릭 펼치기) ---------------------------------------------
+  // 미리보기 버튼을 누르면 본문에 직접 렌더한다. pdf·이미지·문서(PDF 변환본)는
+  // 내부 렌더, 스프레드시트는 테마 내장 SheetJS(xlsx.full.min.js) 표로 보여준다.
+  // 외부 연결 없음. 다시 누르면 접힌다.
   var SHEET_MAX_ROWS = 100;
   var SHEET_MAX_COLS = 20;
-  function sheetError(host, message) {
+  function attachmentNote(host, message) {
     host.textContent = '';
     host.appendChild(el('p', 'th-embed-note', message));
   }
-  function initSheets() {
-    var figs = document.querySelectorAll('figure.th-attachment[data-th-sheet]');
-    if (!figs.length) return;
-    if (!window.XLSX) {
-      figs.forEach(function (fig) {
-        var host = fig.querySelector('.th-table-wrap');
-        if (host) sheetError(host, '표 라이브러리를 불러오지 못했습니다. 내려받기로 확인하세요.');
-      });
-      return;
+  function renderSheetTable(fig, host, rows) {
+    while (rows.length && rows[rows.length - 1].every(function (c) { return c === ''; })) rows.pop();
+    if (!rows.length) { attachmentNote(host, '표가 비어 있습니다. 내려받기로 확인하세요.'); return; }
+    var truncated = rows.length > SHEET_MAX_ROWS;
+    var shown = rows.slice(0, SHEET_MAX_ROWS).map(function (r) { return r.slice(0, SHEET_MAX_COLS); });
+    var wide = rows.some(function (r) { return r.length > SHEET_MAX_COLS; });
+    var table = el('table');
+    var title = fig.querySelector('.th-attachment-title');
+    if (title && title.textContent) table.setAttribute('aria-label', title.textContent.trim() + ' 표 미리보기');
+    var thead = document.createElement('thead');
+    var hr = document.createElement('tr');
+    shown[0].forEach(function (c) {
+      var th = document.createElement('th');
+      th.setAttribute('scope', 'col');
+      th.textContent = c;
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    table.appendChild(thead);
+    var tbody = document.createElement('tbody');
+    shown.slice(1).forEach(function (r) {
+      var tr = document.createElement('tr');
+      for (var i = 0; i < shown[0].length; i++) {
+        var td = document.createElement('td');
+        td.textContent = r[i] == null ? '' : String(r[i]);
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    host.textContent = '';
+    host.appendChild(table);
+    if (truncated || wide) {
+      host.appendChild(el('p', 'th-embed-note', '처음 ' + SHEET_MAX_ROWS + '행만 보여줍니다. 전체는 내려받기로 확인하세요.'));
     }
-    figs.forEach(function (fig) {
-      var src = fig.getAttribute('data-sheet-src');
-      var host = fig.querySelector('.th-table-wrap');
-      if (!src || !host) return;
+  }
+  // 미리보기를 펼쳐서 보여준다. 성공하면 true.
+  function renderAttachment(fig) {
+    var host = fig.querySelector('.th-attachment-preview');
+    if (!host) return false;
+    var kind = fig.getAttribute('data-view-kind');
+    var src = fig.getAttribute('data-view-src');
+    if (!kind || !src) return false;
+    var title = fig.getAttribute('data-view-title') || '첨부 파일';
+    if (kind === 'pdf' || kind === 'doc') {
+      host.textContent = '';
+      var obj = document.createElement('object');
+      obj.setAttribute('data', src);
+      obj.setAttribute('type', 'application/pdf');
+      obj.setAttribute('aria-label', title + ' 미리보기');
+      var p = el('p', 'th-attachment-fallback');
+      var a = el('a', null, title + ' 내려받기');
+      a.href = fig.getAttribute('data-download-src') || src;
+      p.appendChild(a);
+      obj.appendChild(p);
+      host.appendChild(obj);
+      return true;
+    }
+    if (kind === 'image') {
+      host.textContent = '';
+      var img = document.createElement('img');
+      img.src = src;
+      img.alt = title;
+      img.loading = 'lazy';
+      host.appendChild(img);
+      return true;
+    }
+    if (kind === 'sheet') {
+      if (!window.XLSX) { attachmentNote(host, '표 라이브러리를 불러오지 못했습니다. 내려받기로 확인하세요.'); return true; }
+      attachmentNote(host, '표 불러오는 중…');
       var url;
-      try { url = new URL(src, location.href).href; } catch (e) { sheetError(host, '표 주소를 읽지 못했습니다.'); return; }
+      try { url = new URL(src, location.href).href; } catch (e) { attachmentNote(host, '표 주소를 읽지 못했습니다.'); return true; }
       fetch(url).then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.arrayBuffer();
       }).then(function (buf) {
-        var wb = window.XLSX.read(buf, { type: 'array', sheetRows: SHEET_MAX_ROWS + 1 });
+        var wb = window.XLSX.read(new Uint8Array(buf), { type: 'array', sheetRows: SHEET_MAX_ROWS + 1 });
         var ws = wb.Sheets[wb.SheetNames[0]];
         if (!ws) throw new Error('empty workbook');
-        var rows = window.XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: false });
-        while (rows.length && rows[rows.length - 1].every(function (c) { return c === ''; })) rows.pop();
-        if (!rows.length) { sheetError(host, '표가 비어 있습니다. 내려받기로 확인하세요.'); return; }
-        var truncated = rows.length > SHEET_MAX_ROWS;
-        var shown = rows.slice(0, SHEET_MAX_ROWS).map(function (r) { return r.slice(0, SHEET_MAX_COLS); });
-        var wide = rows.some(function (r) { return r.length > SHEET_MAX_COLS; });
-        var table = el('table');
-        var title = fig.querySelector('.th-attachment-title');
-        if (title && title.textContent) table.setAttribute('aria-label', title.textContent.trim() + ' 표 미리보기');
-        var thead = document.createElement('thead');
-        var hr = document.createElement('tr');
-        shown[0].forEach(function (c) {
-          var th = document.createElement('th');
-          th.setAttribute('scope', 'col');
-          th.textContent = c;
-          hr.appendChild(th);
-        });
-        thead.appendChild(hr);
-        table.appendChild(thead);
-        var tbody = document.createElement('tbody');
-        shown.slice(1).forEach(function (r) {
-          var tr = document.createElement('tr');
-          for (var i = 0; i < shown[0].length; i++) {
-            var td = document.createElement('td');
-            td.textContent = r[i] == null ? '' : String(r[i]);
-            tr.appendChild(td);
-          }
-          tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-        host.textContent = '';
-        host.appendChild(table);
-        if (truncated || wide) {
-          host.appendChild(el('p', 'th-embed-note', '처음 ' + SHEET_MAX_ROWS + '행만 보여줍니다. 전체는 내려받기로 확인하세요.'));
-        }
+        renderSheetTable(fig, host, window.XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: false }));
       }).catch(function () {
-        sheetError(host, '표를 불러오지 못했습니다. 내려받기로 확인하세요.');
+        attachmentNote(host, '표를 불러오지 못했습니다. 내려받기로 확인하세요.');
       });
+      return true;
+    }
+    return false;
+  }
+  function clearAttachment(fig) {
+    var host = fig.querySelector('.th-attachment-preview');
+    if (host) attachmentNote(host, '미리보기 버튼을 누르면 여기에 표시됩니다.');
+  }
+  function initAttachments() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('.th-attachment-preview-link');
+      if (!btn) return;
+      var fig = btn.closest('figure.th-attachment');
+      if (!fig) return;
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      if (open) {
+        clearAttachment(fig);
+        btn.setAttribute('aria-expanded', 'false');
+        if (btn.firstChild) btn.firstChild.textContent = '미리보기 ';
+      } else {
+        if (!renderAttachment(fig)) return;
+        btn.setAttribute('aria-expanded', 'true');
+        if (btn.firstChild) btn.firstChild.textContent = '접기 ';
+        var host = fig.querySelector('.th-attachment-preview');
+        fig.scrollIntoView({ block: 'nearest' });
+        if (host) { host.setAttribute('tabindex', '-1'); host.focus({ preventScroll: true }); }
+      }
     });
   }
-
   initDiagrams();
   initCharts();
-  initSheets();
+  initAttachments();
 })();
