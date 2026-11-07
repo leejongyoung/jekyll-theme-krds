@@ -3,10 +3,14 @@
   'use strict';
   var params = new URLSearchParams(location.search);
   var src = params.get('src') || '';
+  var originalSrc = params.get('download') || src;
   var kind = params.get('kind') || '';
+  var ext = (params.get('ext') || '').toLowerCase();
   var title = params.get('title') || '첨부 파일';
   var heading = document.querySelector('.th-file-viewer-title');
+  var icon = document.querySelector('.th-file-viewer-icon');
   var download = document.querySelector('.th-file-viewer-download');
+  var printButton = document.querySelector('.th-file-viewer-print');
   var content = document.querySelector('.th-file-viewer-content');
   var MAX_ROWS = 100;
   var MAX_COLS = 20;
@@ -26,6 +30,21 @@
       return url.href;
     } catch (error) { return null; }
   }
+  function setFileIcon() {
+    var label = /^[a-z0-9]{1,8}$/.test(ext) ? ext.toUpperCase() : ({ pdf: 'PDF', image: 'IMG', sheet: 'XLSX' }[kind] || 'FILE');
+    var iconKind = 'file';
+    if (ext === 'pdf') iconKind = 'pdf';
+    else if (ext === 'hwp' || ext === 'hwpx') iconKind = 'hwp';
+    else if (ext === 'htm' || ext === 'html') iconKind = 'html';
+    else if (kind === 'sheet') iconKind = 'sheet';
+    else if (kind === 'image') iconKind = 'image';
+    else if (kind === 'doc') iconKind = 'doc';
+    icon.className = 'th-attachment-file-icon th-file-viewer-icon th-attachment-file-icon--' + iconKind;
+    icon.querySelector('.th-file-icon-text').textContent = label;
+  }
+  function readyToPrint() {
+    printButton.disabled = false;
+  }
   function renderPDF(url) {
     var object = document.createElement('object');
     object.data = url;
@@ -40,11 +59,14 @@
     object.appendChild(fallback);
     content.textContent = '';
     content.appendChild(object);
+    readyToPrint();
   }
   function renderImage(url) {
     var image = document.createElement('img');
-    image.src = url;
     image.alt = title;
+    image.addEventListener('load', readyToPrint);
+    image.addEventListener('error', function () { fail('이미지 미리보기를 불러오지 못했습니다. 원본을 내려받아 확인하세요.'); });
+    image.src = url;
     content.textContent = '';
     content.appendChild(image);
   }
@@ -99,6 +121,7 @@
         }
         content.textContent = '';
         content.appendChild(wrap);
+        readyToPrint();
       }).catch(function () { fail('스프레드시트 미리보기를 불러오지 못했습니다. 원본을 내려받아 확인하세요.'); });
     };
     script.onerror = function () { fail('표 라이브러리를 불러오지 못했습니다.'); };
@@ -106,14 +129,25 @@
   }
 
   var url = safeURL(src);
+  var originalURL = safeURL(originalSrc);
   if (!url || ['pdf', 'image', 'sheet'].indexOf(kind) === -1) {
     fail('지원하지 않거나 잘못된 미리보기 주소입니다.');
     return;
   }
   document.title = title + ' - 첨부 파일 미리보기';
   heading.textContent = title;
-  download.href = url;
-  download.setAttribute('download', '');
+  setFileIcon();
+  if (originalURL) {
+    download.href = originalURL;
+    download.setAttribute('download', '');
+    if (new URL(originalURL).origin !== location.origin) {
+      download.target = '_blank';
+      download.rel = 'noopener';
+    }
+  } else {
+    download.hidden = true;
+  }
+  printButton.addEventListener('click', function () { window.print(); });
   if (kind === 'pdf') renderPDF(url);
   else if (kind === 'image') renderImage(url);
   else renderSheet(url);
