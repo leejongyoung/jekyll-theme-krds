@@ -56,7 +56,7 @@ HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.5.0
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.6.0
   with:
     source: assets/files
 - run: bundle exec jekyll build
