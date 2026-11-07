@@ -114,46 +114,31 @@
 .th-attachment-file-icon {
   --th-file-icon-color: #667085;
   display: inline-flex;
-  flex: 0 0 2.5rem;
-  width: 2.5rem;
-  height: 3rem;
+  flex: 0 0 4.4rem;
+  align-items: center;
+  justify-content: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: var(--krds-radius-medium2);
+  background: var(--th-bg-subtle);
+  background: color-mix(in srgb, var(--th-file-icon-color) 14%, var(--th-bg));
   color: var(--th-file-icon-color);
-  svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    filter: drop-shadow(0 2px 2px rgb(0 0 0 / 12%));
-  }
-  &--pdf { --th-file-icon-color: #d92d20; }
-  &--hwp { --th-file-icon-color: #6938c6; }
-  &--html { --th-file-icon-color: #b54708; }
-  &--sheet { --th-file-icon-color: #17803d; }
-  &--doc { --th-file-icon-color: #246beb; }
-  &--image { --th-file-icon-color: #7a5af8; }
+  font-size: 2.4rem;
 }
-.th-file-icon-page {
-  fill: var(--th-bg);
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linejoin: round;
-}
-.th-file-icon-fold {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linejoin: round;
-}
-.th-file-icon-label { fill: currentColor; }
-.th-file-icon-text {
-  fill: #fff;
-  font-family: Arial, sans-serif;
-  font-size: 6.5px;
-  font-weight: 700;
-  letter-spacing: -0.15px;
-}
+.th-attachment-file-icon--pdf { --th-file-icon-color: #d92d20; }
+.th-attachment-file-icon--doc { --th-file-icon-color: #246beb; }
+.th-attachment-file-icon--sheet { --th-file-icon-color: #17803d; }
+.th-attachment-file-icon--slides { --th-file-icon-color: #c4320a; }
+.th-attachment-file-icon--hwp { --th-file-icon-color: #6938c6; }
+.th-attachment-file-icon--image { --th-file-icon-color: #7a5af8; }
+.th-attachment-file-icon--audio { --th-file-icon-color: #0e9384; }
+.th-attachment-file-icon--video { --th-file-icon-color: #dd2590; }
+.th-attachment-file-icon--archive { --th-file-icon-color: #b54708; }
+.th-attachment-file-icon--code { --th-file-icon-color: #1570ef; }
+.th-attachment-file-icon--text { --th-file-icon-color: #475467; }
 [data-krds-mode="high-contrast"] .th-attachment-file-icon {
   --th-file-icon-color: var(--th-text);
+  border: 1px solid var(--th-border-strong);
 }
 .th-attachment-meta {
   display: flex;

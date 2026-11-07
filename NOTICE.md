@@ -61,6 +61,21 @@ Re-vendor with `script/vendor-krds <tag>`.
 - File: `chart.umd.js`, unmodified. It bundles `@kurkle/color` (MIT).
 - Loaded only on pages that contain a `chart` code block. Re-vendor with `script/vendor-chartjs <version>`.
 
-## 6. This theme's own code
+## 6. SheetJS Community Edition (spreadsheet preview)
+
+- Source: <https://sheetjs.com> · <https://cdn.sheetjs.com/xlsx-0.20.3/> · Version vendored: **0.20.3**
+- License: **Apache-2.0** — `assets/vendor/xlsx/LICENSE`
+- File: `xlsx.full.min.js`, unmodified (byte-identical to `dist/xlsx.full.min.js` in the `xlsx-0.20.3` package).
+- Loaded only on pages that preview a spreadsheet attachment.
+
+## 7. Font Awesome Free (icons)
+
+- Source: <https://fontawesome.com> (npm `@fortawesome/fontawesome-free`) · Version vendored: **7.3.1**
+- License: **CC BY 4.0** for the SVG icons (<https://creativecommons.org/licenses/by/4.0/>). The full Font Awesome Free license is in `assets/img/fa/LICENSE.txt`.
+- Files: a selected subset (about 80 icons) of `svgs/solid`, `svgs/regular` and `svgs/brands` in `assets/img/fa/`, **unmodified**. Each file keeps Font Awesome's attribution comment.
+- They are applied as CSS masks (`.th-fa`), so no Font Awesome font or script is loaded. HWP has no Font Awesome icon, so the generic `file-lines` icon is used for it.
+- Attribution: Icons by Font Awesome Free (<https://fontawesome.com>), Copyright Fonticons, Inc., licensed under CC BY 4.0. Do not remove the comment header in the SVG files or `LICENSE.txt`.
+
+## 8. This theme's own code
 
 MIT License, see `LICENSE`.

@@ -11,6 +11,8 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 - **컴포넌트:** 건너뛰기 링크, 헤더·메인메뉴(PC)·전체메뉴(모바일), 브레드크럼, 사이드 내비게이션, 페이지네이션, 푸터, 버튼·배지
 - **서체:** Pretendard GOV 셀프 호스팅(외부 CDN 없음)
 - **태그·검색:** 태그 링크와 태그 페이지, 서버 없이 브라우저에서 도는 검색(한글 부분 일치, 태그로 좁히기)
+- **아이콘:** Font Awesome Free SVG 아이콘 세트(`embed/icon.html` include). 첨부 파일 카드는 확장자별 아이콘을 자동으로 고릅니다.
+- **위키:** `[[문서 링크]]`, 역링크, 정보 상자, 분류·검색 필터, 작성이 필요한 문서·고아 문서 목록을 갖춘 위키 레이아웃
 
 **데모:** <https://leejongyoung.github.io/jekyll-theme-krds/> · 소스: [`example/`](example) (`bundle exec jekyll serve`로 확인)
 
@@ -158,6 +160,72 @@ sass:
 - **접근성:** `title`(영상 제목)을 꼭 적으세요. 스크린리더가 iframe 이름으로 읽습니다. 자체 호스팅 영상에는 자막을 함께 넣는 것을 권합니다.
 
 용량: Mermaid(약 3.7MB, 다이어그램 종류별로 필요한 조각만 불러옴), Chart.js 205KB, KaTeX 약 600KB(글꼴 포함)이며 해당 코드 블록·수식이 있는 페이지에서만 받습니다.
+
+## 아이콘
+
+[Font Awesome Free](https://fontawesome.com) 7.3.1의 SVG 아이콘 약 80개가 `assets/img/fa/`에 들어 있습니다. 글꼴 파일이나 외부 서버 없이 글자색을 따라 칠해지는 마스크 아이콘입니다.
+
+```liquid
+{% raw %}{% include embed/icon.html name="file-pdf" %}
+{% include embed/icon.html name="github" style="brands" %}
+{% include embed/icon.html name="circle-info" label="안내" %}{% endraw %}
+```
+
+- 첨부 파일 카드는 확장자(`pdf`·`docx`·`xlsx`·`hwpx` 등)에 맞는 아이콘과 색을 자동으로 고릅니다.
+- 템플릿에서는 `<i class="th-fa th-fa-file-pdf" aria-hidden="true"></i>`로 직접 쓸 수 있고, 전체 목록과 추가 방법은 [데모의 "아이콘"](https://leejongyoung.github.io/jekyll-theme-krds/docs/icons/)에 있습니다.
+- 아이콘은 CC BY 4.0이므로 `NOTICE.md`와 `assets/img/fa/LICENSE.txt`를 지우지 마세요.
+
+## 위키
+
+`wiki/` 폴더에 마크다운 문서를 두면 문서끼리 `[[문서 링크]]`로 잇는 위키가 됩니다. 예제는 [`example/wiki/`](example/wiki), 사용법은 [데모의 위키](https://leejongyoung.github.io/jekyll-theme-krds/wiki/)입니다.
+
+```yaml
+# wiki/index.md — 위키 홈(layout: wiki-home)
+---
+layout: wiki-home
+title: 위키
+lead: 문서를 서로 연결해 모아 둔 위키입니다.
+permalink: /wiki/
+search: false
+---
+```
+
+```yaml
+# wiki/디자인-토큰.md — 위키 문서(layout: wiki)
+---
+layout: wiki
+title: 디자인 토큰
+summary: 목록 카드에 쓰이는 한 줄 요약
+category: 테마
+wiki_aliases: [토큰, tokens]
+tags: [디자인]
+updated: 2026-11-08
+infobox:
+  - label: 저장소
+    value: owner/repo
+---
+```
+
+```yaml
+# _data/navigation.yml — 메인 메뉴
+main:
+  - title: 위키
+    url: /wiki/
+
+# _config.yml
+krds:
+  wiki:                    # 선택: 있으면 편집·변경 이력·새 문서 만들기 링크가 생깁니다
+    repo: owner/repo
+    branch: main
+    content_dir: ""        # 사이트 소스가 저장소 안 하위 폴더면 그 폴더(예: example)
+```
+
+- **문서 링크:** `[[제목]]`, `[[제목|표시 글]]`, `[[제목#섹션]]`. 제목 → 파일 이름 → `wiki_aliases` 순으로 찾고, 없는 문서는 붉은 점선으로 보이며 누르면 새 문서를 만드는 GitHub 화면이 열립니다. 코드 블록 안은 링크로 바뀌지 않습니다.
+- **문서 화면:** 분류별 왼쪽 메뉴, 정보 상자(`infobox`), 이 문서를 가리키는 문서(역링크), 관련 문서, 문서 편집·변경 이력·주소 복사·인쇄.
+- **위키 홈:** 제목·별칭·태그·요약 검색(`/` 키로 이동), 분류 필터, 정렬, 무작위 문서, 최근 바뀐 문서, 작성이 필요한 문서, 고아 문서. 검색어·분류·정렬은 주소(`?q=&category=&sort=`)에 반영됩니다.
+- **동작 방식:** 빌드할 때 `/assets/wiki-index.json` 하나를 만들고 브라우저가 이 파일만 읽습니다. 외부 요청이 없습니다. 링크 해석은 자바스크립트가 필요하고, 꺼져 있으면 `[[ ]]`가 글자 그대로 보입니다. 표시 글자를 바꾸는 링크는 kramdown이 `|`가 든 줄을 표로 읽으므로 `[[제목\|표시 글]]`처럼 `\`를 붙여 씁니다.
+- **제외:** 위키 문서도 사이트 검색에 포함됩니다. 빼려면 front matter에 `search: false`를 적으세요.
+
 
 ## 태그와 검색
 

@@ -29,7 +29,7 @@ attachments:
     title: "첨부 예제 텍스트"
     desc: "내려받기 카드"
     size: "331B"
-    sha256: "3c43e35e6da55b79ef8814f3b852adbab0d57e329892bd16bc2c384e0c1d2bf"
+    sha256: "3c43e35e6da55b79ef8814f3b852adbab0d057e329892bd16bc2c384e0c1d2bf"
 ---
 
 파일을 글에 직접 올려 미리보기와 함께 보여줍니다. 모든 미리보기는 브라우저 안에서 처리되며 외부 서비스에 연결하지 않습니다.
@@ -74,11 +74,11 @@ HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 
 
 변환본이 없는 문서(`hwp`·`ppt` 등)나 텍스트는 내려받기 카드만 나옵니다. 같은 파일도 `preview=false`를 주면 카드만 표시됩니다.
 
-{% include embed/attachment.html src="/assets/files/sample.txt" title="첨부 예제 텍스트" desc="내려받기 카드" size="331B" sha256="3c43e35e6da55b79ef8814f3b852adbab0d57e329892bd16bc2c384e0c1d2bf" %}
+{% include embed/attachment.html src="/assets/files/sample.txt" title="첨부 예제 텍스트" desc="내려받기 카드" size="331B" sha256="3c43e35e6da55b79ef8814f3b852adbab0d057e329892bd16bc2c384e0c1d2bf" %}
 
 ## 파일 정보 표시
 
-본문 include는 미리보기와 파일 정보만 보여주며, 동작 버튼은 중복하지 않습니다. 글 하단 첨부 목록에서 `미리보기`와 `내려받기`를 같은 오른쪽 영역에 모아 제공합니다. PDF·이미지·스프레드시트의 미리보기는 새 탭의 전용 viewer에서 열립니다. 파일 아이콘은 접힌 모서리와 확장자 라벨을 함께 쓰고, 형식마다 색을 구분합니다. `size`와 `sha256`을 적으면 파일명 옆에 용량과 SHA-256 전체 64자리를 표시합니다. 긴 해시는 줄바꿈되어 카드 너비를 넘지 않습니다. 해시는 `shasum -a 256 파일`로 구합니다.
+본문 include는 미리보기와 파일 정보만 보여주며, 동작 버튼은 중복하지 않습니다. 글 하단 첨부 목록에서 `미리보기`와 `내려받기`를 같은 오른쪽 영역에 모아 제공합니다. PDF·이미지·스프레드시트의 미리보기는 새 탭의 전용 viewer에서 열립니다. 파일 아이콘은 [Font Awesome]({{ '/docs/icons/' | relative_url }}) 문서 아이콘을 확장자별 색 타일에 담아 보여주고(PDF 빨강, 워드 파랑, 스프레드시트 초록, 한글 보라 등), 확장자는 카드의 라벨로 표시합니다. `size`와 `sha256`을 적으면 파일명 옆에 용량과 SHA-256 전체 64자리를 표시합니다. 긴 해시는 줄바꿈되어 카드 너비를 넘지 않습니다. 해시는 `shasum -a 256 파일`로 구합니다.
 
 ## 글 하단 파일 목록
 

@@ -1,0 +1,11 @@
+{%- comment -%}
+  위키 문서(layout: wiki)를 제목 순으로 모으고 분류 목록을 만든다.
+  결과 변수: th_wiki_pages(제목 순 문서 배열), th_wiki_cats(분류 이름 배열, 가나다순. 분류가 없으면 '미분류')
+{%- endcomment -%}
+{%- assign th_wiki_pages = site.html_pages | where: 'layout', 'wiki' | sort: 'title' -%}
+{%- assign th_wiki_cats = '' | split: '' -%}
+{%- for th_p in th_wiki_pages -%}
+  {%- assign th_c = th_p.category | default: '미분류' -%}
+  {%- assign th_wiki_cats = th_wiki_cats | push: th_c -%}
+{%- endfor -%}
+{%- assign th_wiki_cats = th_wiki_cats | uniq | sort -%}

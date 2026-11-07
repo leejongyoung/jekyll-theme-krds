@@ -1,0 +1,58 @@
+---
+layout: default
+---
+{%- include wiki-config.html -%}
+{%- assign th_cat = page.category | default: '미분류' -%}
+{%- assign th_upd = page.updated | default: page.last_modified_at | default: page.date -%}
+{%- assign th_home = site.pages | where: 'layout', 'wiki-home' | first -%}
+{%- assign th_tags_page = site.pages | where: 'layout', 'tags' | first -%}
+<div class="th-wrap">
+  {% include breadcrumb.html %}
+  <div class="th-doc th-wiki" data-wiki="article" data-index="{{ '/assets/wiki-index.json' | relative_url }}" data-page-url="{{ page.url | relative_url }}"{% if th_wiki_new_base != '' %} data-new-base="{{ th_wiki_new_base }}" data-new-template="---\nlayout: wiki\ntitle: &quot;{title}&quot;\ncategory: &quot;{{ th_cat | escape }}&quot;\nsummary: \nupdated: {date}\n---\n\n"{% endif %}>
+    <div class="th-doc-side">{% include wiki-nav.html %}</div>
+    <article class="th-wiki-article">
+      <h1 class="th-page-title">{{ page.title }}</h1>
+      <div class="th-wiki-meta">
+        {%- if th_home %}
+        <a class="th-wiki-badge" href="{{ th_home.url | relative_url }}?category={{ th_cat | url_encode }}"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ th_cat }}</a>
+        {%- endif %}
+        {%- if th_upd %}
+        <span class="th-wiki-badge"><i class="th-fa th-fa-clock" aria-hidden="true"></i><time datetime="{{ th_upd | date: '%Y-%m-%d' }}">{{ th_upd | date: '%Y.%m.%d' }} 수정</time></span>
+        {%- endif %}
+        {%- if th_tags_page %}{% for tag in page.tags %}
+        <a class="th-wiki-badge" href="{{ th_tags_page.url | relative_url }}#{{ tag | slugify }}"><i class="th-fa th-fa-tag" aria-hidden="true"></i>{{ tag }}</a>
+        {%- endfor %}{% endif %}
+      </div>
+      {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+      <div class="th-wiki-content" data-wiki-content>
+        {%- if page.infobox %}
+        <aside class="th-wiki-infobox" aria-label="문서 정보">
+          <h2 class="th-wiki-infobox-title"><i class="th-fa th-fa-circle-info" aria-hidden="true"></i>{{ page.infobox_title | default: page.title | escape }}</h2>
+          {%- if page.infobox_image %}<img src="{{ page.infobox_image | relative_url }}" alt="{{ page.infobox_alt | default: '' | escape }}">{% endif %}
+          <dl>{% for row in page.infobox %}<dt>{{ row.label | escape }}</dt><dd>{{ row.value | escape }}</dd>{% endfor %}</dl>
+        </aside>
+        {%- endif %}
+        <div class="th-prose">
+          {{ content }}
+        </div>
+      </div>
+      {% include attachments.html %}
+      <footer class="th-wiki-footer">
+        <section class="th-wiki-section" data-wiki-backlinks hidden></section>
+        <section class="th-wiki-section" data-wiki-related hidden></section>
+        <div class="th-wiki-actions" role="group" aria-label="문서 도구">
+          {%- if th_wiki_base != '' %}
+          <a class="krds-btn small text" href="{{ th_wiki_base }}/edit/{{ th_wiki_branch }}/{{ th_wiki_prefix }}{{ page.path }}" target="_blank" rel="noopener"><i class="th-fa th-fa-pen-to-square" aria-hidden="true"></i>문서 편집<span class="th-sr-only"> (새 창 열림)</span></a>
+          <a class="krds-btn small text" href="{{ th_wiki_base }}/commits/{{ th_wiki_branch }}/{{ th_wiki_prefix }}{{ page.path }}" target="_blank" rel="noopener"><i class="th-fa th-fa-clock-rotate-left" aria-hidden="true"></i>변경 이력<span class="th-sr-only"> (새 창 열림)</span></a>
+          {%- endif %}
+          <button type="button" class="krds-btn small text" data-wiki-copy><i class="th-fa th-fa-link" aria-hidden="true"></i>주소 복사</button>
+          <button type="button" class="krds-btn small text" data-wiki-print><i class="th-fa th-fa-print" aria-hidden="true"></i>인쇄</button>
+          <span class="th-wiki-copy-status" data-wiki-copy-status role="status"></span>
+        </div>
+      </footer>
+    </article>
+    <div class="th-doc-toc">
+      {% include toc.html %}
+    </div>
+  </div>
+</div>

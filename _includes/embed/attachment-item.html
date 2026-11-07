@@ -33,10 +33,8 @@
   {%- elsif kind == 'sheet' -%}{%- assign kind_label = '스프레드시트' -%}
   {%- elsif kind == 'doc' -%}{%- assign kind_label = '문서' -%}
   {%- endif -%}
-  {%- assign icon_kind = kind -%}
-  {%- if ext == 'hwp' or ext == 'hwpx' -%}{%- assign icon_kind = 'hwp' -%}
-  {%- elsif ext == 'htm' or ext == 'html' -%}{%- assign icon_kind = 'html' -%}
-  {%- endif -%}
+  {%- assign kind_label = ext | upcase -%}
+  {%- if kind_label == '' -%}{%- assign kind_label = '파일' -%}{%- endif -%}
   {%- assign title = include.title | default: '' -%}
   {%- if title == '' -%}{%- assign title = clean | split: '/' | last -%}{%- endif -%}
   {%- assign src_head = src | slice: 0, 4 -%}
@@ -81,14 +79,14 @@
     {%- endif %}
   {%- endif %}
   <figcaption class="th-attachment-meta">
-    <span class="th-attachment-file-icon th-attachment-file-icon--{{ icon_kind }}" aria-hidden="true"><svg viewBox="0 0 40 48" focusable="false"><path class="th-file-icon-page" d="M5 1.5h20l10 10v35H5z"/><path class="th-file-icon-fold" d="M25 1.5v10h10"/><rect class="th-file-icon-label" x="7" y="26" width="26" height="14" rx="3"/><text class="th-file-icon-text" x="20" y="35.5" text-anchor="middle">{{ ext | upcase | default: 'FILE' | escape }}</text></svg></span>
+    {% include embed/attachment-icon.html ext=ext %}
     <span class="th-attachment-title">{{ title | escape }}</span>
     {%- if include.desc %}<span class="th-attachment-desc">{{ include.desc | escape }}</span>{% endif -%}
     {%- assign _size = include['size'] -%}
     {%- if _size %}<span class="th-attachment-size">{{ _size | escape }}</span>{% endif -%}
     <span class="th-attachment-kind">{{ kind_label }}</span>
-    {%- if show_actions and view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
-    {%- if show_actions %}<a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>{% endif -%}
+    {%- if show_actions and view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
+    {%- if show_actions %}<a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{% endif -%}
     {%- assign _sha = include.sha256 | default: '' -%}
     {%- if _sha != '' %}<span class="th-attachment-sha">SHA-256 {{ _sha | escape }}</span>{% endif -%}
   </figcaption>

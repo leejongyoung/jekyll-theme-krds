@@ -1,0 +1,26 @@
+{%- comment -%}
+  위키 왼쪽 메뉴: 위키 홈 + 분류별 문서 목록(현재 문서가 속한 분류는 펼쳐 둔다). 호출: {% raw %}{% include wiki-nav.html %}{% endraw %}
+{%- endcomment -%}
+{%- include wiki-data.html -%}
+{%- assign th_home = site.pages | where: 'layout', 'wiki-home' | first -%}
+<nav class="krds-side-navigation" aria-label="위키 메뉴">
+  <h2 class="lnb-tit">위키</h2>
+  <ul class="lnb-list">
+    {%- if th_home %}
+    <li class="lnb-item"><a href="{{ th_home.url | relative_url }}" class="lnb-btn lnb-link"{% if page.url == th_home.url %} aria-current="page"{% endif %}>위키 홈</a></li>
+    {%- endif %}
+    {%- for th_cat in th_wiki_cats %}
+      {%- assign th_i = forloop.index -%}
+      {%- assign th_open = false -%}
+      {%- for th_p in th_wiki_pages %}{% assign th_pc = th_p.category | default: '미분류' %}{% if th_pc == th_cat and th_p.url == page.url %}{% assign th_open = true %}{% endif %}{% endfor %}
+    <li class="lnb-item{% if th_open %} active{% endif %}">
+      <button type="button" class="lnb-btn lnb-toggle{% if th_open %} active{% endif %}" aria-controls="wikinav-{{ th_i }}" aria-expanded="{{ th_open }}">{{ th_cat }}</button>
+      <div class="lnb-submenu"><ul id="wikinav-{{ th_i }}">
+        {%- for th_p in th_wiki_pages %}{% assign th_pc = th_p.category | default: '미분류' %}{% if th_pc == th_cat %}
+        <li class="lnb-subitem{% if th_p.url == page.url %} active{% endif %}"><a href="{{ th_p.url | relative_url }}" class="lnb-btn lnb-link"{% if th_p.url == page.url %} aria-current="page"{% endif %}>{{ th_p.title }}</a></li>
+        {%- endif %}{% endfor %}
+      </ul></div>
+    </li>
+    {%- endfor %}
+  </ul>
+</nav>

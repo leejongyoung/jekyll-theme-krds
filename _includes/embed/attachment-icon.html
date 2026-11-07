@@ -1,0 +1,12 @@
+{%- comment -%}
+  파일 확장자에 맞는 Font Awesome 아이콘 타일을 그린다. 입력: ext(소문자 확장자, 점 없이).
+  목록에 없는 확장자는 일반 파일 아이콘이다. 색은 th-attachment-file-icon--<종류> 클래스가 정한다.
+{%- endcomment -%}
+{%- assign th_icon_kind = 'file' -%}
+{%- assign th_icon_name = 'file' -%}
+{%- assign th_icon_rows = 'pdf:pdf:file-pdf|doc:doc:file-word|docx:doc:file-word|odt:doc:file-word|rtf:doc:file-word|xls:sheet:file-excel|xlsx:sheet:file-excel|ods:sheet:file-excel|cell:sheet:file-excel|csv:sheet:file-csv|tsv:sheet:file-csv|ppt:slides:file-powerpoint|pptx:slides:file-powerpoint|odp:slides:file-powerpoint|show:slides:file-powerpoint|hwp:hwp:file-lines|hwpx:hwp:file-lines|png:image:file-image|jpg:image:file-image|jpeg:image:file-image|gif:image:file-image|webp:image:file-image|svg:image:file-image|bmp:image:file-image|mp3:audio:file-audio|wav:audio:file-audio|ogg:audio:file-audio|m4a:audio:file-audio|flac:audio:file-audio|mp4:video:file-video|webm:video:file-video|mov:video:file-video|mkv:video:file-video|zip:archive:file-zipper|7z:archive:file-zipper|tar:archive:file-zipper|gz:archive:file-zipper|rar:archive:file-zipper|html:code:file-code|htm:code:file-code|json:code:file-code|xml:code:file-code|js:code:file-code|css:code:file-code|yml:code:file-code|yaml:code:file-code|txt:text:file-lines|md:text:file-lines|log:text:file-lines' | split: '|' -%}
+{%- for th_row in th_icon_rows -%}
+  {%- assign th_cols = th_row | split: ':' -%}
+  {%- if th_cols[0] == include.ext -%}{%- assign th_icon_kind = th_cols[1] -%}{%- assign th_icon_name = th_cols[2] -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+<span class="th-attachment-file-icon th-attachment-file-icon--{{ th_icon_kind }}" aria-hidden="true"><i class="th-fa th-fa-{{ th_icon_name }}"></i></span>

@@ -4,6 +4,20 @@
 
 ## [Unreleased]
 
+### 추가
+- 위키: 문서끼리 `[[문서 링크]]`로 잇는 위키 레이아웃(`_layouts/wiki.html`·`wiki-home.html`, `wiki-*` include, `wiki.js`, `/assets/wiki-index.json`). 분류별 왼쪽 메뉴, 정보 상자(`infobox`), 역링크·관련 문서, 문서 편집·변경 이력·주소 복사·인쇄, 위키 홈의 검색·분류 필터·정렬·무작위 문서·최근 바뀐 문서·작성이 필요한 문서·고아 문서. 메인 메뉴의 태그 옆에 "위키"를 추가한 예제와 예제 문서 10개
+- Font Awesome Free 7.3.1 SVG 아이콘 약 80개(`th-fa` 마스크 아이콘)와 `embed/icon.html`·`embed/icon-gallery.html` include, 문서 "아이콘"(아이콘 목록 포함)
+- 블로그 예제 글 "첨부 파일 사용법 한눈에 보기"
+- 라이선스 고지: SheetJS(Apache-2.0) `LICENSE`와 NOTICE 항목, Font Awesome Free(CC BY 4.0) NOTICE 항목
+
+### 변경
+- 첨부 파일 카드·viewer의 파일 아이콘을 Font Awesome 문서 아이콘을 담은 색 타일로 교체(PDF·워드·스프레드시트·프레젠테이션·한글·이미지·음원·영상·압축·코드·텍스트). 카드의 형식 라벨은 확장자(`DOCX`, `HWPX` 등)로 표시
+- 미리보기·내려받기·인쇄 버튼의 아이콘을 Font Awesome으로 통일
+
+### 수정
+- 예제 문서의 `sample.txt` SHA-256 값에서 `0`이 빠져 63자리였던 오기를 64자리로 정정
+
+
 ## [1.4.6] - 2026-11-08
 
 ### 변경

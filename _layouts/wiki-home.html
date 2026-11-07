@@ -1,0 +1,61 @@
+---
+layout: default
+---
+{%- include wiki-config.html -%}
+{%- include wiki-data.html -%}
+{%- assign th_recent = th_wiki_pages | sort: 'updated' | reverse | slice: 0, 5 -%}
+<div class="th-wrap th-wiki" data-wiki="home" data-index="{{ '/assets/wiki-index.json' | relative_url }}"{% if th_wiki_new_base != '' %} data-new-base="{{ th_wiki_new_base }}" data-new-template="---\nlayout: wiki\ntitle: &quot;{title}&quot;\ncategory: &quot;분류&quot;\nsummary: \nupdated: {date}\n---\n\n"{% endif %}>
+  {% include breadcrumb.html %}
+  <h1 class="th-page-title">{{ page.title | default: '위키' }}</h1>
+  {%- if page.lead %}<p class="th-page-lead">{{ page.lead }}</p>{% endif %}
+  {%- if content != '' %}
+  <div class="th-wiki-content" data-wiki-content><div class="th-prose">{{ content }}</div></div>
+  {%- endif %}
+  <div class="th-wiki-toolbar" role="search">
+    <div class="th-wiki-field">
+      <label for="th-wiki-q">위키 검색</label>
+      <div class="th-wiki-search"><i class="th-fa th-fa-magnifying-glass" aria-hidden="true"></i><input type="search" id="th-wiki-q" class="krds-input" data-wiki-q autocomplete="off" placeholder="제목·별칭·요약으로 찾기 (/ 키로 이동)"></div>
+    </div>
+    <div class="th-wiki-field">
+      <label for="th-wiki-sort">정렬</label>
+      <select id="th-wiki-sort" class="th-wiki-select" data-wiki-sort><option value="name">가나다순</option><option value="recent">최근 수정순</option></select>
+    </div>
+    <div class="th-wiki-field"><button type="button" class="krds-btn large secondary" data-wiki-random><i class="th-fa th-fa-shuffle" aria-hidden="true"></i> 무작위 문서</button></div>
+  </div>
+  <ul class="th-wiki-chips" aria-label="분류">
+    <li><button type="button" class="th-wiki-chip" data-wiki-chip="" aria-pressed="true">전체 <span class="th-wiki-chip-count">{{ th_wiki_pages.size }}</span></button></li>
+    {%- for th_cat in th_wiki_cats %}
+      {%- assign th_n = 0 -%}
+      {%- for th_p in th_wiki_pages %}{% assign th_pc = th_p.category | default: '미분류' %}{% if th_pc == th_cat %}{% assign th_n = th_n | plus: 1 %}{% endif %}{% endfor %}
+    <li><button type="button" class="th-wiki-chip" data-wiki-chip="{{ th_cat | escape }}" aria-pressed="false"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ th_cat }} <span class="th-wiki-chip-count">{{ th_n }}</span></button></li>
+    {%- endfor %}
+  </ul>
+  <p class="th-wiki-status" data-wiki-status role="status" aria-live="polite">문서 {{ th_wiki_pages.size }}개</p>
+  <ul class="th-wiki-list" data-wiki-list>
+    {%- for th_p in th_wiki_pages %}
+      {%- assign th_pc = th_p.category | default: '미분류' -%}
+      {%- assign th_pupd = th_p.updated | default: th_p.last_modified_at | default: th_p.date -%}
+      {%- assign th_summary = th_p.summary | default: th_p.lead | default: '' -%}
+    <li class="th-wiki-card" data-wiki-item data-title="{{ th_p.title | escape }}" data-aliases="{{ th_p.wiki_aliases | join: ' ' | escape }}" data-category="{{ th_pc | escape }}" data-tags="{{ th_p.tags | join: ' ' | escape }}" data-updated="{% if th_pupd %}{{ th_pupd | date: '%Y-%m-%d' }}{% endif %}" data-summary="{{ th_summary | escape }}">
+      <h2 class="th-wiki-card-title"><a href="{{ th_p.url | relative_url }}">{{ th_p.title }}</a></h2>
+      {%- if th_summary != '' %}<p class="th-wiki-card-summary">{{ th_summary }}</p>{% endif %}
+      <p class="th-wiki-card-meta"><span class="th-wiki-badge"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ th_pc }}</span>{% if th_pupd %}<span><i class="th-fa th-fa-clock" aria-hidden="true"></i> {{ th_pupd | date: '%Y.%m.%d' }}</span>{% endif %}</p>
+    </li>
+    {%- endfor %}
+  </ul>
+  <p class="th-wiki-empty" data-wiki-empty hidden>조건에 맞는 문서가 없습니다.</p>
+  <div class="th-wiki-panels">
+    <section class="th-wiki-panel">
+      <h2><i class="th-fa th-fa-clock-rotate-left" aria-hidden="true"></i>최근 바뀐 문서</h2>
+      <ul class="th-wiki-link-list">
+        {%- for th_p in th_recent %}
+          {%- assign th_pupd = th_p.updated | default: th_p.last_modified_at | default: th_p.date %}
+        <li><a href="{{ th_p.url | relative_url }}">{{ th_p.title }}</a><span class="th-wiki-link-summary">{% if th_pupd %}{{ th_pupd | date: '%Y.%m.%d' }} · {% endif %}{{ th_p.category | default: '미분류' }}</span></li>
+        {%- endfor %}
+      </ul>
+    </section>
+    <section class="th-wiki-panel" data-wiki-wanted hidden></section>
+    <section class="th-wiki-panel" data-wiki-orphans hidden></section>
+  </div>
+  <noscript><p class="th-embed-note">검색·분류 필터와 문서 링크 해석에는 JavaScript가 필요합니다. 문서 목록은 그대로 볼 수 있습니다.</p></noscript>
+</div>
