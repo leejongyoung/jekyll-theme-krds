@@ -19,6 +19,8 @@ main:
         url: /docs/search-tags/
       - title: 아이콘
         url: /docs/icons/
+      - title: 홈 화면 꾸미기
+        url: /docs/home/
   - title: 블로그
     url: /blog/
   - title: 태그
@@ -54,6 +56,8 @@ docs:
         url: /docs/search-tags/
       - title: 아이콘
         url: /docs/icons/
+      - title: 홈 화면 꾸미기
+        url: /docs/home/
 
 # 푸터 링크
 footer:

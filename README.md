@@ -161,6 +161,17 @@ sass:
 
 용량: Mermaid(약 3.7MB, 다이어그램 종류별로 필요한 조각만 불러옴), Chart.js 205KB, KaTeX 약 600KB(글꼴 포함)이며 해당 코드 블록·수식이 있는 페이지에서만 받습니다.
 
+## 홈 화면
+
+홈(`index.md`)의 front matter에 `banner`·`tabs`·`cards`·`cardnews`를 적으면 구역이 나타납니다(모두 선택, 기존 `hero`·`features`와 함께 씁니다). 예제는 [`example/index.md`](example/index.md), 전체 설명은 [데모의 "홈 화면 꾸미기"](https://leejongyoung.github.io/jekyll-theme-krds/docs/home/)입니다.
+
+- **슬라이드 배너(`banner`):** 자동 넘김, 멈춤·재생 버튼, 이전·다음, 점, 화살표 키, 터치 밀기. 마우스·초점이 있는 동안 잠시 멈추고, "움직임 줄이기" 설정이면 자동 재생하지 않습니다.
+- **탭(`tabs`):** 최근 글(`source: posts`), 최근 바뀐 위키 문서(`source: wiki`), 직접 적은 카드(`items`)를 탭으로 나눕니다. 방향키·Home·End로 옮깁니다.
+- **카드뷰(`cards`)·주요 기능(`features`):** Font Awesome 아이콘(`icon`)과 태그가 있는 카드 격자.
+- **카드뉴스(`cardnews`):** 색 배경(`tone`: blue·green·purple·orange·dark)의 세로형 카드를 가로로 넘겨 봅니다. 이전·다음 버튼과 "1 / 5" 표시.
+- 자바스크립트가 없으면 슬라이드는 세로 목록, 탭은 제목이 붙은 구역으로 보이고, 선명하게(고대비) 모드에서는 검정 바탕에 흰 테두리가 됩니다.
+- 최근 글 구역은 `recent_posts: 3`처럼 개수를 적으면 나옵니다.
+
 ## 아이콘
 
 [Font Awesome Free](https://fontawesome.com) 7.3.1의 SVG 아이콘 약 80개가 `assets/img/fa/`에 들어 있습니다. 글꼴 파일이나 외부 서버 없이 글자색을 따라 칠해지는 마스크 아이콘입니다.
