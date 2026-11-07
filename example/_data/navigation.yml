@@ -13,6 +13,8 @@ main:
         url: /docs/typography/
       - title: 임베드와 수식
         url: /docs/embeds/
+      - title: 첨부 파일
+        url: /docs/attachments/
       - title: 태그와 검색
         url: /docs/search-tags/
   - title: 블로그
@@ -42,6 +44,8 @@ docs:
         url: /docs/typography/
       - title: 임베드와 수식
         url: /docs/embeds/
+      - title: 첨부 파일
+        url: /docs/attachments/
       - title: 태그와 검색
         url: /docs/search-tags/
 
