@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="첨부 미리보기 흐름도">
+<rect width="640" height="360" fill="#f4f7fa"/>
+<text x="32" y="44" font-size="24" font-weight="bold" fill="#0b3b63">첨부 파일 미리보기 흐름</text>
+<g font-size="16" text-anchor="middle">
+<rect x="32" y="90" width="160" height="72" rx="12" fill="#0b6bcb"/><text x="112" y="120" fill="#fff">원본 업로드</text><text x="112" y="144" fill="#dcebfa" font-size="13">pdf · xlsx · hwpx</text>
+<rect x="240" y="90" width="160" height="72" rx="12" fill="#fff" stroke="#0b6bcb" stroke-width="3"/><text x="320" y="120" fill="#0b3b63">형식 판별</text><text x="320" y="144" fill="#5b6b7c" font-size="13">확장자 기준</text>
+<rect x="448" y="90" width="160" height="72" rx="12" fill="#178a50"/><text x="528" y="120" fill="#fff">미리보기</text><text x="528" y="144" fill="#d9f0e3" font-size="13">또는 내려받기</text>
+</g>
+<g stroke="#5b6b7c" stroke-width="3" fill="none" marker-end="url(#ah)">
+<defs><marker id="ah" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#5b6b7c"/></marker></defs>
+<line x1="192" y1="126" x2="236" y2="126"/>
+<line x1="400" y1="126" x2="444" y2="126"/>
+</g>
+<rect x="32" y="200" width="576" height="120" rx="12" fill="#fff" stroke="#ccd6e0" stroke-width="2"/>
+<text x="56" y="236" font-size="16" font-weight="bold" fill="#0b3b63">오피스 문서는 PDF 변환본을 함께 두세요</text>
+<text x="56" y="264" font-size="15" fill="#333">libreoffice --headless --convert-to pdf 보고서.hwpx</text>
+<text x="56" y="290" font-size="15" fill="#333">preview_pdf로 가리키면 외부 연결 없이 미리보기</text>
+</svg>

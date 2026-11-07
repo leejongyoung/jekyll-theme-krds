@@ -6,11 +6,29 @@ tags: [수식, 다이어그램, 차트, 가이드]
 attachments:
   - src: "/assets/files/sample.pdf"
     title: "첨부 예제 PDF"
-    desc: "미리보기 확인용"
-    size: "597B"
+    desc: "브라우저 내장 미리보기"
+    size: "5.8KB"
+    sha256: "0e3be03e83aa11752eaf5cabd18d74b852596c67d29bb9cbab5cff7332e96e07"
+  - src: "/assets/files/sample-diagram.svg"
+    title: "첨부 예제 다이어그램"
+    desc: "이미지 미리보기"
+    size: "1.7KB"
+    sha256: "4e57eb6fc6662edeed97ecd4763c6825fb0fcec09487277a09d0b74f9a3f8ca9"
+  - src: "/assets/files/sample-report.docx"
+    title: "첨부 예제 보고서"
+    desc: "오피스 문서 + PDF 변환본"
+    size: "36.3KB"
+    sha256: "ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1"
+  - src: "/assets/files/sample-data.xlsx"
+    title: "첨부 예제 데이터"
+    desc: "오피스 문서 카드"
+    size: "5.2KB"
+    sha256: "f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414"
   - src: "/assets/files/sample.txt"
     title: "첨부 예제 텍스트"
-    size: "71B"
+    desc: "내려받기 카드"
+    size: "331B"
+    sha256: "3c43e35e6da55b79ef8814f3b852adbab0d57e329892bd16bc2c384e0c1d2bf"
 ---
 이 페이지의 모든 항목은 **필요한 페이지에서만** 해당 라이브러리를 불러옵니다. 외부 서비스(YouTube, Vimeo, 지도 등)는 **불러오기 버튼을 누르기 전에는 연결하지 않습니다.**
 
@@ -150,8 +168,38 @@ pie showData
 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여주고, 없으면 내려받기 카드만 나옵니다.
 꼭 외부 뷰어가 필요하면 `viewer="google"` 또는 `viewer="office"`를 쓰세요.
 버튼을 누르기 전에는 외부에 연결하지 않습니다.
+내려받기 옆 미리보기 버튼은 새 창에서 파일을 엽니다.
+`sha256`을 적으면 파일명 옆에 해시 앞부분이 표시됩니다(전체 값은 말풍선으로 확인).
 
-{% include embed/attachment.html src="/assets/files/sample.pdf" title="첨부 예제 PDF" desc="본문 미리보기 예제" %}
+### pdf 미리보기
+
+{% include embed/attachment.html src="/assets/files/sample.pdf" title="첨부 예제 PDF" desc="브라우저 내장 미리보기" size="5.8KB" sha256="0e3be03e83aa11752eaf5cabd18d74b852596c67d29bb9cbab5cff7332e96e07" %}
+
+### 이미지 미리보기
+
+{% include embed/attachment.html src="/assets/files/sample-diagram.svg" title="첨부 예제 다이어그램" desc="이미지 미리보기" size="1.7KB" sha256="4e57eb6fc6662edeed97ecd4763c6825fb0fcec09487277a09d0b74f9a3f8ca9" %}
+
+### 오피스 문서 + PDF 변환본
+
+{% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" desc="오피스 문서 + PDF 변환본" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
+
+### 오피스 문서 (카드만)
+
+변환본도 외부 뷰어도 지정하지 않으면 내려받기 카드만 나옵니다.
+
+{% include embed/attachment.html src="/assets/files/sample-data.xlsx" title="첨부 예제 데이터" desc="오피스 문서 카드" size="5.2KB" sha256="f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414" %}
+
+### 오피스 문서 + 외부 뷰어
+
+게시된 `https://` 주소라면 외부 뷰어로 미리볼 수 있습니다. 버튼을 누르기 전에는 연결하지 않습니다.
+
+{% include embed/attachment.html src="/assets/files/sample-data.xlsx" title="첨부 예제 데이터" desc="외부 뷰어 미리보기" size="5.2KB" sha256="f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414" viewer="office" %}
+
+### 텍스트 (카드만)
+
+{% include embed/attachment.html src="/assets/files/sample.txt" title="첨부 예제 텍스트" desc="내려받기 카드" size="331B" sha256="3c43e35e6da55b79ef8814f3b852adbab0d57e329892bd16bc2c384e0c1d2bf" %}
+
+### 글 하단 파일 목록
 
 글 끝의 파일 목록은 front matter의 `attachments:`로 만듭니다. 이 페이지 아래에도 같은 목록이 보입니다.
 
@@ -159,12 +207,12 @@ pie showData
 attachments:
   - src: "/assets/files/sample.pdf"
     title: "첨부 예제 PDF"
-    desc: "미리보기 확인용"
-    size: "597B"
+    size: "5.8KB"
+    sha256: "0e3be03e83aa11752eaf5cabd18d74b852596c67d29bb9cbab5cff7332e96e07"
 ```
 
 ```liquid
-{% raw %}{% include embed/attachment.html src="/assets/files/보고서.pdf" title="보고서" %}{% endraw %}
+{% raw %}{% include embed/attachment.html src="/assets/files/보고서.pdf" title="보고서" size="5.8KB" sha256="ab12…" %}{% endraw %}
 {% raw %}{% include embed/attachment.html src="/assets/files/예산안.hwpx" title="예산안" preview_pdf="/assets/files/예산안.pdf" %}{% endraw %}
 {% raw %}{% include embed/attachment.html src="https://example.com/자료.xlsx" title="자료" viewer="office" %}{% endraw %}
 ```
@@ -172,6 +220,8 @@ attachments:
 오피스 문서를 PDF로 바꾸는 예: `libreoffice --headless --convert-to pdf 예산안.hwpx`를 실행해
 원본 옆에 같은 이름의 `.pdf`를 두고 `preview_pdf`로 가리키세요.
 `preview=false`를 주면 미리보기 없이 카드만 나옵니다.
+해시는 `shasum -a 256 파일`로 구합니다.
+
 
 ## 설정
 

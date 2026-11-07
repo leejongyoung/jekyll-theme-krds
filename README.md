@@ -148,7 +148,7 @@ sass:
 | Vimeo | `{% raw %}{% include embed/vimeo.html id="123456" title="제목" %}{% endraw %}` | 없음(iframe) |
 | 그 밖의 페이지 | `{% raw %}{% include embed/iframe.html url="https://..." title="제목" %}{% endraw %}` | 없음(iframe, sandbox) |
 | 자체 호스팅 영상·오디오 | `embed/video.html`(자막 `captions="….vtt"`), `embed/audio.html`(`transcript`) | 없음(HTML5) |
-| 첨부 파일 | `{% raw %}{% include embed/attachment.html src="..." title="..." %}{% endraw %}`(미리보기) + `attachments:`(글 하단 목록) | pdf·이미지 내장, 오피스는 PDF 변환본 또는 클릭 후 외부 뷰어 |
+| 첨부 파일 | `{% raw %}{% include embed/attachment.html src="..." title="..." %}{% endraw %}`(미리보기) + `attachments:`(글 하단 목록) | pdf·이미지 내장, 오피스는 PDF 변환본 또는 클릭 후 외부 뷰어, 미리보기 버튼·SHA-256 표시 |
 
 - **수식:** 달러 기호가 든 일반 문장(`$4와 $6`)은 수식으로 바뀌지 않습니다. 단일 `$ ... $`는 지원하지 않습니다. KaTeX가 MathML도 함께 내보냅니다.
 - **다이어그램:** 화면 모드를 바꾸면 현재 색으로 다시 그리고, "다이어그램 원문 보기"를 제공합니다. 색은 KRDS 토큰에서 가져옵니다.

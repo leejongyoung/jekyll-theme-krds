@@ -159,3 +159,8 @@
   padding: var(--krds-padding-1) 0;
   &:focus-visible { box-shadow: var(--krds-box-shadow-outline); }
 }
+
+.th-attachment-sha {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+}
