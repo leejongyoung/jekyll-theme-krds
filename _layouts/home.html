@@ -3,6 +3,30 @@ layout: default
 ---
 {%- assign hero = page.hero -%}
 <div class="th-wrap">
+  {%- comment -%} 슬라이드 배너(banner): eyebrow, title, text, url, link_text, icon(Font Awesome), tone(blue|green|purple|orange|dark) {%- endcomment -%}
+  {%- if page.banner and page.banner.size > 0 %}
+  <section class="th-banner th-carousel" aria-roledescription="carousel" aria-label="{{ page.banner_label | default: '주요 소식' }}" data-th-carousel data-interval="{{ page.banner_interval | default: 6000 }}">
+    <div class="th-carousel-viewport"><ul class="th-carousel-track">
+      {%- for slide in page.banner %}
+      <li class="th-carousel-slide" role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ forloop.length }}">
+        <div class="th-slide th-tone-{{ slide.tone | default: 'blue' }}">
+          {%- if slide.icon %}<span class="th-slide-icon" aria-hidden="true"><i class="th-fa th-fa-{{ slide.icon }}"></i></span>{% endif %}
+          {%- if slide.eyebrow %}<p class="th-slide-eyebrow">{{ slide.eyebrow }}</p>{% endif %}
+          <h2 class="th-slide-title">{{ slide.title }}</h2>
+          {%- if slide.text %}<p class="th-slide-text">{{ slide.text }}</p>{% endif %}
+          {%- if slide.url %}
+            {%- assign th_surl = slide.url -%}
+            {%- assign th_shead = th_surl | slice: 0, 4 -%}
+            {%- if th_shead != 'http' %}{% assign th_surl = th_surl | relative_url %}{% endif %}
+          <a class="th-slide-link" href="{{ th_surl }}">{{ slide.link_text | default: '자세히 보기' }}<i class="th-fa th-fa-arrow-right" aria-hidden="true"></i></a>
+          {%- endif %}
+        </div>
+      </li>
+      {%- endfor %}
+    </ul></div>
+  </section>
+  {%- endif %}
+
   <section class="th-hero" aria-labelledby="hero-title">
     {%- if hero.eyebrow %}<p class="th-hero-eyebrow">{{ hero.eyebrow }}</p>{% endif %}
     <h1 id="hero-title" class="th-hero-title">{{ hero.title | default: page.title | default: site.title }}</h1>
@@ -22,10 +46,86 @@ layout: default
     <ul class="th-cards">
       {%- for f in page.features %}
       <li class="th-card">
+        {%- if f.icon %}<span class="th-showcase-icon" aria-hidden="true"><i class="th-fa th-fa-{{ f.icon }}"></i></span>{% endif %}
         <h3 class="th-card-title">{{ f.title }}</h3>
         <p class="th-card-text">{{ f.text }}</p>
         {%- if f.url %}<a class="krds-btn medium text th-card-link" href="{{ f.url | relative_url }}">{{ f.link_text | default: '자세히 보기' }} <i class="svg-icon ico-angle right"></i></a>{% endif %}
       </li>
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  {%- comment -%} 탭(tabs): title + source(posts|wiki) + limit, 또는 title + items(title, text, url, icon, tag) {%- endcomment -%}
+  {%- if page.tabs and page.tabs.size > 0 %}
+  <section class="th-section th-tabs" data-th-tabs aria-labelledby="tabs-title">
+    <h2 id="tabs-title" class="th-section-title">{{ page.tabs_title | default: '둘러보기' }}</h2>
+    {%- for tab in page.tabs %}
+    <div class="th-tabpanel" data-tab-title="{{ tab.title | escape }}">
+      <h3 class="th-tabpanel-title">{{ tab.title }}</h3>
+      <ul class="th-showcase">
+        {%- if tab.source == 'posts' %}
+          {%- assign th_limit = tab.limit | default: 3 -%}
+          {%- assign th_tab_posts = site.posts | slice: 0, th_limit -%}
+          {%- for p in th_tab_posts %}
+            {%- assign th_summary = p.excerpt | strip_html | normalize_whitespace | truncate: 80 -%}
+            {%- assign th_pmeta = p.date | date: '%Y.%m.%d' -%}
+            {% include home-card.html title=p.title text=th_summary url=p.url tag='글' meta=th_pmeta %}
+          {%- endfor %}
+        {%- elsif tab.source == 'wiki' %}
+          {%- assign th_limit = tab.limit | default: 3 -%}
+          {%- assign th_tab_wiki = site.html_pages | where: 'layout', 'wiki' | sort: 'updated' | reverse | slice: 0, th_limit -%}
+          {%- for p in th_tab_wiki %}
+            {%- assign th_wsum = p.summary | default: p.lead | default: '' -%}
+            {%- assign th_wcat = p.category | default: '위키' -%}
+            {%- assign th_wupd = p.updated | default: p.last_modified_at | default: p.date -%}
+            {%- if th_wupd %}{% assign th_wmeta = th_wupd | date: '%Y.%m.%d' %}{% else %}{% assign th_wmeta = '' %}{% endif -%}
+            {% include home-card.html title=p.title text=th_wsum url=p.url tag=th_wcat meta=th_wmeta %}
+          {%- endfor %}
+        {%- else %}
+          {%- for item in tab.items %}
+            {% include home-card.html title=item.title text=item.text url=item.url icon=item.icon tag=item.tag %}
+          {%- endfor %}
+        {%- endif %}
+      </ul>
+    </div>
+    {%- endfor %}
+  </section>
+  {%- endif %}
+
+  {%- comment -%} 카드뷰(cards): icon, title, text, url, tag {%- endcomment -%}
+  {%- if page.cards and page.cards.size > 0 %}
+  <section class="th-section" aria-labelledby="cards-title">
+    <h2 id="cards-title" class="th-section-title">{{ page.cards_title | default: '살펴보기' }}</h2>
+    <ul class="th-showcase">
+      {%- for item in page.cards %}
+      {% include home-card.html title=item.title text=item.text url=item.url icon=item.icon tag=item.tag %}
+      {%- endfor %}
+    </ul>
+  </section>
+  {%- endif %}
+
+  {%- comment -%} 카드뉴스(cardnews): tag, title, text, url, icon, tone {%- endcomment -%}
+  {%- if page.cardnews and page.cardnews.size > 0 %}
+  <section class="th-section th-cardnews" data-th-cardnews aria-labelledby="news-title">
+    <div class="th-cardnews-head"><h2 id="news-title" class="th-section-title">{{ page.cardnews_title | default: '카드뉴스' }}</h2></div>
+    <ul class="th-cardnews-track">
+      {%- for news in page.cardnews %}
+      <li class="th-cardnews-item"><article class="th-news th-tone-{{ news.tone | default: 'blue' }}">
+        {%- if news.icon %}<span class="th-news-icon" aria-hidden="true"><i class="th-fa th-fa-{{ news.icon }}"></i></span>{% endif %}
+        <p class="th-news-no">{{ forloop.index | prepend: '00' | slice: -2, 2 }} / {{ forloop.length | prepend: '00' | slice: -2, 2 }}{% if news.tag %} · {{ news.tag }}{% endif %}</p>
+        <div class="th-news-body">
+          <h3 class="th-news-title">
+            {%- if news.url %}
+              {%- assign th_nurl = news.url -%}
+              {%- assign th_nhead = th_nurl | slice: 0, 4 -%}
+              {%- if th_nhead != 'http' %}{% assign th_nurl = th_nurl | relative_url %}{% endif -%}
+              <a href="{{ th_nurl }}">{{ news.title }}</a>
+            {%- else %}{{ news.title }}{% endif -%}
+          </h3>
+          {%- if news.text %}<p class="th-news-text">{{ news.text }}</p>{% endif %}
+        </div>
+      </article></li>
       {%- endfor %}
     </ul>
   </section>

@@ -1,0 +1,16 @@
+{%- comment -%}
+  홈 카드 하나. 입력: title(필수), text, url, icon(Font Awesome 이름), tag, meta
+  url이 http(s)로 시작하면 그대로 쓰고, 아니면 baseurl을 붙인다.
+{%- endcomment -%}
+{%- assign th_u = include.url | default: '' -%}
+{%- if th_u != '' -%}
+  {%- assign th_head = th_u | slice: 0, 4 -%}
+  {%- if th_head != 'http' %}{% assign th_u = th_u | relative_url %}{% endif -%}
+{%- endif -%}
+<li class="th-showcase-card">
+  {%- if include.icon %}<span class="th-showcase-icon" aria-hidden="true"><i class="th-fa th-fa-{{ include.icon }}"></i></span>{% endif %}
+  {%- if include.tag %}<span class="th-showcase-tag">{{ include.tag }}</span>{% endif %}
+  <h3 class="th-showcase-title">{% if th_u != '' %}<a href="{{ th_u }}">{{ include.title }}</a>{% else %}{{ include.title }}{% endif %}</h3>
+  {%- if include.text and include.text != '' %}<p class="th-showcase-text">{{ include.text }}</p>{% endif %}
+  {%- if include.meta and include.meta != '' %}<p class="th-showcase-meta">{{ include.meta }}</p>{% endif %}
+</li>
