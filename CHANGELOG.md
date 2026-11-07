@@ -2,7 +2,7 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
-## [Unreleased]
+## [1.4.4] - 2026-11-08
 
 ### 변경
 - 미리보기 버튼을 누르면 본문에 미리보기가 펼쳐지도록 변경 (새 창 열기 대신, 다시 누르면 접힘). 미리보기가 없는 카드에는 버튼 없음
