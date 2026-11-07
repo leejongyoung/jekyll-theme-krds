@@ -1,0 +1,10 @@
+{%- comment -%}
+  첨부 파일 include. 미리보기 + 파일 정보를 본문 원하는 자리에 넣는다.
+  사용: {% raw %}{% include embed/attachment.html src="/assets/files/보고서.pdf" title="보고서" %}{% endraw %}
+  매개변수: src(필수), title(없으면 파일 이름), desc, size,
+    preview(기본 true, false면 카드만), preview_pdf(오피스 문서의 PDF 변환본),
+    viewer("none" 기본 | "google" | "office", 외부 뷰어·클릭 후 연결), ratio(미리보기 비율, 기본 "4 / 3").
+  페이지 front matter `attachments:`에 같은 파일을 적으면 글 하단 목록에도 함께 보인다.
+{%- endcomment -%}
+{%- assign _s = include['size'] -%}
+{% include embed/attachment-item.html src=include.src title=include.title desc=include.desc size=_s preview=include.preview preview_pdf=include.preview_pdf viewer=include.viewer ratio=include.ratio %}

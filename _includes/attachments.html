@@ -1,0 +1,15 @@
+{%- comment -%}
+  front matter `attachments:` 목록을 내려받기 목록으로 그린다(카드만, 미리보기 없음).
+  예: attachments: [{src: "/assets/files/자료.pdf", title: "자료", desc: "최종본", size: "1.2MB"}]
+{%- endcomment -%}
+{%- if page.attachments -%}
+<section class="th-attachments" aria-label="첨부 파일">
+  <h2 class="th-attachments-title">첨부 파일</h2>
+  <ul class="th-attachments-list">
+    {%- for f in page.attachments -%}
+    {%- assign _sz = f['size'] -%}
+    <li class="th-attachments-item">{% include embed/attachment-item.html src=f.src title=f.title desc=f.desc size=_sz preview=false preview_pdf=f.preview_pdf viewer=f.viewer %}</li>
+    {%- endfor -%}
+  </ul>
+</section>
+{%- endif -%}

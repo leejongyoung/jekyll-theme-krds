@@ -1,0 +1,82 @@
+{%- comment -%}
+  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·내려받기)로 그린다.
+  입력: src(필수), title(없으면 파일 이름), desc, size,
+    preview(기본 true, false면 카드만), preview_pdf(오피스 문서의 PDF 변환본),
+    viewer("none" 기본 | "google" | "office"), ratio(미리보기 비율, 기본 "4 / 3").
+  미리보기: pdf·이미지는 내부 렌더(외부 연결 없음). 오피스(hwp·hwpx·docx·xlsx·cell 등)는
+  preview_pdf가 있으면 그 PDF를, viewer를 지정하면 외부 뷰어를 클릭 후 불러오기로,
+  둘 다 없으면 내려받기 카드만 보여준다.
+{%- endcomment -%}
+{%- assign src = include.src | default: '' -%}
+{%- if src == '' -%}
+<p class="th-embed-error" role="alert">첨부 파일 주소(src)가 필요합니다.</p>
+{%- else -%}
+  {%- assign clean = src | split: '?' | first | split: '#' | first -%}
+  {%- assign parts = clean | split: '.' -%}
+  {%- assign ext = '' -%}
+  {%- if clean contains '.' -%}
+    {%- assign cand = parts | last | downcase -%}
+    {%- unless cand contains '/' -%}{%- assign ext = cand -%}{%- endunless -%}
+  {%- endif -%}
+  {%- assign kind = 'file' -%}
+  {%- if ext == 'pdf' -%}{%- assign kind = 'pdf' -%}
+  {%- else -%}
+    {%- assign images = 'png,jpg,jpeg,gif,webp,svg,bmp' | split: ',' -%}
+    {%- assign offices = 'doc,docx,odt,xls,xlsx,cell,ods,ppt,pptx,odp,hwp,hwpx' | split: ',' -%}
+    {%- if images contains ext -%}{%- assign kind = 'image' -%}
+    {%- elsif offices contains ext -%}{%- assign kind = 'office' -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- assign kind_label = '파일' -%}
+  {%- if kind == 'pdf' -%}{%- assign kind_label = 'PDF' -%}
+  {%- elsif kind == 'image' -%}{%- assign kind_label = '이미지' -%}
+  {%- elsif kind == 'office' -%}{%- assign kind_label = '문서' -%}
+  {%- endif -%}
+  {%- assign title = include.title | default: '' -%}
+  {%- if title == '' -%}{%- assign title = clean | split: '/' | last -%}{%- endif -%}
+  {%- assign src_head = src | slice: 0, 4 -%}
+  {%- if src_head == 'http' -%}{%- assign src_url = src -%}{%- else -%}{%- assign src_url = src | relative_url -%}{%- endif -%}
+  {%- assign want_preview = true -%}
+  {%- if include.preview == false or include.preview == 'false' or include.preview == 'no' or include.preview == 'off' -%}{%- assign want_preview = false -%}{%- endif -%}
+  {%- assign preview_pdf = include.preview_pdf | default: '' -%}
+  {%- if preview_pdf != '' -%}
+    {%- assign pdf_head = preview_pdf | slice: 0, 4 -%}
+    {%- if pdf_head == 'http' -%}{%- assign preview_pdf_url = preview_pdf -%}{%- else -%}{%- assign preview_pdf_url = preview_pdf | relative_url -%}{%- endif -%}
+  {%- endif -%}
+  {%- assign viewer = include.viewer | default: 'none' | downcase -%}
+  {%- unless viewer == 'google' or viewer == 'office' -%}{%- assign viewer = 'none' -%}{%- endunless -%}
+  {%- if src_head == 'http' -%}{%- assign abs = src -%}{%- else -%}{%- assign abs = src | absolute_url -%}{%- endif -%}
+  {%- assign abs_head = abs | slice: 0, 8 -%}
+<figure class="th-embed th-attachment th-attachment-{{ kind }}">
+  {%- if want_preview %}
+    {%- if kind == 'pdf' %}
+  <div class="th-attachment-preview"><object data="{{ src_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+    {%- elsif kind == 'image' %}
+  <div class="th-attachment-preview"><img src="{{ src_url | escape }}" alt="{{ title | escape }}" loading="lazy"></div>
+    {%- elsif kind == 'office' %}
+      {%- if preview_pdf != '' %}
+  <div class="th-attachment-preview"><object data="{{ preview_pdf_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+      {%- elsif viewer != 'none' and abs_head == 'https://' %}
+      {%- assign abs_url_enc = abs | url_encode -%}
+        {%- if viewer == 'google' -%}
+          {%- assign viewer_url = 'https://docs.google.com/viewer?url=' | append: abs_url_enc | append: '&embedded=true' -%}
+          {%- assign provider = 'Google 문서 뷰어' -%}
+        {%- else -%}
+          {%- assign viewer_url = 'https://view.officeapps.live.com/op/embed.aspx?src=' | append: abs_url_enc -%}
+          {%- assign provider = 'Microsoft Office 뷰어' -%}
+        {%- endif -%}
+        {% include embed/frame.html src=viewer_url title=title provider=provider link=abs ratio=include.ratio sandbox="allow-scripts allow-same-origin" button="미리보기 불러오기" %}
+      {%- endif %}
+    {%- endif %}
+  {%- endif %}
+  <figcaption class="th-attachment-meta">
+    <i class="svg-icon ico-file" aria-hidden="true"></i>
+    <span class="th-attachment-title">{{ title | escape }}</span>
+    {%- if include.desc %}<span class="th-attachment-desc">{{ include.desc | escape }}</span>{% endif -%}
+    {%- assign _size = include['size'] -%}
+    {%- if _size %}<span class="th-attachment-size">{{ _size | escape }}</span>{% endif -%}
+    <span class="th-attachment-kind">{{ kind_label }}</span>
+    <a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
+  </figcaption>
+</figure>
+{%- endif -%}
