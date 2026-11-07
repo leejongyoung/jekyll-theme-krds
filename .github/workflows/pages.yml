@@ -10,6 +10,7 @@ on:
       - "assets/**"
       - "example/**"
       - "jekyll-theme-krds.gemspec"
+      - "document-previews/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -30,6 +31,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+      - name: Generate document preview PDFs
+        uses: ./document-previews
+        with:
+          source: example/assets/files
       - uses: actions/configure-pages@v6
       - uses: ruby/setup-ruby@v1
         with:

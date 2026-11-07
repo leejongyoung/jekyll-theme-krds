@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+      - name: Generate document preview PDFs
+        uses: ./document-previews
+        with:
+          source: example/assets/files
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.4"
