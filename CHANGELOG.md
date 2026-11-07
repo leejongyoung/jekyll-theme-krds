@@ -2,7 +2,7 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
-## [Unreleased]
+## [1.3.1] - 2026-11-07
 
 ### 수정
 - `embed/frame.html`의 `link`·`thumb`가 `https://`로 시작하지 않으면 출력하지 않음 (`javascript:` 등 비정상 scheme 차단). `ratio`는 숫자·슬래시 형식이 아니면 `16 / 9`로 바꿈 (동일 검증을 `embed/video.html`의 `ratio`에도 적용)
