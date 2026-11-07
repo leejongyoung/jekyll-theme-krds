@@ -79,3 +79,8 @@ Re-vendor with `script/vendor-krds <tag>`.
 ## 8. This theme's own code
 
 MIT License, see `LICENSE`.
+
+
+## 9. Example site assets
+
+- `sample.hwpx` in the example site was generated with python-hwpx 6.11.0 (<https://github.com/airmang/python-hwpx>, Apache-2.0) from its blank-document template plus text written for this theme. It is only an example file and is not part of the theme code. The generator script is not included.

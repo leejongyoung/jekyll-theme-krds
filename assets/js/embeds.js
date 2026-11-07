@@ -405,7 +405,38 @@
     });
   }
 
+  // 5) 첨부 한글 문서(HWPX): 글자·표·그림을 브라우저에서 바로 그린다(KRDSHwpx = js/hwpx.js). PDF 변환본이 있으면 이 경로를 쓰지 않는다.
+  var HWPX_MAX_BYTES = 30 * 1024 * 1024;
+  function initHwpx() {
+    var figs = document.querySelectorAll('figure.th-attachment[data-th-hwpx]');
+    if (!figs.length) return;
+    figs.forEach(function (fig) {
+      var host = fig.querySelector('.th-hwpx-wrap');
+      var src = fig.getAttribute('data-hwpx-src');
+      if (!host || !src) return;
+      function failed(message) {
+        host.textContent = '';
+        host.appendChild(el('p', 'th-embed-error', message));
+      }
+      if (!window.KRDSHwpx) { failed('한글 문서 미리보기 스크립트를 불러오지 못했습니다. 내려받기로 확인하세요.'); return; }
+      fetch(src).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var length = parseInt(res.headers.get('content-length') || '0', 10);
+        if (length > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
+        return res.arrayBuffer();
+      }).then(function (buf) {
+        if (buf.byteLength > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
+        return window.KRDSHwpx.render(buf);
+      }).then(function (root) {
+        host.textContent = '';
+        host.appendChild(root);
+      }).catch(function (error) {
+        failed((error && (error.hwpx || /^[^\x00-\x7f]/.test(error.message)) ? error.message : '문서를 불러오지 못했습니다.') + ' 내려받기로 확인하세요.');
+      });
+    });
+  }
   initDiagrams();
   initCharts();
   initSheets();
+  initHwpx();
 })();

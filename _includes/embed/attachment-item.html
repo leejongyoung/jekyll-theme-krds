@@ -51,6 +51,7 @@
   {%- assign view_kind = '' -%}
   {%- if kind == 'pdf' or kind == 'image' or kind == 'sheet' -%}{%- assign view_kind = kind -%}
   {%- elsif kind == 'doc' and preview_pdf != '' -%}{%- assign view_kind = 'doc' -%}
+  {%- elsif ext == 'hwpx' and preview_pdf == '' -%}{%- assign view_kind = 'hwpx' -%}
   {%- endif -%}
   {%- assign view_src = src_url -%}
   {%- if view_kind == 'doc' and preview_pdf != '' -%}{%- assign view_src = preview_pdf_url -%}{%- endif -%}
@@ -66,7 +67,7 @@
     {%- assign encoded_ext = ext | uri_escape -%}
     {%- assign viewer_url = viewer_base | append: '?src=' | append: encoded_src | append: '&download=' | append: encoded_download | append: '&kind=' | append: encoded_kind | append: '&ext=' | append: encoded_ext | append: '&title=' | append: encoded_title -%}
   {%- endif -%}
-<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}>
+<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'hwpx' %} data-th-hwpx data-hwpx-src="{{ src_url | escape }}"{% endif %}>
   {%- if want_preview and view_kind != '' %}
     {%- if view_kind == 'pdf' %}
   <div class="th-attachment-preview"><object data="{{ src_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
@@ -76,6 +77,8 @@
   <div class="th-attachment-preview"><div class="th-table-wrap"><p class="th-embed-note">표 불러오는 중…</p></div></div>
     {%- elsif view_kind == 'doc' and preview_pdf != '' %}
   <div class="th-attachment-preview"><object data="{{ preview_pdf_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+    {%- elsif view_kind == 'hwpx' %}
+  <div class="th-attachment-preview th-attachment-hwpx"><div class="th-hwpx-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
     {%- endif %}
   {%- endif %}
   <figcaption class="th-attachment-meta">

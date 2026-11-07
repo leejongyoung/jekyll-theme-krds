@@ -28,7 +28,7 @@ attachments:
 문서 front matter의 `attachments`에 파일을 적으면 이 페이지 아래처럼 목록이 만들어집니다. 각 줄에는 형식별 [[아이콘]], 용량, SHA-256 전체 값, 그리고 `미리보기`와 `내려받기` 버튼이 나옵니다.
 
 - PDF와 이미지는 새 탭의 viewer에서, 스프레드시트는 표로 미리 봅니다.
-- `docx`·`hwpx` 같은 문서는 PDF 변환본(`preview_pdf`)이 있을 때 미리 볼 수 있습니다. 변환은 GitHub Actions의 `document-previews`가 맡습니다.
+- `hwpx` 한글 문서는 변환 없이 브라우저가 글·표·그림을 직접 읽어 미리 보여 줍니다. `docx` 같은 문서는 PDF 변환본(`preview_pdf`)이 있을 때 미리 볼 수 있고, 변환은 GitHub Actions의 `document-previews`가 맡습니다.
 - 본문 중간에는 `{% raw %}{% include embed/attachment.html src="..." title="..." %}{% endraw %}`로 파일 카드를 넣을 수 있습니다.
 
 전체 설명과 예제는 [첨부 파일 문서]({{ '/docs/attachments/' | relative_url }})에 있습니다. 위키 문서에서도 똑같이 쓰는 것은 [[위키 사용법]]의 front matter 규칙이 같기 때문입니다.

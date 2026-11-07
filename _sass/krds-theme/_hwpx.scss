@@ -1,0 +1,37 @@
+// HWPX(한글 문서) 미리보기(첨부 파일 카드·viewer).
+.th-hwpx { color: var(--th-text); }
+.th-hwpx-note {
+  margin: 0 0 var(--krds-gap-3);
+  padding: var(--krds-padding-2) var(--krds-padding-3);
+  border-radius: var(--krds-radius-small2);
+  background: var(--th-bg-subtle);
+  color: var(--th-text-subtle);
+  font-size: var(--krds-pc-font-size-body-small);
+}
+.th-hwpx-page {
+  margin: 0 0 var(--krds-gap-4);
+  padding: var(--krds-padding-5);
+  border: 1px solid var(--th-border);
+  border-radius: var(--krds-radius-medium2);
+  background: var(--th-bg);
+}
+.th-hwpx-p {
+  margin: 0 0 0.4em;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+  white-space: pre-wrap;
+}
+.th-hwpx-blank { min-height: 1em; }
+.th-hwpx-table-wrap { max-width: 100%; margin: 0 0 var(--krds-gap-3); overflow-x: auto; }
+.th-hwpx-table { width: 100%; border-collapse: collapse; }
+.th-hwpx-table th, .th-hwpx-table td {
+  padding: var(--krds-padding-1) var(--krds-padding-2);
+  border: 1px solid var(--th-border-strong);
+  vertical-align: top;
+}
+.th-hwpx-table .th-hwpx-p { margin: 0; }
+.th-hwpx-img { display: inline-block; max-width: 100%; height: auto; margin: 0; vertical-align: middle; }
+.th-hwpx-missing { color: var(--th-text-subtle); }
+.th-attachment-hwpx .th-hwpx-wrap { max-height: 70vh; padding: var(--krds-padding-3); overflow: auto; }
+@media print { .th-hwpx-note { display: none; } .th-attachment-hwpx .th-hwpx-wrap { max-height: none; overflow: visible; } }

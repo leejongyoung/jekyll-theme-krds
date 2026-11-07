@@ -25,6 +25,11 @@ attachments:
     desc: "스프레드시트 미리보기"
     size: "5.2KB"
     sha256: "f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414"
+  - src: "/assets/files/sample.hwpx"
+    title: "첨부 예제 한글 문서"
+    desc: "한글(HWPX) 브라우저 미리보기"
+    size: "11.4KB"
+    sha256: "84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf"
   - src: "/assets/files/sample.txt"
     title: "첨부 예제 텍스트"
     desc: "내려받기 카드"
@@ -48,11 +53,11 @@ attachments:
 
 ## 오피스 문서 + PDF 변환본
 
-`docx`·`hwpx` 같은 문서 파일은 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 브라우저 viewer로 엽니다.
+`docx`·`pptx` 같은 오피스 문서는 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 브라우저 viewer로 엽니다.
 
 {% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" desc="오피스 문서 + PDF 변환본" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
 
-HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 빌드 job에서 아래 composite action을 Jekyll 빌드보다 먼저 실행하세요. Ubuntu runner에 LibreOffice와 해시가 고정된 H2Orestart v0.8.0을 설치하고, 원본과 같은 경로·이름의 `.pdf`를 생성합니다.
+HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미리 보려면 사이트의 GitHub Actions 빌드 job에서 아래 composite action을 정적 사이트 빌드보다 먼저 실행하세요. Ubuntu runner에 LibreOffice와 해시가 고정된 H2Orestart v0.8.0을 설치하고, 원본과 같은 경로·이름의 `.pdf`를 생성합니다.
 
 ```yaml
 - uses: actions/checkout@v7
@@ -63,6 +68,18 @@ HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 
 ```
 
 예를 들어 `assets/files/예산안.hwpx`는 `assets/files/예산안.pdf`로 변환됩니다. include에는 `preview_pdf="/assets/files/예산안.pdf"`를 지정하세요. 변환 결과는 workflow 작업 공간에서만 만들면 되므로 PDF를 저장소에 커밋할 필요가 없습니다. 한컴오피스 고유 객체는 변환 결과를 별도로 확인해야 합니다.
+
+## 한글(HWPX) 미리보기
+
+`hwpx`는 변환 없이 브라우저가 파일을 직접 읽어 보여줍니다. 문단, 글자 모양(굵기·기울임·밑줄·취소선·색·크기), 문단 정렬, 표(칸 합치기 포함), 그림(PNG·JPEG·GIF·BMP·WebP·SVG)을 그립니다. 테마에 포함된 `hwpx.js`가 ZIP을 풀어 처리하며 외부 연결이 없습니다.
+
+{% include embed/attachment.html src="/assets/files/sample.hwpx" title="첨부 예제 한글 문서" desc="한글(HWPX) 브라우저 미리보기" size="11.4KB" sha256="84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf" %}
+
+- **그리지 않는 것:** 쪽 모양, 머리말·꼬리말·쪽 번호, 도형·글상자, 수식, 변경 추적. 그래서 글과 표를 훑어보는 용도입니다. 서식까지 정확히 보여야 하면 위의 PDF 변환본을 `preview_pdf`로 함께 두세요(변환본이 있으면 PDF가 우선입니다).
+- **지원하지 않는 형식:** 예전 형식 `hwp`와 암호가 걸린 문서는 미리볼 수 없고 내려받기만 나옵니다.
+- **브라우저:** ZIP을 풀 때 브라우저의 `DecompressionStream`을 씁니다(최근 Chrome·Edge·Safari·Firefox). 지원하지 않으면 안내 문구와 내려받기가 나옵니다.
+- 문서가 크면(30MB 초과) 미리보기를 건너뛰고, 문단이 4000개를 넘으면 앞부분만 보여줍니다.
+- 미리보기 버튼은 새 탭의 viewer에서 같은 내용을 크게 열고 인쇄할 수 있습니다.
 
 ## 스프레드시트 미리보기
 
