@@ -2,7 +2,7 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
-## [Unreleased]
+## [1.4.1] - 2026-11-07
 
 ### 추가
 - 첨부 파일에 새 창 미리보기 버튼과 SHA-256 표시(`sha256:`) 추가
