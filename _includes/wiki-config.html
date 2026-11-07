@@ -1,0 +1,16 @@
+{%- comment -%}
+  위키 설정(_config.yml 의 krds.wiki). repo(예: owner/name)가 있으면 GitHub 편집·변경 이력·새 문서 주소를 만든다.
+  repo 가 없으면 해당 링크는 나오지 않는다. 키: repo, branch(기본 main), content_dir(기본: 사이트 루트), section(기본 wiki)
+  결과 변수: th_wiki_base(저장소 주소, 없으면 빈 값), th_wiki_branch, th_wiki_prefix(콘텐츠 폴더 + '/'), th_wiki_new_base
+{%- endcomment -%}
+{%- assign th_wiki_cfg = site.krds.wiki -%}
+{%- assign th_wiki_base = '' -%}
+{%- assign th_wiki_new_base = '' -%}
+{%- assign th_wiki_branch = th_wiki_cfg.branch | default: 'main' -%}
+{%- assign th_wiki_prefix = '' -%}
+{%- if th_wiki_cfg.content_dir and th_wiki_cfg.content_dir != '' -%}{%- assign th_wiki_prefix = th_wiki_cfg.content_dir | append: '/' -%}{%- endif -%}
+{%- if th_wiki_cfg.repo -%}
+  {%- assign th_wiki_base = 'https://github.com/' | append: th_wiki_cfg.repo -%}
+  {%- assign th_wiki_section = th_wiki_cfg.section | default: 'wiki' -%}
+  {%- assign th_wiki_new_base = th_wiki_base | append: '/new/' | append: th_wiki_branch | append: '/' | append: th_wiki_prefix | append: th_wiki_section | append: '?filename=' -%}
+{%- endif -%}

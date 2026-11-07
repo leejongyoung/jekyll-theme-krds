@@ -30,17 +30,38 @@
       return url.href;
     } catch (error) { return null; }
   }
+  var TYPES = [
+    ['pdf', 'file-pdf', 'pdf'],
+    ['doc', 'file-word', 'doc docx odt rtf'],
+    ['sheet', 'file-excel', 'xls xlsx ods cell'],
+    ['sheet', 'file-csv', 'csv tsv'],
+    ['slides', 'file-powerpoint', 'ppt pptx odp show'],
+    ['hwp', 'file-lines', 'hwp hwpx'],
+    ['image', 'file-image', 'png jpg jpeg gif webp svg bmp'],
+    ['audio', 'file-audio', 'mp3 wav ogg m4a flac'],
+    ['video', 'file-video', 'mp4 webm mov mkv'],
+    ['archive', 'file-zipper', 'zip 7z tar gz rar'],
+    ['code', 'file-code', 'html htm json xml js css yml yaml'],
+    ['text', 'file-lines', 'txt md log']
+  ];
+  function iconFor(extension) {
+    for (var i = 0; i < TYPES.length; i += 1) {
+      if (TYPES[i][2].split(' ').indexOf(extension) > -1) return TYPES[i];
+    }
+    if (kind === 'pdf') return TYPES[0];
+    if (kind === 'sheet') return TYPES[2];
+    if (kind === 'image') return TYPES[6];
+    return ['file', 'file'];
+  }
   function setFileIcon() {
-    var label = /^[a-z0-9]{1,8}$/.test(ext) ? ext.toUpperCase() : ({ pdf: 'PDF', image: 'IMG', sheet: 'XLSX' }[kind] || 'FILE');
-    var iconKind = 'file';
-    if (ext === 'pdf') iconKind = 'pdf';
-    else if (ext === 'hwp' || ext === 'hwpx') iconKind = 'hwp';
-    else if (ext === 'htm' || ext === 'html') iconKind = 'html';
-    else if (kind === 'sheet') iconKind = 'sheet';
-    else if (kind === 'image') iconKind = 'image';
-    else if (kind === 'doc') iconKind = 'doc';
-    icon.className = 'th-attachment-file-icon th-file-viewer-icon th-attachment-file-icon--' + iconKind;
-    icon.querySelector('.th-file-icon-text').textContent = label;
+    var row = iconFor(ext);
+    icon.className = 'th-attachment-file-icon th-file-viewer-icon th-attachment-file-icon--' + row[0];
+    icon.textContent = '';
+    var glyph = document.createElement('i');
+    glyph.className = 'th-fa th-fa-' + row[1];
+    icon.appendChild(glyph);
+    var kicker = document.querySelector('.th-file-viewer-kicker');
+    if (kicker && /^[a-z0-9]{1,8}$/.test(ext)) kicker.textContent = '첨부 파일 미리보기 · ' + ext.toUpperCase();
   }
   function readyToPrint() {
     printButton.disabled = false;

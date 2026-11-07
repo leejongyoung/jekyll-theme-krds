@@ -1,0 +1,110 @@
+/* Font Awesome Free SVG 아이콘(CC BY 4.0, assets/img/fa/LICENSE.txt). 글자색(currentColor)을 따르는 마스크 아이콘이다. */
+.th-fa {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  background-color: currentColor;
+  -webkit-mask: var(--th-fa) center / contain no-repeat;
+  mask: var(--th-fa) center / contain no-repeat;
+}
+.th-fa-file { --th-fa: url("../img/fa/solid/file.svg"); }
+.th-fa-file-pdf { --th-fa: url("../img/fa/solid/file-pdf.svg"); }
+.th-fa-file-word { --th-fa: url("../img/fa/solid/file-word.svg"); }
+.th-fa-file-excel { --th-fa: url("../img/fa/solid/file-excel.svg"); }
+.th-fa-file-powerpoint { --th-fa: url("../img/fa/solid/file-powerpoint.svg"); }
+.th-fa-file-image { --th-fa: url("../img/fa/solid/file-image.svg"); }
+.th-fa-file-lines { --th-fa: url("../img/fa/solid/file-lines.svg"); }
+.th-fa-file-csv { --th-fa: url("../img/fa/solid/file-csv.svg"); }
+.th-fa-file-zipper { --th-fa: url("../img/fa/solid/file-zipper.svg"); }
+.th-fa-file-code { --th-fa: url("../img/fa/solid/file-code.svg"); }
+.th-fa-file-audio { --th-fa: url("../img/fa/solid/file-audio.svg"); }
+.th-fa-file-video { --th-fa: url("../img/fa/solid/file-video.svg"); }
+.th-fa-file-circle-plus { --th-fa: url("../img/fa/solid/file-circle-plus.svg"); }
+.th-fa-file-signature { --th-fa: url("../img/fa/solid/file-signature.svg"); }
+.th-fa-eye { --th-fa: url("../img/fa/solid/eye.svg"); }
+.th-fa-download { --th-fa: url("../img/fa/solid/download.svg"); }
+.th-fa-up-right-from-square { --th-fa: url("../img/fa/solid/up-right-from-square.svg"); }
+.th-fa-print { --th-fa: url("../img/fa/solid/print.svg"); }
+.th-fa-link { --th-fa: url("../img/fa/solid/link.svg"); }
+.th-fa-link-slash { --th-fa: url("../img/fa/solid/link-slash.svg"); }
+.th-fa-copy { --th-fa: url("../img/fa/solid/copy.svg"); }
+.th-fa-book-open { --th-fa: url("../img/fa/solid/book-open.svg"); }
+.th-fa-book { --th-fa: url("../img/fa/solid/book.svg"); }
+.th-fa-bookmark { --th-fa: url("../img/fa/solid/bookmark.svg"); }
+.th-fa-tag { --th-fa: url("../img/fa/solid/tag.svg"); }
+.th-fa-tags { --th-fa: url("../img/fa/solid/tags.svg"); }
+.th-fa-folder { --th-fa: url("../img/fa/solid/folder.svg"); }
+.th-fa-folder-open { --th-fa: url("../img/fa/solid/folder-open.svg"); }
+.th-fa-magnifying-glass { --th-fa: url("../img/fa/solid/magnifying-glass.svg"); }
+.th-fa-pen-to-square { --th-fa: url("../img/fa/solid/pen-to-square.svg"); }
+.th-fa-clock-rotate-left { --th-fa: url("../img/fa/solid/clock-rotate-left.svg"); }
+.th-fa-clock { --th-fa: url("../img/fa/solid/clock.svg"); }
+.th-fa-shuffle { --th-fa: url("../img/fa/solid/shuffle.svg"); }
+.th-fa-circle-info { --th-fa: url("../img/fa/solid/circle-info.svg"); }
+.th-fa-diagram-project { --th-fa: url("../img/fa/solid/diagram-project.svg"); }
+.th-fa-sitemap { --th-fa: url("../img/fa/solid/sitemap.svg"); }
+.th-fa-list { --th-fa: url("../img/fa/solid/list.svg"); }
+.th-fa-triangle-exclamation { --th-fa: url("../img/fa/solid/triangle-exclamation.svg"); }
+.th-fa-lightbulb { --th-fa: url("../img/fa/solid/lightbulb.svg"); }
+.th-fa-circle-question { --th-fa: url("../img/fa/solid/circle-question.svg"); }
+.th-fa-house { --th-fa: url("../img/fa/solid/house.svg"); }
+.th-fa-gear { --th-fa: url("../img/fa/solid/gear.svg"); }
+.th-fa-star { --th-fa: url("../img/fa/solid/star.svg"); }
+.th-fa-heart { --th-fa: url("../img/fa/solid/heart.svg"); }
+.th-fa-check { --th-fa: url("../img/fa/solid/check.svg"); }
+.th-fa-circle-check { --th-fa: url("../img/fa/solid/circle-check.svg"); }
+.th-fa-circle-xmark { --th-fa: url("../img/fa/solid/circle-xmark.svg"); }
+.th-fa-circle-exclamation { --th-fa: url("../img/fa/solid/circle-exclamation.svg"); }
+.th-fa-bell { --th-fa: url("../img/fa/solid/bell.svg"); }
+.th-fa-calendar { --th-fa: url("../img/fa/solid/calendar.svg"); }
+.th-fa-user { --th-fa: url("../img/fa/solid/user.svg"); }
+.th-fa-envelope { --th-fa: url("../img/fa/solid/envelope.svg"); }
+.th-fa-phone { --th-fa: url("../img/fa/solid/phone.svg"); }
+.th-fa-globe { --th-fa: url("../img/fa/solid/globe.svg"); }
+.th-fa-lock { --th-fa: url("../img/fa/solid/lock.svg"); }
+.th-fa-shield-halved { --th-fa: url("../img/fa/solid/shield-halved.svg"); }
+.th-fa-universal-access { --th-fa: url("../img/fa/solid/universal-access.svg"); }
+.th-fa-palette { --th-fa: url("../img/fa/solid/palette.svg"); }
+.th-fa-code { --th-fa: url("../img/fa/solid/code.svg"); }
+.th-fa-terminal { --th-fa: url("../img/fa/solid/terminal.svg"); }
+.th-fa-bolt { --th-fa: url("../img/fa/solid/bolt.svg"); }
+.th-fa-arrow-right { --th-fa: url("../img/fa/solid/arrow-right.svg"); }
+.th-fa-arrow-left { --th-fa: url("../img/fa/solid/arrow-left.svg"); }
+.th-fa-chevron-right { --th-fa: url("../img/fa/solid/chevron-right.svg"); }
+.th-fa-xmark { --th-fa: url("../img/fa/solid/xmark.svg"); }
+.th-fa-plus { --th-fa: url("../img/fa/solid/plus.svg"); }
+.th-fa-filter { --th-fa: url("../img/fa/solid/filter.svg"); }
+.th-fa-sort { --th-fa: url("../img/fa/solid/sort.svg"); }
+.th-fa-arrow-up-right-from-square { --th-fa: url("../img/fa/solid/arrow-up-right-from-square.svg"); }
+.th-fa-paperclip { --th-fa: url("../img/fa/solid/paperclip.svg"); }
+.th-fa-newspaper { --th-fa: url("../img/fa/solid/newspaper.svg"); }
+.th-fa-regular-file { --th-fa: url("../img/fa/regular/file.svg"); }
+.th-fa-regular-file-lines { --th-fa: url("../img/fa/regular/file-lines.svg"); }
+.th-fa-regular-bookmark { --th-fa: url("../img/fa/regular/bookmark.svg"); }
+.th-fa-regular-star { --th-fa: url("../img/fa/regular/star.svg"); }
+.th-fa-regular-clock { --th-fa: url("../img/fa/regular/clock.svg"); }
+.th-fa-regular-folder { --th-fa: url("../img/fa/regular/folder.svg"); }
+.th-fa-brands-github { --th-fa: url("../img/fa/brands/github.svg"); }
+.th-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--krds-gap-3);
+  margin: 0 0 var(--krds-gap-6);
+  padding: 0;
+  list-style: none;
+}
+.th-icon-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: var(--krds-padding-4) var(--krds-padding-2);
+  border: 1px solid var(--th-border);
+  border-radius: var(--krds-radius-medium2);
+  font-size: var(--krds-pc-font-size-body-small);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+.th-icon-grid .th-fa { color: var(--th-text-primary); font-size: 3.2rem; }

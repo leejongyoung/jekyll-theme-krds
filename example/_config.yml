@@ -23,6 +23,10 @@ krds:
       - label: 저장소
         value: github.com/leejongyoung/jekyll-theme-krds
     copyright: jekyll-theme-krds
+  wiki:
+    repo: leejongyoung/jekyll-theme-krds
+    branch: main
+    content_dir: example
 
 sass:
   quiet_deps: true

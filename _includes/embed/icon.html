@@ -1,0 +1,8 @@
+{%- comment -%}
+  Font Awesome 아이콘. 사용: {% raw %}{% include embed/icon.html name="file-pdf" %}{% endraw %}
+  매개변수: name(필수), style(solid 기본 | regular | brands), label(있으면 스크린리더용 이름, 없으면 장식으로 숨김)
+  테마에 들어 있는 아이콘 목록은 문서의 "아이콘" 페이지에 있다.
+{%- endcomment -%}
+{%- assign th_style = include.style | default: 'solid' -%}
+{%- if th_style == 'solid' -%}{%- assign th_class = 'th-fa-' | append: include.name -%}{%- else -%}{%- assign th_class = 'th-fa-' | append: th_style | append: '-' | append: include.name -%}{%- endif -%}
+<i class="th-fa {{ th_class }}"{% if include.label %} role="img" aria-label="{{ include.label | escape }}"{% else %} aria-hidden="true"{% endif %}></i>

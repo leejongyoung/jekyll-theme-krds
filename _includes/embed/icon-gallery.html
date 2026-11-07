@@ -1,0 +1,12 @@
+{%- comment -%} 테마에 들어 있는 Font Awesome 아이콘 전체를 이름과 함께 보여 준다. 사용: {% raw %}{% include embed/icon-gallery.html %}{% endraw %} {%- endcomment -%}
+{%- assign th_solid = 'file,file-pdf,file-word,file-excel,file-powerpoint,file-image,file-lines,file-csv,file-zipper,file-code,file-audio,file-video,file-circle-plus,file-signature,eye,download,up-right-from-square,print,link,link-slash,copy,book-open,book,bookmark,tag,tags,folder,folder-open,magnifying-glass,pen-to-square,clock-rotate-left,clock,shuffle,circle-info,diagram-project,sitemap,list,triangle-exclamation,lightbulb,circle-question,house,gear,star,heart,check,circle-check,circle-xmark,circle-exclamation,bell,calendar,user,envelope,phone,globe,lock,shield-halved,universal-access,palette,code,terminal,bolt,arrow-right,arrow-left,chevron-right,xmark,plus,filter,sort,arrow-up-right-from-square,paperclip,newspaper' | split: ',' -%}
+{%- assign th_regular = 'file,file-lines,bookmark,star,clock,folder' | split: ',' -%}
+{%- assign th_brands = 'github' | split: ',' -%}
+<ul class="th-icon-grid" aria-label="Font Awesome Solid 아이콘">
+{%- for n in th_solid %}<li><i class="th-fa th-fa-{{ n }}" aria-hidden="true"></i><code>{{ n }}</code></li>{% endfor -%}
+</ul>
+<p>Regular 스타일은 <code>style="regular"</code>, 브랜드 아이콘은 <code>style="brands"</code>로 씁니다.</p>
+<ul class="th-icon-grid" aria-label="Font Awesome Regular·Brands 아이콘">
+{%- for n in th_regular %}<li><i class="th-fa th-fa-regular-{{ n }}" aria-hidden="true"></i><code>regular · {{ n }}</code></li>{% endfor -%}
+{%- for n in th_brands %}<li><i class="th-fa th-fa-brands-{{ n }}" aria-hidden="true"></i><code>brands · {{ n }}</code></li>{% endfor -%}
+</ul>

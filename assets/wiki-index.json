@@ -1,0 +1,42 @@
+---
+---
+{%- comment -%}
+  위키 인덱스(/assets/wiki-index.json). 제목(t)·주소(u)·별칭(a)·분류(c)·태그(g)·요약(s)·수정일(d)·본문 속 [[문서 링크]] 대상(l)을 담는다.
+  코드 블록과 인라인 코드 안의 [[ ]]는 링크로 세지 않는다. 본문이 아직 변환되기 전(마크다운)이든 변환된 뒤(HTML)이든 같게 동작하도록
+  ``` 와 ` 로 감싼 부분, 그리고 <code> 안쪽을 걷어 낸다.
+{%- endcomment -%}
+{%- assign th_pages = site.html_pages | where: 'layout', 'wiki' | sort: 'title' -%}
+{%- assign th_first = true -%}
+[
+{%- for p in th_pages -%}
+  {%- assign th_clean = '' -%}
+  {%- assign th_fenced = p.content | split: '```' -%}
+  {%- for th_seg in th_fenced -%}
+    {%- assign th_mod = forloop.index0 | modulo: 2 -%}
+    {%- if th_mod == 0 -%}
+      {%- assign th_inline = th_seg | split: '`' -%}
+      {%- for th_s in th_inline -%}
+        {%- assign th_mod2 = forloop.index0 | modulo: 2 -%}
+        {%- if th_mod2 == 0 -%}{%- assign th_clean = th_clean | append: th_s -%}{%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign th_chunks = th_clean | split: '</code>' -%}
+  {%- assign th_clean = '' -%}
+  {%- for th_ch in th_chunks -%}
+    {%- assign th_head = th_ch | split: '<code' | first -%}
+    {%- assign th_clean = th_clean | append: th_head -%}
+  {%- endfor -%}
+  {%- assign th_links = '' | split: '' -%}
+  {%- assign th_parts = th_clean | split: '[[' -%}
+  {%- for th_part in th_parts offset: 1 -%}
+    {%- if th_part contains ']]' -%}
+      {%- assign th_t = th_part | split: ']]' | first | split: '\|' | first | split: '|' | first | split: '#' | first | strip -%}
+      {%- if th_t != '' -%}{%- assign th_links = th_links | push: th_t -%}{%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign th_upd = p.updated | default: p.last_modified_at | default: p.date -%}
+{% unless th_first %},{% endunless %}{ "t": {{ p.title | jsonify }}, "u": {{ p.url | relative_url | jsonify }}, "a": {% if p.wiki_aliases %}{{ p.wiki_aliases | jsonify }}{% else %}[]{% endif %}, "c": {{ p.category | default: '미분류' | jsonify }}, "g": {% if p.tags %}{{ p.tags | jsonify }}{% else %}[]{% endif %}, "s": {{ p.summary | default: p.lead | default: '' | jsonify }}, "d": {% if th_upd %}{{ th_upd | date: "%Y-%m-%d" | jsonify }}{% else %}""{% endif %}, "l": {{ th_links | uniq | jsonify }} }
+  {%- assign th_first = false -%}
+{%- endfor %}
+]

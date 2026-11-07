@@ -17,10 +17,14 @@ main:
         url: /docs/attachments/
       - title: 태그와 검색
         url: /docs/search-tags/
+      - title: 아이콘
+        url: /docs/icons/
   - title: 블로그
     url: /blog/
   - title: 태그
     url: /tags/
+  - title: 위키
+    url: /wiki/
 
 # 헤더 맨 위의 보조 링크
 utility:
@@ -48,6 +52,8 @@ docs:
         url: /docs/attachments/
       - title: 태그와 검색
         url: /docs/search-tags/
+      - title: 아이콘
+        url: /docs/icons/
 
 # 푸터 링크
 footer:
