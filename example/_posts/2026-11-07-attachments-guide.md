@@ -62,14 +62,15 @@ attachments:
 | :--- | :--- |
 | PDF, 이미지 | 브라우저가 직접 그립니다. 버튼을 누르면 새 탭의 viewer가 열립니다. |
 | 스프레드시트(`xlsx`, `xls`, `ods`, `csv`, `tsv`) | 테마에 들어 있는 SheetJS가 표로 보여 줍니다(처음 100행). |
-| 오피스·한글 문서(`docx`, `hwpx`, `pptx` 등) | PDF 변환본(`preview_pdf`)이 있을 때 그 PDF를 보여 줍니다. |
+| 한글 문서(`hwpx`) | 브라우저가 파일을 직접 읽어 글·표·그림을 보여 줍니다(도형·머리말은 제외). 변환본(`preview_pdf`)이 있으면 PDF가 우선입니다. |
+| 오피스 문서(`docx`, `pptx` 등) | PDF 변환본(`preview_pdf`)이 있을 때 그 PDF를 보여 줍니다. |
 | 그 밖의 파일 | 카드와 `내려받기`만 나옵니다. |
 
 모든 미리보기는 브라우저 안에서만 처리되고 외부 서비스에 파일을 보내지 않습니다.
 
 ## 5. 한글과 오피스 문서는 PDF로 바꿔 두기
 
-브라우저는 `docx`나 `hwpx`를 직접 그리지 못합니다. 빌드할 때 PDF로 바꿔 두면 그 PDF로 미리보기를 보여 줄 수 있습니다. GitHub Actions를 쓴다면 테마의 `document-previews` 액션이 Ubuntu에 LibreOffice와 H2Orestart(한글 문서 변환 확장)를 설치해 원본과 같은 이름의 `.pdf`를 만들어 줍니다.
+`docx` 같은 오피스 문서는 브라우저가 직접 그리지 못합니다. 빌드할 때 PDF로 바꿔 두면 그 PDF로 미리보기를 보여 줄 수 있습니다. `hwpx`는 바로 미리볼 수 있지만, 서식까지 정확히 보여야 하거나 예전 형식 `hwp`라면 변환이 필요합니다. GitHub Actions를 쓴다면 테마의 `document-previews` 액션이 Ubuntu에 LibreOffice와 H2Orestart(한글 문서 변환 확장)를 설치해 원본과 같은 이름의 `.pdf`를 만들어 줍니다.
 
 ```yaml
 - uses: actions/checkout@v7
