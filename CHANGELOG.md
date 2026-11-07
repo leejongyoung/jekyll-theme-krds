@@ -2,6 +2,15 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
+## [Unreleased]
+
+### 변경
+- 첨부 미리보기 버튼을 새 탭의 브라우저 viewer 링크로 복원하고, 미리보기 없는 카드의 내려받기 버튼도 오른쪽 정렬
+- PDF·HWP/HWPX·HTML은 KRDS 전용 아이콘, 그 밖의 파일은 확장자 아이콘으로 표시
+
+### 추가
+- GitHub Actions에서 H2Orestart v0.8.0으로 HWP/HWPX·오피스 문서를 PDF로 변환하는 `document-previews` composite action
+
 ## [1.4.4] - 2026-11-08
 
 ### 변경

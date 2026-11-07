@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>첨부 파일 미리보기</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    body { margin: 0; background: var(--th-bg); color: var(--th-text); }
+    .th-file-viewer { display: flex; min-height: 100vh; flex-direction: column; }
+    .th-file-viewer-header { display: flex; flex-wrap: wrap; align-items: center; gap: var(--krds-gap-3); padding: var(--krds-padding-4); border-bottom: 1px solid var(--th-border); }
+    .th-file-viewer-title { min-width: 0; margin: 0; font-size: var(--krds-pc-font-size-heading-small); overflow-wrap: anywhere; }
+    .th-file-viewer-download { margin-left: auto; }
+    .th-file-viewer-content { flex: 1; min-height: 0; padding: var(--krds-padding-4); }
+    .th-file-viewer-content object { display: block; width: 100%; height: calc(100vh - 8rem); border: 1px solid var(--th-border); }
+    .th-file-viewer-content img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+    .th-file-viewer-content .th-table-wrap { max-height: calc(100vh - 8rem); overflow: auto; }
+  </style>
+</head>
+<body>
+  <main class="th-file-viewer">
+    <header class="th-file-viewer-header">
+      <h1 class="th-file-viewer-title">첨부 파일 미리보기</h1>
+      <a class="krds-btn small text th-file-viewer-download" href="#">원본 내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
+    </header>
+    <div class="th-file-viewer-content" aria-live="polite"><p class="th-embed-note">미리보기를 불러오는 중…</p></div>
+  </main>
+  <script src="js/attachment-viewer.js"></script>
+</body>
+</html>

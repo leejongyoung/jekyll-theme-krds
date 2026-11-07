@@ -1,9 +1,10 @@
 {%- comment -%}
-  첨부 파일 하나를 파일 정보 + 미리보기 버튼으로 그린다. 미리보기는 버튼을 눌러야 본문에 펼쳐진다.
+  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·해시·내려받기·미리보기)로 그린다.
   입력: src(필수), title(없으면 파일 이름), desc, size, sha256(전체 해시, 앞 16자만 표시),
     preview(기본 true, false면 카드만), preview_pdf(문서 파일의 PDF 변환본).
-  펼치기 대상: pdf·이미지는 내부 렌더, 스프레드시트(xls·xlsx·ods·csv·tsv)는 SheetJS 표(외부 연결 없음),
+  미리보기: pdf·이미지는 내부 렌더, 스프레드시트(xls·xlsx·ods·csv·tsv)는 SheetJS 표(외부 연결 없음),
     문서(doc·docx·hwp·hwpx·ppt 등)는 preview_pdf가 있을 때만 PDF 미리보기. 그 외는 내려받기 카드만.
+  미리보기 버튼은 새 창에서 미리보기용 주소를 연다.
 {%- endcomment -%}
 {%- assign src = include.src | default: '' -%}
 {%- if src == '' -%}
@@ -33,6 +34,11 @@
   {%- elsif kind == 'sheet' -%}{%- assign kind_label = '스프레드시트' -%}
   {%- elsif kind == 'doc' -%}{%- assign kind_label = '문서' -%}
   {%- endif -%}
+  {%- assign icon_kind = '' -%}
+  {%- if ext == 'pdf' -%}{%- assign icon_kind = 'pdf' -%}
+  {%- elsif ext == 'hwp' or ext == 'hwpx' -%}{%- assign icon_kind = 'hwp' -%}
+  {%- elsif ext == 'htm' or ext == 'html' -%}{%- assign icon_kind = 'html' -%}
+  {%- endif -%}
   {%- assign title = include.title | default: '' -%}
   {%- if title == '' -%}{%- assign title = clean | split: '/' | last -%}{%- endif -%}
   {%- assign src_head = src | slice: 0, 4 -%}
@@ -52,18 +58,36 @@
   {%- endif -%}
   {%- assign view_src = src_url -%}
   {%- if view_kind == 'doc' and preview_pdf != '' -%}{%- assign view_src = preview_pdf_url -%}{%- endif -%}
-<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if view_kind != '' %} data-th-attachment data-view-kind="{{ view_kind }}" data-view-src="{{ view_src | escape }}" data-view-title="{{ title | escape }}" data-download-src="{{ src_url | escape }}"{% if view_kind == 'sheet' %} data-th-sheet{% endif %}{% endif %}>
+  {%- assign viewer_kind = view_kind -%}
+  {%- if viewer_kind == 'doc' -%}{%- assign viewer_kind = 'pdf' -%}{%- endif -%}
+  {%- assign viewer_url = '' -%}
+  {%- if view_kind != '' -%}
+    {%- assign viewer_base = '/assets/attachment-viewer.html' | relative_url -%}
+    {%- assign encoded_src = view_src | uri_escape -%}
+    {%- assign encoded_kind = viewer_kind | uri_escape -%}
+    {%- assign encoded_title = title | uri_escape -%}
+    {%- assign viewer_url = viewer_base | append: '?src=' | append: encoded_src | append: '&kind=' | append: encoded_kind | append: '&title=' | append: encoded_title -%}
+  {%- endif -%}
+<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}>
   {%- if view_kind != '' %}
-  <div class="th-attachment-preview"><p class="th-embed-note">미리보기 버튼을 누르면 여기에 표시됩니다.</p></div>
+    {%- if view_kind == 'pdf' %}
+  <div class="th-attachment-preview"><object data="{{ src_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+    {%- elsif view_kind == 'image' %}
+  <div class="th-attachment-preview"><img src="{{ src_url | escape }}" alt="{{ title | escape }}" loading="lazy"></div>
+    {%- elsif view_kind == 'sheet' %}
+  <div class="th-attachment-preview"><div class="th-table-wrap"><p class="th-embed-note">표 불러오는 중…</p></div></div>
+    {%- elsif view_kind == 'doc' and preview_pdf != '' %}
+  <div class="th-attachment-preview"><object data="{{ preview_pdf_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+    {%- endif %}
   {%- endif %}
   <figcaption class="th-attachment-meta">
-    <i class="svg-icon ico-file" aria-hidden="true"></i>
+    {%- if icon_kind != '' %}<span class="th-attachment-file-icon th-attachment-file-icon--{{ icon_kind }}" aria-hidden="true"></span>{% elsif ext != '' %}<span class="th-attachment-file-icon th-attachment-file-icon--extension" aria-hidden="true">{{ ext | upcase | escape }}</span>{% else %}<i class="svg-icon ico-file" aria-hidden="true"></i>{% endif -%}
     <span class="th-attachment-title">{{ title | escape }}</span>
     {%- if include.desc %}<span class="th-attachment-desc">{{ include.desc | escape }}</span>{% endif -%}
     {%- assign _size = include['size'] -%}
     {%- if _size %}<span class="th-attachment-size">{{ _size | escape }}</span>{% endif -%}
     <span class="th-attachment-kind">{{ kind_label }}</span>
-    {%- if view_kind != '' %}<button type="button" class="krds-btn small text th-attachment-preview-link" aria-expanded="false">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i></button>{% endif -%}
+    {%- if view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
     <a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
     {%- assign _sha = include.sha256 | default: '' -%}
     {%- if _sha != '' %}<span class="th-attachment-sha" title="SHA-256 {{ _sha | escape }}">SHA-256 {{ _sha | slice: 0, 16 | escape }}…</span>{% endif -%}

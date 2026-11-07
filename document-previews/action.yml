@@ -1,0 +1,33 @@
+name: KRDS document previews
+description: Convert HWP, HWPX, and office documents to PDF previews on an Ubuntu runner.
+inputs:
+  source:
+    description: Directory containing source documents, relative to GITHUB_WORKSPACE.
+    required: true
+  output:
+    description: Directory for generated PDFs. Defaults to the source directory.
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    - name: Install LibreOffice and H2Orestart
+      shell: bash
+      env:
+        H2ORESTART_VERSION: v0.8.0
+        H2ORESTART_SHA256: f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c
+      run: |
+        set -euo pipefail
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends default-jre-headless libreoffice-java-common libreoffice-writer libreoffice-impress fonts-nanum
+        curl -fsSLo "${RUNNER_TEMP}/H2Orestart.oxt" "https://github.com/ebandal/H2Orestart/releases/download/${H2ORESTART_VERSION}/H2Orestart.oxt"
+        echo "${H2ORESTART_SHA256}  ${RUNNER_TEMP}/H2Orestart.oxt" | sha256sum -c -
+        sudo -H unopkg add --shared --force "${RUNNER_TEMP}/H2Orestart.oxt"
+    - name: Convert document previews
+      shell: bash
+      env:
+        PREVIEW_SOURCE: ${{ inputs.source }}
+        PREVIEW_OUTPUT: ${{ inputs.output }}
+      run: |
+        output="${PREVIEW_OUTPUT:-$PREVIEW_SOURCE}"
+        bash "${{ github.action_path }}/convert.sh" "${GITHUB_WORKSPACE}/${PREVIEW_SOURCE}" "${GITHUB_WORKSPACE}/${output}"

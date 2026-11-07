@@ -47,11 +47,21 @@ attachments:
 
 ## 오피스 문서 + PDF 변환본
 
-`docx`·`hwpx` 같은 문서 파일은 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다.
+`docx`·`hwpx` 같은 문서 파일은 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 브라우저 viewer로 엽니다.
 
 {% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" desc="오피스 문서 + PDF 변환본" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
 
-오피스 문서를 PDF로 바꾸는 예: `libreoffice --headless --convert-to pdf 보고서.docx`를 실행해 원본 옆에 같은 이름의 `.pdf`를 두고 `preview_pdf`로 가리키세요. `hwpx`·`hwp`는 순정 LibreOffice에서 열리지 않아 H2Orestart 확장이 필요합니다(Linux: `sudo apt install libreoffice-h2orestart`, macOS·Windows: 확장 관리자에 H2Orestart.oxt 추가). 가장 정확한 결과는 한컴오피스에서 PDF로 저장하기입니다.
+HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 빌드 job에서 아래 composite action을 Jekyll 빌드보다 먼저 실행하세요. Ubuntu runner에 LibreOffice와 해시가 고정된 H2Orestart v0.8.0을 설치하고, 원본과 같은 경로·이름의 `.pdf`를 생성합니다.
+
+```yaml
+- uses: actions/checkout@v7
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.4.5
+  with:
+    source: assets/files
+- run: bundle exec jekyll build
+```
+
+예를 들어 `assets/files/예산안.hwpx`는 `assets/files/예산안.pdf`로 변환됩니다. include에는 `preview_pdf="/assets/files/예산안.pdf"`를 지정하세요. 변환 결과는 workflow 작업 공간에서만 만들면 되므로 PDF를 저장소에 커밋할 필요가 없습니다. 한컴오피스 고유 객체는 변환 결과를 별도로 확인해야 합니다.
 
 ## 스프레드시트 미리보기
 
@@ -67,7 +77,7 @@ attachments:
 
 ## 파일 정보 표시
 
-오른쪽 끝 미리보기 버튼을 누르면 본문에 미리보기가 펼쳐집니다(다시 누르면 접힘). 미리보기가 없는 파일(카드만)에는 버튼이 없습니다. `size`와 `sha256`을 적으면 파일명 옆에 용량·해시 앞부분이 표시됩니다(전체 해시는 말풍선으로 확인). 해시는 `shasum -a 256 파일`로 구합니다.
+오른쪽 끝 미리보기 버튼을 누르면 미리보기 주소가 새 탭에서 열립니다. 미리보기가 없는 파일(카드만)은 내려받기 버튼이 같은 오른쪽 끝에 놓입니다. 파일 아이콘은 PDF·HWP/HWPX·HTML 전용 아이콘을 쓰고, 그 밖의 형식은 확장자를 표시합니다. `size`와 `sha256`을 적으면 파일명 옆에 용량·해시 앞부분이 표시됩니다(전체 해시는 말풍선으로 확인). 해시는 `shasum -a 256 파일`로 구합니다.
 
 ## 글 하단 파일 목록
 
