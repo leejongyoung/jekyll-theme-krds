@@ -464,9 +464,64 @@
       });
     });
   }
+  // 7) 고화질 한글 미리보기(rhwp, 선택): 사이트가 rhwp를 올려 둔 경우에만 figure[data-th-rhwp]가 생긴다(KRDSRhwp = js/hwp-rhwp.js).
+  //    rhwp는 용량이 커서(약 12MB) 버튼을 눌렀을 때 비로소 불러온다. 기본 미리보기(hwpx.js)가 있으면 그것과 오간다.
+  function initRhwp() {
+    var figs = document.querySelectorAll('figure.th-attachment[data-th-rhwp]');
+    if (!figs.length) return;
+    figs.forEach(function (fig) {
+      var preview = fig.querySelector('.th-attachment-preview');
+      var src = fig.getAttribute('data-rhwp-src');
+      var base = fig.getAttribute('data-rhwp-base');
+      if (!preview || !src || !base) return;
+      var simple = preview.querySelector('.th-hwpx-wrap, .th-rhwp-wrap');
+      var bar = el('div', 'th-rhwp-bar');
+      var info = el('span', 'th-rhwp-info', '쪽 모양 그대로 보려면 고화질 미리보기를 켜세요(rhwp 약 12MB를 불러옵니다).');
+      var button = el('button', 'th-text-btn th-rhwp-btn', '고화질로 보기');
+      button.type = 'button';
+      var live = el('span', 'th-sr-only');
+      live.setAttribute('role', 'status');
+      bar.appendChild(info);
+      bar.appendChild(button);
+      bar.appendChild(live);
+      preview.insertBefore(bar, preview.firstChild);
+      var scroller = el('div', 'th-rhwp-view');
+      scroller.hidden = true;
+      preview.appendChild(scroller);
+      var view = null;
+      function show(on) {
+        scroller.hidden = !on;
+        if (simple) simple.hidden = on;
+        button.textContent = on ? (simple && simple.classList.contains('th-hwpx-wrap') ? '간단히 보기' : '접기') : '고화질로 보기';
+        button.setAttribute('aria-expanded', on ? 'true' : 'false');
+      }
+      button.setAttribute('aria-expanded', 'false');
+      button.addEventListener('click', function () {
+        if (view) { show(scroller.hidden); return; }
+        if (!window.KRDSRhwp) { info.textContent = '고화질 미리보기 스크립트를 불러오지 못했습니다. 내려받기로 확인하세요.'; return; }
+        button.disabled = true;
+        button.textContent = '불러오는 중…';
+        info.textContent = '고화질 미리보기를 불러오는 중입니다…';
+        window.KRDSRhwp.open({ base: base, src: src, root: scroller }).then(function (opened) {
+          view = opened;
+          scroller.appendChild(opened.root);
+          info.textContent = '쪽 모양 그대로 · 전체 ' + opened.pageCount + '쪽';
+          live.textContent = '고화질 미리보기를 열었습니다. 전체 ' + opened.pageCount + '쪽.';
+          button.disabled = false;
+          show(true);
+        }).catch(function (error) {
+          info.textContent = (error && error.krdsRhwp ? error.message : '고화질 미리보기를 불러오지 못했습니다.') + ' 내려받기로 확인하세요.';
+          info.classList.add('th-rhwp-info--error');
+          button.disabled = false;
+          button.textContent = '다시 시도';
+        });
+      });
+    });
+  }
   initDiagrams();
   initCharts();
   initSheets();
   initHwpx();
   initText();
+  initRhwp();
 })();

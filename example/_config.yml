@@ -23,6 +23,8 @@ krds:
       - label: 저장소
         value: github.com/leejongyoung/jekyll-theme-krds
     copyright: jekyll-theme-krds
+  hwp:
+    rhwp: true   # 고화질 한글 미리보기(선택). rhwp 파일은 pages.yml이 빌드 때 받아 옵니다
   wiki:
     repo: leejongyoung/jekyll-theme-krds
     branch: main

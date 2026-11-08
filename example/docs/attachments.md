@@ -74,10 +74,37 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 {% include embed/attachment.html src="/assets/files/sample.hwpx" title="첨부 예제 한글 문서" size="11.7KB" sha256="5c121fe16c4375fd1cec206bdb180ea6d3e30c88e528f97ad0b05a40af1f7ddd" %}
 
 - **그리지 않는 것:** 쪽 모양, 머리말·꼬리말·쪽 번호, 도형·글상자, 수식, 변경 추적. 그래서 글과 표를 훑어보는 용도입니다. 서식까지 정확히 보여야 하면 위의 PDF 변환본을 `preview_pdf`로 함께 두세요(변환본이 있으면 PDF가 우선입니다).
-- **지원하지 않는 형식:** 예전 형식 `hwp`와 암호가 걸린 문서는 미리볼 수 없고 내려받기만 나옵니다.
+- **지원하지 않는 형식:** 예전 형식 `hwp`와 암호가 걸린 문서는 이 기본 미리보기로는 열 수 없고 내려받기만 나옵니다(`hwp`는 아래 고화질 미리보기를 켜면 열립니다).
 - **브라우저:** ZIP을 풀 때 브라우저의 `DecompressionStream`을 씁니다(최근 Chrome·Edge·Safari·Firefox). 지원하지 않으면 안내 문구와 내려받기가 나옵니다.
 - 문서가 크면(30MB 초과) 미리보기를 건너뛰고, 문단이 4000개를 넘으면 앞부분만 보여줍니다.
 - 미리보기 버튼은 새 탭의 viewer에서 같은 내용을 크게 열고 인쇄할 수 있습니다.
+
+## 고화질 한글 미리보기(rhwp, 선택)
+
+기본 미리보기는 글·표·그림 위주라서 쪽 모양, 표 배경색, 머리말, 도형을 그리지 않고 예전 형식 `hwp`(5.x)는 열지 못합니다. 쪽 모양 그대로 보고 싶으면 [rhwp](https://github.com/edwardkim/rhwp)(MIT, Rust/WASM)를 **선택해서** 켤 수 있습니다. 기본은 꺼져 있고, 켜지 않으면 아무것도 달라지지 않습니다.
+
+1. 설정에서 켭니다: `krds.hwp.rhwp: true`(`_config.yml`)
+2. **rhwp 파일은 테마에 들어 있지 않습니다**(약 12MB). 사이트 빌드 때 받아서 `assets/vendor/rhwp/`에 두세요. 내려받은 압축 파일의 SHA-256을 고정해 두었고, 다르면 아무것도 복사하지 않고 실패합니다.
+
+```yaml
+- name: Download rhwp (optional high-fidelity Hangul preview)
+  uses: leejongyoung/jekyll-theme-krds/rhwp-vendor@v1.11.0
+  with:
+    dest: assets/vendor/rhwp
+```
+
+   GitHub Actions를 쓰지 않으면 `bash rhwp-vendor/fetch.sh assets/vendor/rhwp`로 같은 파일을 받을 수 있습니다. 받은 폴더는 `.gitignore`에 넣어 저장소에 올리지 않는 것을 권합니다.
+
+켜면 `hwp`·`hwpx` 카드에 **고화질로 보기** 버튼이 생깁니다. 이 버튼을 누르는 순간에만 rhwp를 불러오고(누르기 전에는 내려받지 않습니다), 쪽은 화면에 보일 때 하나씩 그립니다. `hwpx`는 **간단히 보기**로 기본 미리보기와 오갈 수 있고, 하단 파일 목록의 `미리보기`·`고화질 미리보기`로 여는 새 탭 viewer에서는 `hwp`도 열립니다(40쪽 이하면 인쇄할 수 있습니다). PDF 변환본(`preview_pdf`)이 있으면 PDF가 우선이라 이 버튼은 나오지 않습니다.
+
+{% include embed/attachment.html src="/assets/files/sample.hwp" title="첨부 예제 한글 문서(hwp)" size="9.0KB" sha256="4fae695a6ff7c8e3f769d7502f7dcb1e6c38847d85c9411c8ad7e356f7ddd49a" %}
+
+- **보안:** rhwp가 문서 내용으로 만든 SVG를 그대로 넣지 않고, 허용한 SVG 요소·속성만 새로 만들어 옮깁니다(스크립트, 외부 주소, 이벤트 속성, `foreignObject` 제거). 30MB를 넘는 문서는 열지 않습니다.
+- **글꼴:** SVG는 글꼴 이름으로 글자를 그리므로 기기에 한컴 글꼴이 없으면 대체 글꼴로 보이고 줄바꿈 위치가 원본과 다를 수 있습니다.
+- **접근성:** 쪽 전체를 그림으로 다뤄서 스크린 리더로는 글을 읽을 수 없습니다. 접근성이 필요하면 기본 미리보기(`hwpx`)나 PDF 변환본을 쓰세요.
+- **CSP:** `Content-Security-Policy`를 쓰는 사이트는 WASM 실행을 허용(`script-src 'wasm-unsafe-eval'`)해야 합니다.
+- **열리지 않는 문서:** 암호가 걸린 문서와 rhwp가 지원하지 않는 형식은 오류 안내와 내려받기가 나옵니다.
+- **확인한 범위:** HWP 5.x와 HWP 3.0 변환본을 포함한 실제 문서 20개를 Chromium·Firefox·WebKit(Playwright)에서 열어 오류가 없는 것을 확인했습니다. 한컴 오피스의 화면과 일일이 대조하지는 않았습니다. 예제 `sample.hwp`는 rhwp 프로젝트(MIT)의 테스트 문서입니다.
 
 ## 스프레드시트 미리보기
 

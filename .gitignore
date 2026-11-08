@@ -8,3 +8,4 @@ vendor/bundle/
 _pages/
 __pycache__/
 *.pyc
+/example/assets/vendor/rhwp/
