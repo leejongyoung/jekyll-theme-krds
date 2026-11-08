@@ -6,3 +6,5 @@ Gemfile.lock
 vendor/bundle/
 .DS_Store
 _pages/
+__pycache__/
+*.pyc

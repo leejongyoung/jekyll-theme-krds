@@ -9,7 +9,8 @@
   nocomment  주석(/* … */, // …)과 빈 줄을 뺀 뒤 같아야 함. 머리 주석에 테마 이름이 들어가는 JS용
 
 기본은 어긋남을 경고(GitHub Actions 주석)로만 알리고 성공(0)으로 끝난다. --strict를 주면 어긋날 때 1로 끝난다.
-상대 저장소의 PR이 아직 병합되지 않았으면 일시적으로 어긋날 수 있어서 처음에는 경고만 쓴다.
+상대 저장소의 PR이 아직 병합되지 않았으면 일시적으로 어긋날 수 있어서, PR·푸시(CI의 shared-files 잡)는 경고만 쓰고
+주 1회 shared-drift 워크플로가 --strict로 돌아 방치된 어긋남을 실패로 알린다.
 
 사용: python3 script/check-shared.py [--other 상대 저장소 경로] [--strict]
 """
