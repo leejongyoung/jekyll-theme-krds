@@ -68,6 +68,7 @@ bundle exec jekyll serve        # http://127.0.0.1:4000
 새 버전을 낼 때 아래 값을 함께 올립니다. 빠뜨리면 사용자가 예전 버전을 설치하게 됩니다.
 
 1. `jekyll-theme-krds.gemspec`의 `spec.version`
+   - 같은 버전이 `example/Gemfile.lock`과 `example/Gemfile.jekyll43.lock`의 `jekyll-theme-krds (…)` 줄에 적혀 있어서 두 파일도 함께 고칩니다. 앞의 것은 로컬에서 예제를 빌드하면 저절로 바뀌지만 **뒤의 것은 바뀌지 않아** CI의 `build-lower-bound`가 "path gems changed"로 실패합니다.
 2. `README.md`의 설치 예시(`@v…`, `tag: "v…"`)
 3. 예제 문서의 버전 표기(`example/docs`, `example/_posts`의 `@v…`)
 4. `CHANGELOG.md`의 `[Unreleased]`를 새 버전과 날짜로 바꿈
