@@ -39,3 +39,24 @@ jobs:
       - uses: actions/checkout@v7
       - name: Compare shared files with the sibling theme (warning only)
         run: python3 script/check-shared.py
+
+  # gemspec이 선언한 지원 범위의 하한(Ruby 3.1, Jekyll 4.3)으로도 예제 사이트가 빌드되는지 확인한다.
+  # 최신 조합(Ruby 3.4, Jekyll 4.4)은 위의 build-example이 검증한다. 바이러스 검사·문서 변환은 버전과 무관해 생략한다.
+  build-lower-bound:
+    runs-on: ubuntu-24.04
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/example/Gemfile.jekyll43
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check the declared lower bounds match what is tested here
+        run: |
+          grep -q 'required_ruby_version = ">= 3.1"' jekyll-theme-krds.gemspec || { echo "gemspec의 required_ruby_version 하한이 3.1이 아닙니다. 이 잡의 Ruby 버전과 함께 고치세요." >&2; exit 1; }
+          grep -q '"jekyll", ">= 4.3"' jekyll-theme-krds.gemspec || { echo "gemspec의 jekyll 하한이 4.3이 아닙니다. example/Gemfile.jekyll43과 함께 고치세요." >&2; exit 1; }
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1"
+          bundler-cache: true
+          working-directory: example
+      - name: Build example site with Ruby 3.1 and Jekyll 4.3
+        working-directory: example
+        run: bundle exec jekyll build --strict_front_matter
