@@ -87,16 +87,26 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ## 텍스트 미리보기
 
-`txt`·`log`·`md`·`json`·`xml`·`yml`·`ini`·`conf`·`toml` 같은 텍스트 파일은 `<pre>` 영역에 그대로 보여줍니다. 줄바꿈과 들여쓰기가 유지되고, 본문 카드는 앞 100KB까지, 새 탭 viewer(`미리보기` 버튼, 인쇄 가능)는 앞 2MB까지 보여줍니다.
+`txt`·`log`·`md`·`json`·`xml`·`yml`·`ini`·`conf`·`toml` 같은 텍스트 파일은 줄 번호가 있는 카드로 보여줍니다. 줄바꿈과 들여쓰기가 유지되고, 본문 카드는 앞 100KB까지, 새 탭 viewer(`미리보기` 버튼, 인쇄 가능)는 앞 2MB까지 보여줍니다.
 
-- 인코딩은 BOM(UTF-8·UTF-16) → UTF-8 → EUC-KR(CP949) 순서로 자동 판별해서 오래된 한글 텍스트도 깨지지 않습니다.
+- **인코딩 표시**: 카드 위쪽에 파일 종류, 인코딩, 줄 수가 칩으로 나옵니다. 인코딩은 BOM(UTF-8·UTF-16) → UTF-8 → EUC-KR(CP949) 순서로 자동 판별해서 오래된 한글 텍스트도 깨지지 않습니다. UTF-8·BOM·ASCII로 확실히 읽었으면 초록 칩, **EUC-KR로 추정**했거나 깨진 글자가 있거나 앞부분만 보여줄 때는 노란 칩과 안내 문구가 함께 나옵니다.
+- **하이라이트**: `json`·`yml`·`ini`·`conf`·`toml`·`md`·`xml`·`log`는 종류에 맞게 색을 입힙니다(외부 라이브러리 없이 테마가 직접 처리). 로그는 ERROR·WARN 줄에 색 띠가 붙습니다. 간단한 분석기라서 문법이 어긋난 파일이나 특이한 서식은 색이 틀릴 수 있고, 5,000줄을 넘는 큰 파일은 줄 번호와 색 없이 본문만 보여줍니다.
+- **줄바꿈·복사**: `줄바꿈` 버튼으로 긴 줄을 접거나 펼치고, `복사` 버튼으로 내용을 복사합니다(앞부분만 보여줄 때는 그 부분). 줄 번호는 복사되지 않습니다.
 - 내용은 글자로만 넣으므로 파일 안의 HTML이나 스크립트는 실행되지 않습니다. 아래 예제 파일에도 `<script>` 태그가 들어 있지만 글자 그대로 보입니다.
-- `md`도 서식 없이 원문 그대로 보여줍니다. `csv`·`tsv`는 스프레드시트로 처리해 표로 보입니다.
+- `csv`·`tsv`는 스프레드시트로 처리해 표로 보입니다.
 - 바이너리 파일처럼 0 바이트(NUL)가 들어 있으면 텍스트로 보지 않고 내려받기만 안내합니다.
 
 {% include embed/attachment.html src="/assets/files/sample.txt" title="첨부 예제 텍스트" size="474B" sha256="2956c87d9a723e783a3de64ebd3d1baa40693dc7fd58734de420db7d4479ff6f" %}
 
 {% include embed/attachment.html src="/assets/files/sample-euckr.txt" title="첨부 예제 텍스트(EUC-KR)" size="114B" sha256="1f6fae6620804653d1ed3fcacf44b4f9a33a364a884a652f863585f39e10327a" %}
+
+{% include embed/attachment.html src="/assets/files/sample.json" title="첨부 예제 JSON" size="462B" sha256="f9304ba10135e2a068c970a415fc3587d929371dc6614e0d09fcd92130b8bb3d" %}
+
+{% include embed/attachment.html src="/assets/files/sample.yaml" title="첨부 예제 YAML" size="393B" sha256="216f93456cc9ef7fc415f91e6660763d75409afd0d179e35adbed085723013f2" %}
+
+{% include embed/attachment.html src="/assets/files/sample.log" title="첨부 예제 로그" size="647B" sha256="383c9d0a7d8b779149a80b311e925a28976df1e4bb9bce942a36b4df61265b48" %}
+
+{% include embed/attachment.html src="/assets/files/sample.md" title="첨부 예제 Markdown" size="406B" sha256="c263acc14833b42018259387ef7451fe50cad677cbcb1a139b06eab8d1536ac2" %}
 
 ## 미리보기 없는 파일
 

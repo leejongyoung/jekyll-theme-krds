@@ -1,0 +1,18 @@
+# GitHub Actions: 첨부 파일 미리보기 만들기
+name: build
+on:
+  push:
+    branches: [main]
+env:
+  HUGO_VERSION: "0.158.0"
+  DEBUG: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15   # 15분 안에 끝나야 함
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build site
+        run: hugo --gc --minify
+      - name: Anchors &base
+        with: *base

@@ -188,14 +188,10 @@
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return window.KRDSText.read(response, TEXT_MAX_BYTES);
       }).then(function (buffer) {
-        var out = window.KRDSText.render(buffer, { maxBytes: TEXT_MAX_BYTES, label: title + ' 내용' });
+        var out = window.KRDSText.render(buffer, { maxBytes: TEXT_MAX_BYTES, label: title + ' 내용', ext: ext, moreHint: '전체는 원본을 내려받아 확인하세요.' });
         content.textContent = '';
         var wrap = document.createElement('div');
         wrap.className = 'th-text-viewer';
-        var note = document.createElement('p');
-        note.className = 'th-text-note';
-        note.textContent = out.note + (out.truncated ? ' · 전체는 원본을 내려받아 확인하세요.' : '');
-        wrap.appendChild(note);
         wrap.appendChild(out.root);
         content.appendChild(wrap);
         readyToPrint();

@@ -1,26 +1,200 @@
-// 첨부 텍스트 미리보기(<pre>)와 바이러스 검사 표시.
+// 텍스트 미리보기: 카드·머리줄(종류·인코딩 칩)·줄 번호·하이라이트 · 바이러스 검사 표시.
 .th-text { color: var(--th-text); }
-.th-text-note {
-  margin: var(--krds-gap-2) 0 0;
-  color: var(--th-text-subtle);
+.th-text-card {
+  --th-tok-k: #0550ae; --th-tok-s: #0a6b3d; --th-tok-n: #a04100; --th-tok-c: #5b6573; --th-tok-p: #57606a;
+  --th-tok-h: #6f2da8; --th-tok-e: #b3261e; --th-tok-w: #8a4b00; --th-tok-i: #0b5fa5; --th-tok-d: #5b6573;
+  --th-line-err: #fdecea; --th-line-warn: #fff5db;
+  --th-text-lh: 2.24rem;
+  overflow: hidden;
+  border: 1px solid var(--th-border-strong);
+  border-radius: var(--krds-radius-medium2);
+  background: var(--th-bg);
+  color: var(--th-text);
+}
+html[data-krds-mode="high-contrast"] .th-text-card {
+  --th-tok-k: #79c0ff; --th-tok-s: #7ee787; --th-tok-n: #ffa657; --th-tok-c: #9aa4b0; --th-tok-p: #9aa4b0;
+  --th-tok-h: #d2a8ff; --th-tok-e: #ff7b72; --th-tok-w: #e3b341; --th-tok-i: #79c0ff; --th-tok-d: #9aa4b0;
+  --th-line-err: rgba(248, 81, 73, 0.16); --th-line-warn: rgba(227, 179, 65, 0.14);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-krds-mode="theme"] .th-text-card {
+    --th-tok-k: #79c0ff; --th-tok-s: #7ee787; --th-tok-n: #ffa657; --th-tok-c: #9aa4b0; --th-tok-p: #9aa4b0;
+  --th-tok-h: #d2a8ff; --th-tok-e: #ff7b72; --th-tok-w: #e3b341; --th-tok-i: #79c0ff; --th-tok-d: #9aa4b0;
+  --th-line-err: rgba(248, 81, 73, 0.16); --th-line-warn: rgba(227, 179, 65, 0.14);
+  }
+}
+.th-text-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--krds-gap-2) var(--krds-gap-4);
+  padding: var(--krds-padding-2) var(--krds-padding-3);
+  border-bottom: 1px solid var(--th-border);
+  background: var(--th-bg-subtle);
+}
+.th-text-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.th-text-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.1rem 1rem;
+  border: 1px solid var(--th-border-strong);
+  border-radius: 99rem;
+  background: var(--th-bg);
+  color: var(--th-text);
+  font-size: var(--krds-pc-font-size-body-small);
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.th-text-chip .th-fa { font-size: 1.3rem; }
+.th-text-chip--ok {
+  border-color: var(--krds-color-light-success-60);
+  background: var(--krds-color-light-success-5);
+  color: var(--krds-color-light-success-70);
+}
+.th-text-chip--warn {
+  border-color: var(--krds-color-light-warning-60);
+  background: var(--krds-color-light-warning-5);
+  color: var(--krds-color-light-warning-70);
+}
+.th-text-tools { display: flex; gap: 0.6rem; }
+.th-text-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.1rem 1rem;
+  border: 1px solid var(--th-border-strong);
+  border-radius: var(--krds-radius-small2);
+  background: var(--th-bg);
+  color: var(--th-text);
+  font: inherit;
+  font-size: var(--krds-pc-font-size-body-small);
+  line-height: 1.6;
+  cursor: pointer;
+}
+.th-text-btn:hover { border-color: var(--th-border-primary); color: var(--th-text-primary); }
+.th-text-btn:focus-visible { outline: none; box-shadow: var(--krds-box-shadow-outline); }
+.th-text-btn[aria-pressed="true"] {
+  border-color: var(--th-border-primary);
+  background: var(--th-surface-primary);
+  color: var(--th-text-primary);
+}
+.th-text-btn[aria-pressed="true"]::before { content: "\2713"; font-weight: var(--krds-font-weight-bold); }
+.th-text-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  margin: 0;
+  padding: var(--krds-padding-2) var(--krds-padding-3);
+  border-bottom: 1px solid var(--th-border);
+  background: var(--krds-color-light-warning-5);
+  color: var(--krds-color-light-warning-70);
   font-size: var(--krds-pc-font-size-body-small);
 }
-.th-text-viewer > .th-text-note { margin: 0 0 var(--krds-gap-3); }
-.th-text-pre {
+.th-text-alert p { margin: 0; }
+.th-text-alert .th-fa { flex: none; margin-top: 0.4rem; }
+html[data-krds-mode="high-contrast"] .th-text-chip,
+html[data-krds-mode="high-contrast"] .th-text-alert {
+  background: transparent;
+  color: var(--th-text);
+}
+html[data-krds-mode="high-contrast"] .th-text-chip--ok .th-fa { color: var(--krds-high-contrast-color-text-success); }
+html[data-krds-mode="high-contrast"] .th-text-chip--warn .th-fa,
+html[data-krds-mode="high-contrast"] .th-text-alert .th-fa { color: var(--krds-high-contrast-color-text-warning); }
+html[data-krds-mode="high-contrast"] .th-text-chip--ok { border-color: var(--krds-high-contrast-color-border-success); }
+html[data-krds-mode="high-contrast"] .th-text-chip--warn { border-color: var(--krds-high-contrast-color-border-warning); }
+@media (prefers-color-scheme: dark) {
+  html[data-krds-mode="theme"] .th-text-chip,
+  html[data-krds-mode="theme"] .th-text-alert {
+    background: transparent;
+    color: var(--th-text);
+  }
+  html[data-krds-mode="theme"] .th-text-chip--ok .th-fa { color: var(--krds-high-contrast-color-text-success); }
+  html[data-krds-mode="theme"] .th-text-chip--warn .th-fa,
+  html[data-krds-mode="theme"] .th-text-alert .th-fa { color: var(--krds-high-contrast-color-text-warning); }
+  html[data-krds-mode="theme"] .th-text-chip--ok { border-color: var(--krds-high-contrast-color-border-success); }
+  html[data-krds-mode="theme"] .th-text-chip--warn { border-color: var(--krds-high-contrast-color-border-warning); }
+}
+/* 문서 본문(.th-prose)의 pre·code 규칙보다 앞서도록 .th-text-card 아래로 한 단계 더 구체적으로 쓴다 */
+.th-text-card .th-text-pre {
   margin: 0;
-  padding: var(--krds-padding-4);
-  border: 1px solid var(--th-border);
+  padding: var(--krds-padding-2) 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--th-bg);
+  color: var(--th-text);
+  font: 1.4rem/var(--th-text-lh) ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK KR", "D2Coding", monospace;
+  overflow: auto;
+  tab-size: 4;
+}
+.th-text-card .th-text-pre:focus-visible { outline: none; box-shadow: var(--krds-box-shadow-outline-inset); }
+.th-text-card .th-text-code { display: block; padding: 0; border-radius: 0; background: none; color: inherit; font: inherit; counter-reset: line; }
+.th-text-card .th-text-code--plain { padding: 0 var(--krds-padding-3); white-space: pre-wrap; overflow-wrap: anywhere; }
+.th-line {
+  display: grid;
+  grid-template-columns: calc(var(--th-ln-digits, 3) * 1ch + 2.8rem) minmax(0, 1fr);
+  border-left: 0.3rem solid transparent;
+  background: var(--th-line-bg, transparent);
+  counter-increment: line;
+}
+.th-line::before {
+  content: counter(line);
+  position: sticky;
+  left: 0;
+  box-sizing: border-box;
+  padding-right: 1.2rem;
+  border-right: 1px solid var(--th-border);
+  background: var(--th-line-bg, var(--th-bg));
+  color: var(--th-text-subtle);
+  text-align: right;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.th-line--err { --th-line-bg: var(--th-line-err); border-left-color: var(--th-tok-e); }
+.th-line--warn { --th-line-bg: var(--th-line-warn); border-left-color: var(--th-tok-w); }
+.th-code {
+  min-width: 0;
+  min-height: var(--th-text-lh);
+  padding: 0 var(--krds-padding-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.th-text-card[data-wrap="off"] .th-code { white-space: pre; overflow-wrap: normal; }
+.th-text-card[data-wrap="off"] .th-line { width: max-content; min-width: 100%; }
+.th-tok-k { color: var(--th-tok-k); }
+.th-tok-s { color: var(--th-tok-s); }
+.th-tok-n { color: var(--th-tok-n); }
+.th-tok-c, .th-tok-d { color: var(--th-tok-c); }
+.th-tok-p { color: var(--th-tok-p); }
+.th-tok-h { color: var(--th-tok-h); font-weight: var(--krds-font-weight-bold); }
+.th-tok-b { font-weight: var(--krds-font-weight-bold); }
+.th-tok-e { color: var(--th-tok-e); font-weight: var(--krds-font-weight-bold); }
+.th-tok-w { color: var(--th-tok-w); font-weight: var(--krds-font-weight-bold); }
+.th-tok-i { color: var(--th-tok-i); font-weight: var(--krds-font-weight-bold); }
+.th-attachment-preview.th-attachment-text { overflow: visible; border: 0; background: transparent; }
+.th-attachment-text .th-text-wrap { padding: 0; }
+.th-attachment-text .th-text-wrap > .th-embed-note,
+.th-attachment-text .th-text-wrap > .th-embed-error {
+  max-width: none;
+  padding: var(--krds-padding-3) var(--krds-padding-4);
+  border: 1px solid var(--th-border-strong);
   border-radius: var(--krds-radius-medium2);
   background: var(--th-bg-subtle);
-  color: var(--th-text);
-  font: 1.4rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK KR", "D2Coding", monospace;
-  overflow: auto;
-  overflow-wrap: anywhere;
-  tab-size: 4;
-  white-space: pre-wrap;
 }
-.th-attachment-text .th-text-wrap { padding: var(--krds-padding-3); }
-.th-attachment-text .th-text-pre { max-height: 36rem; }
+.th-attachment-text .th-text-card .th-text-pre { max-height: 36rem; }
+@media (max-width: 767px) {
+  .th-line { grid-template-columns: calc(var(--th-ln-digits, 3) * 1ch + 2rem) minmax(0, 1fr); }
+  .th-line::before { padding-right: 0.8rem; }
+  .th-code, .th-text-code--plain { padding: 0 var(--krds-padding-2); }
+}
 .th-attachment-meta .th-attachment-scan {
   display: inline-flex;
   align-items: center;
@@ -37,7 +211,12 @@
   background: transparent;
   color: var(--th-text);
 }
-@media print { .th-text-note { display: none; } .th-text-pre { max-height: none; overflow: visible; } }
+@media print {
+  .th-text-tools { display: none; }
+  .th-text-card { overflow: visible; }
+  .th-text-card .th-text-pre { max-height: none; overflow: visible; }
+  .th-line { break-inside: avoid; }
+}
 
 // 모바일: 첨부 제목·설명은 2줄, SHA-256은 한 줄로 줄이고 나머지는 …로 표시(전체 값은 문서에 그대로 있음)
 @media (max-width: 767px) {
