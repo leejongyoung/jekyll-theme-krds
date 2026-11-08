@@ -23,6 +23,8 @@ krds:
       - label: 저장소
         value: github.com/leejongyoung/jekyll-theme-krds
     copyright: jekyll-theme-krds
+  search:
+    answer: true   # AI로 답변 만들기(선택, 방문자 API 키). 기본 꺼짐
   hwp:
     rhwp: true   # 고화질 한글 미리보기(선택). rhwp 파일은 pages.yml이 빌드 때 받아 옵니다
   wiki:
