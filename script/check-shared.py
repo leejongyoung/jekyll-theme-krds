@@ -43,6 +43,12 @@ TARGETS = (
     ]
 )
 
+# 디렉터리 비교에서 빼는 상대 경로 앞부분(Hugo 경로, Jekyll 경로 순).
+# rhwp는 Hugo에서 파이프라인 발행용 assets/에만 있고 static/에는 없으며,
+# Jekyll에서는 테마 파일을 항상 복사해 assets/에 있다. 내용은 아래
+# ("dir", "assets/vendor/rhwp", ...) 항목에서 양쪽이 같은지 본다.
+DIR_IGNORE = {("static/assets/vendor", "assets/vendor"): ("rhwp",)}
+
 
 def detect(root):
     if os.path.exists(os.path.join(root, "theme.toml")) and os.path.isdir(os.path.join(root, "layouts")):
@@ -82,8 +88,8 @@ def files_in(base):
     return found
 
 
-def compare(mine, theirs, kind, mode):
-    """어긋난 항목을 (경로 설명, 이유) 목록으로 돌려준다."""
+def compare(mine, theirs, kind, mode, ignore=()):
+    """어긋난 항목을 (경로 설명, 이유) 목록으로 돌려준다. ignore에 든 상대 경로 앞부분은 견주지 않는다."""
     if not os.path.exists(mine) and not os.path.exists(theirs):
         return []
     if not os.path.exists(mine):
@@ -95,6 +101,8 @@ def compare(mine, theirs, kind, mode):
     a, b = files_in(mine), files_in(theirs)
     out = []
     for rel in sorted(set(a) | set(b)):
+        if any(rel == prefix or rel.startswith(prefix + "/") for prefix in ignore):
+            continue
         if rel not in a:
             out.append((rel, "이쪽에 없음"))
         elif rel not in b:
@@ -129,7 +137,8 @@ def main():
     problems = []
     for kind, hugo_path, jekyll_path, mode in TARGETS:
         mine, theirs = (hugo_path, jekyll_path) if me == "hugo" else (jekyll_path, hugo_path)
-        for rel, reason in compare(os.path.join(root, mine), os.path.join(other_root, theirs), kind, mode):
+        ignore = DIR_IGNORE.get((hugo_path, jekyll_path), ())
+        for rel, reason in compare(os.path.join(root, mine), os.path.join(other_root, theirs), kind, mode, ignore):
             label = mine + ("/" + rel if rel else "")
             problems.append((mine, label, reason, mode))
 
