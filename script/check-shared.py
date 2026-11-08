@@ -25,7 +25,7 @@ REPOS = {"hugo": "hugo-theme-krds", "jekyll": "jekyll-theme-krds"}
 OWNER = "leejongyoung"
 
 # (종류, Hugo 경로, Jekyll 경로, 방식). 종류: file | dir
-JS_EXACT = ["hwp", "text", "home", "wiki", "attachment-viewer", "ask-ai"]
+JS_EXACT = ["hwp", "pdf", "text", "home", "wiki", "attachment-viewer"]
 JS_LOOSE = ["theme", "embeds", "math", "search"]
 TARGETS = (
     [("file", f"static/assets/js/{n}.js", f"assets/js/{n}.js", "exact") for n in JS_EXACT]
@@ -36,6 +36,7 @@ TARGETS = (
         ("dir", "document-previews", "document-previews", "exact"),
         ("dir", "attachment-scan", "attachment-scan", "exact"),
         ("dir", "assets/vendor/rhwp", "assets/vendor/rhwp", "exact"),
+        ("dir", "assets/vendor/pdfjs", "assets/vendor/pdfjs", "exact"),
         ("dir", "static/assets/vendor", "assets/vendor", "exact"),
         ("dir", "static/assets/js/vendor", "assets/js/vendor", "exact"),
         ("dir", "static/assets/img/fa", "assets/img/fa", "exact"),
@@ -47,7 +48,7 @@ TARGETS = (
 # rhwp는 Hugo에서 파이프라인 발행용 assets/에만 있고 static/에는 없으며,
 # Jekyll에서는 테마 파일을 항상 복사해 assets/에 있다. 내용은 아래
 # ("dir", "assets/vendor/rhwp", ...) 항목에서 양쪽이 같은지 본다.
-DIR_IGNORE = {("static/assets/vendor", "assets/vendor"): ("rhwp",)}
+DIR_IGNORE = {("static/assets/vendor", "assets/vendor"): ("rhwp", "pdfjs")}
 
 
 def detect(root):

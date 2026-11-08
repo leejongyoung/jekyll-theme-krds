@@ -24,7 +24,6 @@ krds:
         value: github.com/leejongyoung/jekyll-theme-krds
     copyright: jekyll-theme-krds
   search:
-    ai: true   # AI에게 물어보기(선택): 무료 웹 챗봇(ChatGPT·Gemini·Claude)으로 질문을 넘깁니다. 기본 꺼짐
   wiki:
     repo: leejongyoung/jekyll-theme-krds
     branch: main

@@ -1,0 +1,15 @@
+// 자주 묻는 질문(FAQ) 아코디언. JS 없이 details/summary로 동작한다.
+.th-faq { display: flex; flex-direction: column; gap: var(--krds-gap-3); }
+.th-faq-item { border: 1px solid var(--th-border); border-radius: var(--krds-radius-medium2); background: var(--th-bg); }
+.th-faq-q { display: flex; align-items: center; justify-content: space-between; gap: var(--krds-gap-3); margin: 0; padding: var(--krds-padding-3) var(--krds-padding-4); font-weight: var(--krds-font-weight-bold); cursor: pointer; list-style: none; }
+.th-faq-q::-webkit-details-marker { display: none; }
+.th-faq-q::marker { content: ""; }
+.th-faq-q::after { content: "+"; flex: none; color: var(--th-text-subtle); font-weight: var(--krds-font-weight-regular); }
+.th-faq-item[open] .th-faq-q::after { content: "−"; }
+.th-faq-a { padding: var(--krds-padding-3) var(--krds-padding-4); border-top: 1px solid var(--th-border); }
+.th-faq-a > :first-child { margin-top: 0; }
+.th-faq-a > :last-child { margin-bottom: 0; }
+.th-faq-ask { margin: var(--krds-gap-2) 0 0; }
+@media print {
+  .th-faq-item > .th-faq-a { display: block !important; }
+}

@@ -13,8 +13,8 @@ lead: 사이트 이름, 푸터, 색과 글꼴을 바꾸는 방법입니다.
 | `krds.footer.contact` | 푸터 연락처 목록(`label`, `value`) |
 | `krds.favicon` | 파비콘 경로 |
 | `krds.search.max_chars` | 검색 색인에 담는 본문 길이(글자 수, 기본 3000). 글이 많으면 줄입니다 |
-| `krds.search.ai` | 검색의 "AI에게 물어보기"를 켤지(기본 꺼짐). `true`이거나 서비스 목록(예: `[chatgpt, gemini, grok]`). 질문을 무료 웹 챗봇으로 넘기는 링크이며 `search.sentence`가 켜져 있어야 합니다 |
 | `krds.search.sentence` | 검색의 "문장으로 찾기"를 켤지(기본 `true`). 끄면 색인에서 소제목별 본문이 빠집니다 |
+| `krds.faq.ask` | 자주 묻는 질문 아래 "질문하기" 버튼의 기본 주소(이슈·토론·메일). include의 `ask`가 우선합니다 |
 
 ## 색과 글꼴 바꾸기
 

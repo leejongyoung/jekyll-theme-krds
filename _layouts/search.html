@@ -33,10 +33,6 @@ layout: default
     {%- if site.krds.search.sentence != false %}
     <section class="th-search-ask" hidden aria-labelledby="th-search-ask-title"><h2 class="th-search-ask-title" id="th-search-ask-title">질문과 가까운 내용</h2><p class="th-search-ask-note">문장으로 찾은 내용입니다. 정확한 답이 아닐 수 있으니 링크를 열어 확인해 주세요.</p><ol class="th-search-ask-list"></ol></section>
     {%- endif %}
-    {%- include search-ai-services.html %}
-    {%- if th_ai_services != '' %}
-    <section class="th-search-askai" data-th-askai data-services="{{ th_ai_services | escape }}" hidden></section>
-    {%- endif %}
     <noscript><p class="th-embed-error">검색에는 JavaScript가 필요합니다. 태그 페이지에서 글을 찾아볼 수 있습니다.</p></noscript>
   </div>
 </div>
