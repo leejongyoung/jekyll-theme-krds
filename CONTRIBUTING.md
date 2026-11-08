@@ -62,3 +62,12 @@ bundle exec jekyll serve        # http://127.0.0.1:4000
 | 상태 | `needs-triage`, `needs-info`, `blocked`, `priority: high`, `breaking-change` |
 | 참여 | `good first issue`, `help wanted` |
 | 정리 | `duplicate`, `invalid`, `wontfix`, `skip-changelog` |
+
+## 릴리즈 때 버전을 고칠 곳
+
+새 버전을 낼 때 아래 값을 함께 올립니다. 빠뜨리면 사용자가 예전 버전을 설치하게 됩니다.
+
+1. `jekyll-theme-krds.gemspec`의 `spec.version`
+2. `README.md`의 설치 예시(`@v…`, `tag: "v…"`)
+3. 예제 문서의 버전 표기(`example/docs`, `example/_posts`의 `@v…`)
+4. `CHANGELOG.md`의 `[Unreleased]`를 새 버전과 날짜로 바꿈

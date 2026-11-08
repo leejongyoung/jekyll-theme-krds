@@ -41,13 +41,13 @@ plugins:
   - jekyll-paginate
 ```
 
-Jekyll 4로 직접 빌드(`bundle exec jekyll build`)해서 동작하는 것을 확인했습니다. `owner/repo@v1.0.0`처럼 태그를 붙여 버전을 고정할 수 있습니다.
+Jekyll 4로 직접 빌드(`bundle exec jekyll build`)해서 동작하는 것을 확인했습니다. `owner/repo@v1.8.1`처럼 태그를 붙여 버전을 고정할 수 있습니다.
 
 ### 방법 2. gem
 
 ```ruby
 # Gemfile
-gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds", tag: "v1.0.0"
+gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds", tag: "v1.8.1"
 ```
 
 ```yaml
@@ -56,6 +56,12 @@ theme: jekyll-theme-krds
 ```
 
 > RubyGems에는 올리지 않았습니다. 위처럼 GitHub에서 설치합니다.
+
+### 요구 사항
+
+- Ruby 3.1 이상, Jekyll 4.3 이상(5 미만).
+- **Ruby 3.4 이상에서는 Jekyll 4.4 이상을 쓰세요.** Jekyll 4.3.x는 Ruby 3.4에서 기본 gem에서 빠진 `csv`를 불러오지 못해 시작하지 못합니다(`Gemfile`에 `csv`·`base64`·`bigdecimal`·`logger`를 추가하면 동작합니다). 테마의 결함이 아니라 Jekyll 4.3.x의 의존성 문제입니다.
+- 예제 사이트 빌드를 확인한 조합: Ruby 3.4 + Jekyll 4.4(CI), Ruby 3.4 + Jekyll 4.3.4(위 gem 추가), Ruby 3.1 + Jekyll 4.3.4. Ruby 3.2·3.3은 확인하지 않았습니다.
 
 ### GitHub Pages에 배포하기 (Actions)
 
