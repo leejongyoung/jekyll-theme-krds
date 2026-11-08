@@ -20,6 +20,11 @@ attachments:
     desc: "스프레드시트 미리보기"
     size: "5.2KB"
     sha256: "f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414"
+  - src: "/assets/files/sample.hwpx"
+    title: "첨부 예제 한글 문서"
+    desc: "한글(HWPX) 브라우저 미리보기"
+    size: "11.4KB"
+    sha256: "84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf"
 ---
 글에 PDF, 오피스 문서, 한글 문서, 스프레드시트를 붙이는 방법을 순서대로 정리했습니다. 이 글 맨 아래의 "첨부 파일" 목록이 바로 아래 설명대로 만든 결과입니다.
 
