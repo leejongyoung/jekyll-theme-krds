@@ -1,4 +1,4 @@
-/* Standalone attachment viewer: PDF, images, the first spreadsheet sheet, HWPX, plain text, and (optional) HWP/HWPX through rhwp. */
+/* Standalone attachment viewer: PDF, images, the first spreadsheet sheet, plain text, and HWP/HWPX through rhwp. */
 (function () {
   'use strict';
   var params = new URLSearchParams(location.search);
@@ -150,35 +150,6 @@
     document.head.appendChild(script);
   }
 
-  var HWPX_MAX_BYTES = 30 * 1024 * 1024;
-  function renderHwpx(url) {
-    var script = document.createElement('script');
-    script.src = new URL('js/hwpx.js', location.href).href;
-    script.onload = function () {
-      fetch(url).then(function (response) {
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        var length = parseInt(response.headers.get('content-length') || '0', 10);
-        if (length > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
-        return response.arrayBuffer();
-      }).then(function (buffer) {
-        if (buffer.byteLength > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
-        return window.KRDSHwpx.render(buffer);
-      }).then(function (root) {
-        content.textContent = '';
-        var wrap = document.createElement('div');
-        wrap.className = 'th-hwpx-viewer';
-        wrap.appendChild(root);
-        content.appendChild(wrap);
-        readyToPrint();
-      }).catch(function (error) {
-        var known = error && (error.hwpx || /^[^\x00-\x7f]/.test(error.message));
-        fail((known ? error.message : '한글 문서를 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
-      });
-    };
-    script.onerror = function () { fail('한글 문서 미리보기 스크립트를 불러오지 못했습니다.'); };
-    document.head.appendChild(script);
-  }
-
   var TEXT_MAX_BYTES = 2 * 1024 * 1024;
   function renderText(url) {
     var script = document.createElement('script');
@@ -203,33 +174,33 @@
     document.head.appendChild(script);
   }
 
-  // 고화질 한글 미리보기(rhwp, 선택): 사이트가 rhwp를 올려 둔 경우에만 링크가 생긴다. 쪽 수가 적으면 모두 그려 인쇄할 수 있다.
-  function renderRhwp(url) {
+  // 한글 문서(hwp·hwpx): rhwp로 쪽 모양 그대로 그린다. 쪽 수가 적으면 모두 그려 인쇄할 수 있다.
+  function renderHwp(url) {
     var script = document.createElement('script');
-    script.src = new URL('js/hwp-rhwp.js', location.href).href;
+    script.src = new URL('js/hwp.js', location.href).href;
     script.onload = function () {
-      window.KRDSRhwp.open({ base: new URL('vendor/rhwp/', location.href).href, src: url, eager: true }).then(function (view) {
+      window.KRDSHwp.open({ base: new URL('vendor/rhwp/', location.href).href, src: url, eager: true }).then(function (view) {
         content.textContent = '';
         var wrap = document.createElement('div');
-        wrap.className = 'th-rhwp-viewer';
+        wrap.className = 'th-hwp-viewer';
         var info = document.createElement('p');
-        info.className = 'th-rhwp-info';
+        info.className = 'th-hwp-info';
         info.textContent = '쪽 모양 그대로 · 전체 ' + view.pageCount + '쪽';
         wrap.appendChild(info);
         wrap.appendChild(view.root);
         content.appendChild(wrap);
         view.rendered.then(readyToPrint);
       }).catch(function (error) {
-        fail((error && error.krdsRhwp ? error.message : '한글 문서를 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
+        fail((error && error.krdsHwp ? error.message : '한글 문서를 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
       });
     };
-    script.onerror = function () { fail('고화질 미리보기 스크립트를 불러오지 못했습니다.'); };
+    script.onerror = function () { fail('한글 문서 미리보기 스크립트를 불러오지 못했습니다.'); };
     document.head.appendChild(script);
   }
 
   var url = safeURL(src);
   var originalURL = safeURL(originalSrc);
-  if (!url || ['pdf', 'image', 'sheet', 'hwpx', 'text', 'rhwp'].indexOf(kind) === -1) {
+  if (!url || ['pdf', 'image', 'sheet', 'hwp', 'text'].indexOf(kind) === -1) {
     fail('지원하지 않거나 잘못된 미리보기 주소입니다.');
     return;
   }
@@ -249,8 +220,7 @@
   printButton.addEventListener('click', function () { window.print(); });
   if (kind === 'pdf') renderPDF(url);
   else if (kind === 'image') renderImage(url);
-  else if (kind === 'hwpx') renderHwpx(url);
+  else if (kind === 'hwp') renderHwp(url);
   else if (kind === 'text') renderText(url);
-  else if (kind === 'rhwp') renderRhwp(url);
   else renderSheet(url);
 })();

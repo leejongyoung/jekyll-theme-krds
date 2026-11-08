@@ -53,27 +53,13 @@
   {%- assign view_kind = '' -%}
   {%- if kind == 'pdf' or kind == 'image' or kind == 'sheet' or kind == 'text' -%}{%- assign view_kind = kind -%}
   {%- elsif kind == 'doc' and preview_pdf != '' -%}{%- assign view_kind = 'doc' -%}
-  {%- elsif ext == 'hwpx' and preview_pdf == '' -%}{%- assign view_kind = 'hwpx' -%}
+  {%- elsif preview_pdf == '' and ext == 'hwp' -%}{%- assign view_kind = 'hwp' -%}
+  {%- elsif preview_pdf == '' and ext == 'hwpx' -%}{%- assign view_kind = 'hwp' -%}
   {%- endif -%}
   {%- assign view_src = src_url -%}
   {%- if view_kind == 'doc' and preview_pdf != '' -%}{%- assign view_src = preview_pdf_url -%}{%- endif -%}
   {%- assign viewer_kind = view_kind -%}
   {%- if viewer_kind == 'doc' -%}{%- assign viewer_kind = 'pdf' -%}{%- endif -%}
-  {%- comment -%} 고화질 한글 미리보기(rhwp, 선택): hwp·hwpx에 PDF 변환본이 없을 때만. site.krds.hwp.rhwp: true 로 켠다(기본 꺼짐) {%- endcomment -%}
-  {%- assign rhwp_doc = false -%}
-  {%- if site.krds.hwp.rhwp == true and preview_pdf == '' -%}
-    {%- if ext == 'hwp' or ext == 'hwpx' -%}{%- assign rhwp_doc = true -%}{%- endif -%}
-  {%- endif -%}
-  {%- assign rhwp_on = false -%}
-  {%- if rhwp_doc and want_preview -%}{%- assign rhwp_on = true -%}{%- endif -%}
-  {%- assign rhwp_viewer_url = '' -%}
-  {%- if rhwp_doc -%}
-    {%- assign rhwp_base = '/assets/attachment-viewer.html' | relative_url -%}
-    {%- assign rhwp_src = src_url | uri_escape -%}
-    {%- assign rhwp_ext = ext | uri_escape -%}
-    {%- assign rhwp_title = title | uri_escape -%}
-    {%- assign rhwp_viewer_url = rhwp_base | append: '?src=' | append: rhwp_src | append: '&download=' | append: rhwp_src | append: '&kind=rhwp&ext=' | append: rhwp_ext | append: '&title=' | append: rhwp_title -%}
-  {%- endif -%}
   {%- assign viewer_url = '' -%}
   {%- if view_kind != '' -%}
     {%- assign viewer_base = '/assets/attachment-viewer.html' | relative_url -%}
@@ -94,7 +80,7 @@
   {%- if scan and scan.result != 'clean' -%}{%- assign scan = nil -%}{%- endif -%}
   {%- if scan and given_sha != '' and given_sha != scan.sha256 -%}{%- assign scan = nil -%}{%- endif -%}
 {%- endif -%}
-<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'hwpx' %} data-th-hwpx data-hwpx-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'text' %} data-th-text data-text-src="{{ src_url | escape }}"{% endif %}{% if rhwp_on %} data-th-rhwp data-rhwp-src="{{ src_url | escape }}" data-rhwp-base="{{ '/assets/vendor/rhwp/' | relative_url }}"{% endif %}>
+<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'hwp' %} data-th-hwp data-hwp-src="{{ src_url | escape }}" data-hwp-base="{{ '/assets/vendor/rhwp/' | relative_url }}"{% endif %}{% if want_preview and view_kind == 'text' %} data-th-text data-text-src="{{ src_url | escape }}"{% endif %}{% if rhwp_on %}{% endif %}>
   {%- if want_preview and view_kind != '' %}
     {%- if view_kind == 'pdf' %}
   <div class="th-attachment-preview"><object data="{{ src_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
@@ -106,12 +92,9 @@
   <div class="th-attachment-preview"><object data="{{ preview_pdf_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
     {%- elsif view_kind == 'text' %}
   <div class="th-attachment-preview th-attachment-text"><div class="th-text-wrap" aria-live="polite"><p class="th-embed-note">텍스트 불러오는 중…</p></div></div>
-    {%- elsif view_kind == 'hwpx' %}
-  <div class="th-attachment-preview th-attachment-hwpx"><div class="th-hwpx-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
+    {%- elsif view_kind == 'hwp' %}
+  <div class="th-attachment-preview th-attachment-hwp"><div class="th-hwp-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
     {%- endif %}
-  {%- endif %}
-  {%- if rhwp_on and view_kind == '' %}
-  <div class="th-attachment-preview th-attachment-rhwp"><div class="th-rhwp-wrap"><p class="th-embed-note">이 한글 문서(hwp)는 고화질 미리보기로만 볼 수 있습니다. 아래 버튼을 눌러 쪽 모양 그대로 확인하세요.</p></div></div>
   {%- endif %}
   <figcaption class="th-attachment-meta">
     {% include embed/attachment-icon.html ext=ext %}
@@ -122,7 +105,6 @@
     <span class="th-attachment-kind">{{ kind_label }}</span>
     {%- if scan %}<span class="th-attachment-scan" title="{{ scan.engine | escape }} · {{ scan.scanned_at | escape }} 검사 · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과</span>{% endif -%}
     {%- if show_actions and view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
-    {%- if show_actions and rhwp_viewer_url != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ rhwp_viewer_url | escape }}" target="_blank" rel="noopener">{% if view_kind != '' %}고화질 미리보기{% else %}미리보기{% endif %} <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
     {%- if show_actions %}<a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{% endif -%}
     {%- assign _sha = include.sha256 | default: '' -%}
     {%- if _sha != '' %}<span class="th-attachment-sha">SHA-256 {{ _sha | escape }}</span>{% endif -%}

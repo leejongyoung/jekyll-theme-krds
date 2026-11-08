@@ -405,34 +405,46 @@
     });
   }
 
-  // 5) 첨부 한글 문서(HWPX): 글자·표·그림을 브라우저에서 바로 그린다(KRDSHwpx = js/hwpx.js). PDF 변환본이 있으면 이 경로를 쓰지 않는다.
-  var HWPX_MAX_BYTES = 30 * 1024 * 1024;
-  function initHwpx() {
-    var figs = document.querySelectorAll('figure.th-attachment[data-th-hwpx]');
+  // 5) 첨부 한글 문서(hwp·hwpx): rhwp로 쪽 모양 그대로 그린다(KRDSHwp = js/hwp.js). PDF 변환본이 있으면 이 경로를 쓰지 않는다.
+  //    엔진(약 12MB, 전송은 압축돼 약 4MB)은 카드가 화면 근처에 왔을 때 비로소 불러온다. 쪽은 보이는 것만 그리고 쪽 글은 스크린 리더용 대체 글로 함께 둔다.
+  function initHwp() {
+    var figs = document.querySelectorAll('figure.th-attachment[data-th-hwp]');
     if (!figs.length) return;
     figs.forEach(function (fig) {
-      var host = fig.querySelector('.th-hwpx-wrap');
-      var src = fig.getAttribute('data-hwpx-src');
-      if (!host || !src) return;
+      var host = fig.querySelector('.th-hwp-wrap');
+      var src = fig.getAttribute('data-hwp-src');
+      var base = fig.getAttribute('data-hwp-base');
+      if (!host || !src || !base) return;
+      var scroller = el('div', 'th-hwp-view');
+      scroller.hidden = true;
+      host.appendChild(scroller);
       function failed(message) {
         host.textContent = '';
-        host.appendChild(el('p', 'th-embed-error', message));
+        host.appendChild(el('p', 'th-embed-error', message + ' 내려받기로 확인하세요.'));
       }
-      if (!window.KRDSHwpx) { failed('한글 문서 미리보기 스크립트를 불러오지 못했습니다. 내려받기로 확인하세요.'); return; }
-      fetch(src).then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        var length = parseInt(res.headers.get('content-length') || '0', 10);
-        if (length > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
-        return res.arrayBuffer();
-      }).then(function (buf) {
-        if (buf.byteLength > HWPX_MAX_BYTES) throw new Error('파일이 너무 커서 미리볼 수 없습니다.');
-        return window.KRDSHwpx.render(buf);
-      }).then(function (root) {
-        host.textContent = '';
-        host.appendChild(root);
-      }).catch(function (error) {
-        failed((error && (error.hwpx || /^[^\x00-\x7f]/.test(error.message)) ? error.message : '문서를 불러오지 못했습니다.') + ' 내려받기로 확인하세요.');
-      });
+      var started = false;
+      function load() {
+        if (started) return;
+        started = true;
+        if (!window.KRDSHwp) { failed('한글 문서 미리보기 스크립트를 불러오지 못했습니다.'); return; }
+        window.KRDSHwp.open({ base: base, src: src, root: scroller }).then(function (opened) {
+          host.textContent = '';
+          host.appendChild(el('p', 'th-hwp-info', '쪽 모양 그대로 · 전체 ' + opened.pageCount + '쪽'));
+          scroller.hidden = false;
+          scroller.appendChild(opened.root);
+          host.appendChild(scroller);
+        }).catch(function (error) {
+          failed(error && error.krdsHwp ? error.message : '한글 문서를 불러오지 못했습니다.');
+        });
+      }
+      if (typeof IntersectionObserver === 'function') {
+        var observer = new IntersectionObserver(function (entries) {
+          if (entries.some(function (entry) { return entry.isIntersecting; })) { observer.disconnect(); load(); }
+        }, { rootMargin: '300px 0px' });
+        observer.observe(fig);
+      } else {
+        load();
+      }
     });
   }
   // 6) 첨부 텍스트 파일: <pre>로 앞부분을 보여 준다(KRDSText = js/text.js). 전체는 새 창 viewer나 내려받기로 본다.
@@ -464,64 +476,9 @@
       });
     });
   }
-  // 7) 고화질 한글 미리보기(rhwp, 선택): 사이트가 rhwp를 올려 둔 경우에만 figure[data-th-rhwp]가 생긴다(KRDSRhwp = js/hwp-rhwp.js).
-  //    rhwp는 용량이 커서(약 12MB) 버튼을 눌렀을 때 비로소 불러온다. 기본 미리보기(hwpx.js)가 있으면 그것과 오간다.
-  function initRhwp() {
-    var figs = document.querySelectorAll('figure.th-attachment[data-th-rhwp]');
-    if (!figs.length) return;
-    figs.forEach(function (fig) {
-      var preview = fig.querySelector('.th-attachment-preview');
-      var src = fig.getAttribute('data-rhwp-src');
-      var base = fig.getAttribute('data-rhwp-base');
-      if (!preview || !src || !base) return;
-      var simple = preview.querySelector('.th-hwpx-wrap, .th-rhwp-wrap');
-      var bar = el('div', 'th-rhwp-bar');
-      var info = el('span', 'th-rhwp-info', '쪽 모양 그대로 보려면 고화질 미리보기를 켜세요(rhwp 약 12MB를 불러옵니다).');
-      var button = el('button', 'th-text-btn th-rhwp-btn', '고화질로 보기');
-      button.type = 'button';
-      var live = el('span', 'th-sr-only');
-      live.setAttribute('role', 'status');
-      bar.appendChild(info);
-      bar.appendChild(button);
-      bar.appendChild(live);
-      preview.insertBefore(bar, preview.firstChild);
-      var scroller = el('div', 'th-rhwp-view');
-      scroller.hidden = true;
-      preview.appendChild(scroller);
-      var view = null;
-      function show(on) {
-        scroller.hidden = !on;
-        if (simple) simple.hidden = on;
-        button.textContent = on ? (simple && simple.classList.contains('th-hwpx-wrap') ? '간단히 보기' : '접기') : '고화질로 보기';
-        button.setAttribute('aria-expanded', on ? 'true' : 'false');
-      }
-      button.setAttribute('aria-expanded', 'false');
-      button.addEventListener('click', function () {
-        if (view) { show(scroller.hidden); return; }
-        if (!window.KRDSRhwp) { info.textContent = '고화질 미리보기 스크립트를 불러오지 못했습니다. 내려받기로 확인하세요.'; return; }
-        button.disabled = true;
-        button.textContent = '불러오는 중…';
-        info.textContent = '고화질 미리보기를 불러오는 중입니다…';
-        window.KRDSRhwp.open({ base: base, src: src, root: scroller }).then(function (opened) {
-          view = opened;
-          scroller.appendChild(opened.root);
-          info.textContent = '쪽 모양 그대로 · 전체 ' + opened.pageCount + '쪽';
-          live.textContent = '고화질 미리보기를 열었습니다. 전체 ' + opened.pageCount + '쪽.';
-          button.disabled = false;
-          show(true);
-        }).catch(function (error) {
-          info.textContent = (error && error.krdsRhwp ? error.message : '고화질 미리보기를 불러오지 못했습니다.') + ' 내려받기로 확인하세요.';
-          info.classList.add('th-rhwp-info--error');
-          button.disabled = false;
-          button.textContent = '다시 시도';
-        });
-      });
-    });
-  }
   initDiagrams();
   initCharts();
   initSheets();
-  initHwpx();
+  initHwp();
   initText();
-  initRhwp();
 })();

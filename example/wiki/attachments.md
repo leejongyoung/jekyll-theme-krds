@@ -29,7 +29,7 @@ attachments:
 문서 front matter의 `attachments`에 파일을 적으면 이 페이지 아래처럼 목록이 만들어집니다. 각 줄에는 형식별 [[아이콘]], 용량, SHA-256 전체 값, 그리고 `미리보기`와 `내려받기` 버튼이 나옵니다.
 
 - PDF와 이미지는 새 탭의 viewer에서, 스프레드시트는 표로 미리 봅니다.
-- `hwpx` 한글 문서는 변환 없이 브라우저가 글·표·그림을 직접 읽어 미리 보여 줍니다. `docx` 같은 문서는 PDF 변환본(`preview_pdf`)이 있을 때 미리 볼 수 있고, 변환은 GitHub Actions의 `document-previews`가 맡습니다.
+- `hwp`·`hwpx` 한글 문서는 변환 없이 브라우저가 쪽 모양 그대로 그려 미리 보여 줍니다. `docx` 같은 문서는 PDF 변환본(`preview_pdf`)이 있을 때 미리 볼 수 있고, 변환은 GitHub Actions의 `document-previews`가 맡습니다.
 - 텍스트(`txt`·`log`·`md`·`json` 등)는 `<pre>` 영역에 그대로 보여 주고, 새 탭 viewer에서는 앞 2MB까지 볼 수 있습니다. 인코딩(UTF-8·EUC-KR)은 자동으로 판별합니다.
 - 빌드할 때 `attachment-scan` action으로 ClamAV 검사를 돌리면 검사에 통과한 파일에 "바이러스 검사 통과" 표시가 붙습니다. 파일을 처음 넣을 때 한 번만 검사합니다.
 - 본문 중간에는 `{% raw %}{% include embed/attachment.html src="..." title="..." %}{% endraw %}`로 파일 카드를 넣을 수 있습니다.

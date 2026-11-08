@@ -1,5 +1,5 @@
-/* KRDSRhwp — 한글 문서(hwp·hwpx)를 쪽 모양 그대로 보여 주는 선택 기능. 사이트가 rhwp를 직접 올려 둔 경우에만 쓴다.
-   rhwp(@rhwp/core, MIT, https://github.com/edwardkim/rhwp)는 한글 문서를 쪽 단위 SVG로 그리는 Rust/WASM 라이브러리다.
+/* KRDSHwp — 한글 문서(hwp·hwpx)를 쪽 모양 그대로 보여 준다.
+   rhwp(@rhwp/core, MIT, https://github.com/edwardkim/rhwp)는 한글 문서를 쪽 단위 SVG로 그리는 Rust/WASM 라이브러리이고, 테마의 assets/vendor/rhwp/ 에 들어 있다.
    이 파일은 사이트 안의 주소(base)에 있는 rhwp.js·rhwp_bg.wasm만 불러오고 외부 연결은 하지 않는다.
    rhwp가 돌려주는 SVG는 문서 내용에서 만들어지므로 그대로 넣지 않는다. 허용한 요소·속성만 새로 만들어 옮기고,
    쪽마다 id를 구분해(같은 id가 여러 쪽에 있으면 clip-path가 엉킨다) 쪽 단위로 필요할 때 그린다. */
@@ -13,7 +13,7 @@
 
   function fail(message) {
     var error = new Error(message);
-    error.krdsRhwp = true;
+    error.krdsHwp = true;
     return error;
   }
 
@@ -75,13 +75,25 @@
     return copy(root, prefix);
   }
 
+  // 쪽의 글만 뽑는다(rhwp가 JSON 문자열로 돌려준다). 스크린 리더용 대체 글이라 줄바꿈만 정리하고 길면 자른다.
+  function pageText(doc, index) {
+    try {
+      var raw = doc.getPageText(index);
+      var text = raw;
+      try { text = JSON.parse(raw); } catch (error) { text = raw; }
+      if (typeof text !== 'string') return '';
+      text = text.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+      return text.length > 6000 ? text.slice(0, 6000) + '…' : text;
+    } catch (error) { return ''; }
+  }
+
   // ── rhwp 불러오기 ───────────────────────────────────────────────────
   var loaders = {};
   function load(base) {
     var root = new URL(base, location.href).href.replace(/[^/]*$/, '');
     if (loaders[root]) return loaders[root];
-    if (typeof WebAssembly !== 'object') return Promise.reject(fail('이 브라우저는 WebAssembly를 지원하지 않아 고화질 미리보기를 쓸 수 없습니다.'));
-    var missing = fail('고화질 미리보기에 필요한 rhwp 파일을 사이트에서 찾지 못했습니다. 설치 방법은 첨부 파일 문서를 확인하세요.');
+    if (typeof WebAssembly !== 'object') return Promise.reject(fail('이 브라우저는 WebAssembly를 지원하지 않아 한글 문서 미리보기를 쓸 수 없습니다.'));
+    var missing = fail('한글 문서 미리보기 엔진(rhwp)을 불러오지 못했습니다. 사이트에 assets/vendor/rhwp/ 파일이 있는지, CSP가 WASM 실행을 막지 않는지 확인하세요.');
     // import()는 classic 스크립트에서도 쓸 수 있다. 파일이 없거나 CSP가 막으면 같은 오류로 모은다.
     loaders[root] = import(root + 'rhwp.js').then(function (mod) {
       return mod.default({ module_or_path: root + 'rhwp_bg.wasm' }).then(function () { return mod; });
@@ -93,10 +105,10 @@
     return fetch(src).then(function (response) {
       if (!response.ok) throw fail('문서를 내려받지 못했습니다(HTTP ' + response.status + ').');
       var length = parseInt(response.headers.get('content-length') || '0', 10);
-      if (length > MAX_BYTES) throw fail('문서가 너무 커서(' + Math.round(length / 1048576) + 'MB) 고화질 미리보기를 쓸 수 없습니다.');
+      if (length > MAX_BYTES) throw fail('문서가 너무 커서(' + Math.round(length / 1048576) + 'MB) 미리볼 수 없습니다.');
       return response.arrayBuffer();
     }).then(function (buffer) {
-      if (buffer.byteLength > MAX_BYTES) throw fail('문서가 너무 커서 고화질 미리보기를 쓸 수 없습니다.');
+      if (buffer.byteLength > MAX_BYTES) throw fail('문서가 너무 커서 미리볼 수 없습니다.');
       return new Uint8Array(buffer);
     });
   }
@@ -115,7 +127,7 @@
       }
 
       var holder = document.createElement('div');
-      holder.className = 'th-rhwp-pages';
+      holder.className = 'th-hwp-pages';
       var boxes = [];
       var painted = [];
       var observer = null;
@@ -130,7 +142,7 @@
         try { svg = sanitize(doc.renderPageSvg(index), 'p' + (index + 1) + '-'); } catch (error) { svg = null; }
         box.textContent = '';
         if (!svg) {
-          box.className += ' th-rhwp-page--error';
+          box.className += ' th-hwp-page--error';
           box.textContent = (index + 1) + '쪽을 그리지 못했습니다.';
           return;
         }
@@ -142,13 +154,21 @@
         svg.removeAttribute('width');
         svg.removeAttribute('height');
         svg.setAttribute('focusable', 'false');
+        svg.setAttribute('aria-hidden', 'true');   // 그림 속 글자 하나하나가 따로 읽히지 않게 하고, 아래 대체 글을 읽게 한다
         box.appendChild(svg);
+        var alt = pageText(doc, index);
+        if (alt) {
+          var reader = document.createElement('p');
+          reader.className = 'th-sr-only';
+          reader.textContent = alt;
+          box.appendChild(reader);
+        }
       }
 
       for (var i = 0; i < count; i += 1) {
         var box = document.createElement('div');
-        box.className = 'th-rhwp-page';
-        box.setAttribute('role', 'img');   // 글자 하나하나가 따로 읽히지 않게 쪽 전체를 그림으로 둔다
+        box.className = 'th-hwp-page';
+        box.setAttribute('role', 'group');
         box.setAttribute('aria-label', (i + 1) + '쪽 / 전체 ' + count + '쪽');
         box.setAttribute('data-page', String(i + 1));
         holder.appendChild(box);
@@ -200,5 +220,5 @@
     });
   }
 
-  window.KRDSRhwp = { open: open, sanitize: sanitize };
+  window.KRDSHwp = { open: open, sanitize: sanitize };
 })();
