@@ -303,6 +303,7 @@
     renderAsk();
     updateStatus(q, tokens);
     syncUrl(q);
+    document.dispatchEvent(new CustomEvent('krds:search-done'));   // "AI에게 물어보기"(ask-ai.js)가 링크를 갱신한다
   }
 
   function resultItem(r, tokens) {
