@@ -72,8 +72,8 @@ Re-vendor with `script/vendor-krds <tag>`.
 
 - Source: <https://fontawesome.com> (npm `@fortawesome/fontawesome-free`) · Version vendored: **7.3.1**
 - License: **CC BY 4.0** for the SVG icons (<https://creativecommons.org/licenses/by/4.0/>). The full Font Awesome Free license is in `assets/img/fa/LICENSE.txt`.
-- Files: a selected subset (about 80 icons) of `svgs/solid`, `svgs/regular` and `svgs/brands` in `assets/img/fa/`, **unmodified**. Each file keeps Font Awesome's attribution comment.
-- They are applied as CSS masks (`.th-fa`), so no Font Awesome font or script is loaded. HWP has no Font Awesome icon, so the generic `file-lines` icon is used for it.
+- Files: a selected subset (about 80 icons) of `svgs/solid`, `svgs/regular` and `svgs/brands` in `assets/img/fa/`, **unmodified** except `solid/file-hwp.svg`, which reuses the page outline of the `file-word` icon and replaces the "W" with an "H" (a change made for this theme; its header comment says so). Each file keeps Font Awesome's attribution comment.
+- They are applied as CSS masks (`.th-fa`), so no Font Awesome font or script is loaded. HWP has no Font Awesome icon, so the modified `file-hwp` icon described above is used for it.
 - Attribution: Icons by Font Awesome Free (<https://fontawesome.com>), Copyright Fonticons, Inc., licensed under CC BY 4.0. Do not remove the comment header in the SVG files or `LICENSE.txt`.
 
 ## 8. This theme's own code
@@ -84,3 +84,8 @@ MIT License, see `LICENSE`.
 ## 9. Example site assets
 
 - `sample.hwpx` in the example site was generated with python-hwpx 6.11.0 (<https://github.com/airmang/python-hwpx>, Apache-2.0) from its blank-document template plus text written for this theme. It is only an example file and is not part of the theme code. The generator script is not included.
+
+
+## 10. ClamAV (optional attachment scan)
+
+- The optional `attachment-scan` GitHub Action installs ClamAV (<https://www.clamav.net/>, GPL-2.0) on the CI runner from the Ubuntu package repository and runs `clamscan` as a separate program. No ClamAV code or virus definitions are included in this repository or in the theme.

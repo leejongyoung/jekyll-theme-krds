@@ -1,4 +1,4 @@
-/* Standalone attachment viewer: PDF, images, and the first spreadsheet sheet. */
+/* Standalone attachment viewer: PDF, images, the first spreadsheet sheet, HWPX, and plain text. */
 (function () {
   'use strict';
   var params = new URLSearchParams(location.search);
@@ -36,13 +36,13 @@
     ['sheet', 'file-excel', 'xls xlsx ods cell'],
     ['sheet', 'file-csv', 'csv tsv'],
     ['slides', 'file-powerpoint', 'ppt pptx odp show'],
-    ['hwp', 'file-lines', 'hwp hwpx'],
+    ['hwp', 'file-hwp', 'hwp hwpx'],
     ['image', 'file-image', 'png jpg jpeg gif webp svg bmp'],
     ['audio', 'file-audio', 'mp3 wav ogg m4a flac'],
     ['video', 'file-video', 'mp4 webm mov mkv'],
     ['archive', 'file-zipper', 'zip 7z tar gz rar'],
     ['code', 'file-code', 'html htm json xml js css yml yaml'],
-    ['text', 'file-lines', 'txt md log']
+    ['text', 'file-lines', 'txt text md markdown log ini conf cfg toml']
   ];
   function iconFor(extension) {
     for (var i = 0; i < TYPES.length; i += 1) {
@@ -51,6 +51,7 @@
     if (kind === 'pdf') return TYPES[0];
     if (kind === 'sheet') return TYPES[2];
     if (kind === 'image') return TYPES[6];
+    if (kind === 'text') return TYPES[11];
     return ['file', 'file'];
   }
   function setFileIcon() {
@@ -178,9 +179,37 @@
     document.head.appendChild(script);
   }
 
+  var TEXT_MAX_BYTES = 2 * 1024 * 1024;
+  function renderText(url) {
+    var script = document.createElement('script');
+    script.src = new URL('js/text.js', location.href).href;
+    script.onload = function () {
+      fetch(url).then(function (response) {
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        return window.KRDSText.read(response, TEXT_MAX_BYTES);
+      }).then(function (buffer) {
+        var out = window.KRDSText.render(buffer, { maxBytes: TEXT_MAX_BYTES, label: title + ' 내용' });
+        content.textContent = '';
+        var wrap = document.createElement('div');
+        wrap.className = 'th-text-viewer';
+        var note = document.createElement('p');
+        note.className = 'th-text-note';
+        note.textContent = out.note + (out.truncated ? ' · 전체는 원본을 내려받아 확인하세요.' : '');
+        wrap.appendChild(note);
+        wrap.appendChild(out.root);
+        content.appendChild(wrap);
+        readyToPrint();
+      }).catch(function (error) {
+        fail((error && error.krdsText ? error.message : '텍스트 파일을 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
+      });
+    };
+    script.onerror = function () { fail('텍스트 미리보기 스크립트를 불러오지 못했습니다.'); };
+    document.head.appendChild(script);
+  }
+
   var url = safeURL(src);
   var originalURL = safeURL(originalSrc);
-  if (!url || ['pdf', 'image', 'sheet', 'hwpx'].indexOf(kind) === -1) {
+  if (!url || ['pdf', 'image', 'sheet', 'hwpx', 'text'].indexOf(kind) === -1) {
     fail('지원하지 않거나 잘못된 미리보기 주소입니다.');
     return;
   }
@@ -201,5 +230,6 @@
   if (kind === 'pdf') renderPDF(url);
   else if (kind === 'image') renderImage(url);
   else if (kind === 'hwpx') renderHwpx(url);
+  else if (kind === 'text') renderText(url);
   else renderSheet(url);
 })();

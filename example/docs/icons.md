@@ -24,7 +24,7 @@ tags: [아이콘, 가이드]
 
 ## 첨부 파일 아이콘
 
-[첨부 파일]({{ '/docs/attachments/' | relative_url }}) 카드는 확장자에 맞는 아이콘과 색을 자동으로 고릅니다. HWP/HWPX는 Font Awesome에 전용 아이콘이 없어 문서 아이콘을 보라색으로 구분합니다.
+[첨부 파일]({{ '/docs/attachments/' | relative_url }}) 카드는 확장자에 맞는 아이콘과 색을 자동으로 고릅니다. HWP/HWPX는 Font Awesome 문서 아이콘의 모양을 바탕으로 "H"를 넣은 전용 아이콘(`file-hwp`)을 쓰고, 워드와 구분되도록 조금 진한 파란색으로 그립니다.
 
 | 종류 | 확장자 | 아이콘 |
 | :--- | :--- | :--- |
@@ -32,7 +32,7 @@ tags: [아이콘, 가이드]
 | 문서 | doc, docx, odt, rtf | {% include embed/icon.html name="file-word" %} file-word |
 | 스프레드시트 | xls, xlsx, ods, cell, csv, tsv | {% include embed/icon.html name="file-excel" %} file-excel · {% include embed/icon.html name="file-csv" %} file-csv |
 | 프레젠테이션 | ppt, pptx, odp, show | {% include embed/icon.html name="file-powerpoint" %} file-powerpoint |
-| 한글 | hwp, hwpx | {% include embed/icon.html name="file-lines" %} file-lines |
+| 한글 | hwp, hwpx | {% include embed/icon.html name="file-hwp" %} file-hwp |
 | 이미지·음원·영상 | png, jpg, svg, mp3, mp4 … | {% include embed/icon.html name="file-image" %} {% include embed/icon.html name="file-audio" %} {% include embed/icon.html name="file-video" %} |
 | 압축·코드·텍스트 | zip, html, json, txt … | {% include embed/icon.html name="file-zipper" %} {% include embed/icon.html name="file-code" %} {% include embed/icon.html name="file-lines" %} |
 

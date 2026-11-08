@@ -1,0 +1,62 @@
+name: KRDS attachment virus scan
+description: Scan newly added attachment files with ClamAV once and record the result so the theme can show a badge.
+inputs:
+  source:
+    description: Directory containing the attachment files, relative to GITHUB_WORKSPACE.
+    required: true
+  manifest:
+    description: Manifest JSON the theme reads (Hugo data/attachment_scan.json, Jekyll _data/attachment_scan.json), relative to GITHUB_WORKSPACE.
+    required: true
+  url-prefix:
+    description: Site URL path the source directory is served at.
+    required: false
+    default: /assets/files
+  rescan:
+    description: Set to "true" to scan every file again and ignore the manifest.
+    required: false
+    default: "false"
+outputs:
+  pending:
+    description: Number of files that needed a scan.
+    value: ${{ steps.plan.outputs.pending }}
+runs:
+  using: composite
+  steps:
+    - name: Find files that were never scanned
+      id: plan
+      shell: bash
+      env:
+        SCAN_SOURCE: ${{ inputs.source }}
+        SCAN_MANIFEST: ${{ inputs.manifest }}
+        SCAN_PREFIX: ${{ inputs.url-prefix }}
+        SCAN_RESCAN: ${{ inputs.rescan }}
+      run: |
+        set -euo pipefail
+        args=(--source "${GITHUB_WORKSPACE}/${SCAN_SOURCE}" --manifest "${GITHUB_WORKSPACE}/${SCAN_MANIFEST}" --url-prefix "${SCAN_PREFIX}")
+        if [[ "${SCAN_RESCAN}" == "true" ]]; then args+=(--rescan); fi
+        python3 "${{ github.action_path }}/scan.py" plan "${args[@]}"
+    - name: Install ClamAV
+      if: steps.plan.outputs.pending != '0'
+      shell: bash
+      run: |
+        set -euo pipefail
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends clamav ca-certificates
+        sudo systemctl stop clamav-freshclam || true
+        # clamd 없이 clamscan만 쓰므로 패키지 기본 설정에서 clamd 알림만 끈다. 별도 설정 파일(--config-file)은
+        # GitHub 러너에서 freshclam이 열지 못해(원인 미확인) 쓰지 않는다.
+        sudo sed -i 's/^NotifyClamd/#NotifyClamd/' /etc/clamav/freshclam.conf
+        sudo freshclam
+    - name: Scan new attachment files
+      if: steps.plan.outputs.pending != '0'
+      shell: bash
+      env:
+        SCAN_SOURCE: ${{ inputs.source }}
+        SCAN_MANIFEST: ${{ inputs.manifest }}
+        SCAN_PREFIX: ${{ inputs.url-prefix }}
+        SCAN_RESCAN: ${{ inputs.rescan }}
+      run: |
+        set -euo pipefail
+        args=(--source "${GITHUB_WORKSPACE}/${SCAN_SOURCE}" --manifest "${GITHUB_WORKSPACE}/${SCAN_MANIFEST}" --url-prefix "${SCAN_PREFIX}")
+        if [[ "${SCAN_RESCAN}" == "true" ]]; then args+=(--rescan); fi
+        python3 "${{ github.action_path }}/scan.py" scan "${args[@]}"

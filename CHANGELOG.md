@@ -4,6 +4,14 @@
 
 ## [Unreleased]
 
+### 추가
+- 첨부 파일 바이러스 검사 옵션: `attachment-scan` GitHub Action이 ClamAV로 새로 들어온 파일만(주소·SHA-256 기준, 처음 한 번) 검사해 `_data/attachment_scan.json`에 기록하고, 감염이 있으면 빌드를 실패시킵니다. 기록된 파일 카드에 "바이러스 검사 통과 · 날짜" 표시가 붙습니다
+- 첨부 텍스트 미리보기(`txt`·`log`·`md`·`json`·`xml`·`yml`·`ini`·`conf`·`toml` 등): `<pre>`로 본문 카드(앞 100KB)와 새 탭 viewer(앞 2MB, 인쇄 가능)에 표시. UTF-8·UTF-16(BOM)·EUC-KR(CP949) 자동 판별, 내용은 `textContent`로만 넣어 HTML이 실행되지 않음, NUL이 있으면 텍스트로 보지 않음
+- 예제 `sample-euckr.txt`, `sample.txt` 갱신과 문서 설명
+
+### 변경
+- 한글(hwp·hwpx) 파일 아이콘을 "H"가 들어간 전용 `file-hwp`로 바꾸고 색을 보라에서 진한 파랑으로 변경(Font Awesome 문서 아이콘 윤곽을 바탕으로 만든 수정본, NOTICE에 명시)
+
 ## [1.7.1] - 2026-11-08
 
 ### 수정
