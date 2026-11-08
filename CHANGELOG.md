@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-11-08
+
+### 추가
+- CI에 `build-lower-bound` 잡: `gemspec`이 선언한 지원 하한(Ruby 3.1, Jekyll 4.3)으로도 예제 사이트가 빌드되는지 확인합니다(`example/Gemfile.jekyll43`). 선언한 하한과 이 잡이 시험하는 값이 다르면 실패합니다
+- `script/check-shared.py`와 CI의 `shared-files` 잡: Hugo·Jekyll 두 테마에서 같아야 하는 파일이 상대 저장소의 `main`과 어긋나면 경고합니다(지금은 경고만, `--strict`로 실패 가능). CONTRIBUTING에 설명을 추가했습니다
+- 문서: 검사 기록을 CI가 자동으로 커밋하는 방법(선택). 실제 GitHub 러너에서 시험한 동작을 바탕으로 제약도 적었습니다
+
+### 변경
+- 예제 `sample.hwpx`에 하이퍼링크를 넣어 데모에서 링크가 어떻게 보이는지 확인할 수 있습니다
+
 ## [1.9.0] - 2026-11-08
 
 ### 추가
