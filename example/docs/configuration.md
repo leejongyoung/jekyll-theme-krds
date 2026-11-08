@@ -14,7 +14,7 @@ lead: 사이트 이름, 푸터, 색과 글꼴을 바꾸는 방법입니다.
 | `krds.favicon` | 파비콘 경로 |
 | `krds.search.max_chars` | 검색 색인에 담는 본문 길이(글자 수, 기본 3000). 글이 많으면 줄입니다 |
 | `krds.hwp.rhwp` | 고화질 한글 미리보기(rhwp)를 켤지(기본 꺼짐). rhwp 파일은 테마에 없고 `rhwp-vendor` action으로 받아야 합니다([첨부 파일]({{ '/docs/attachments/' | relative_url }}) 참고) |
-| `krds.search.answer` | 검색의 "AI로 답변 만들기"를 켤지(기본 꺼짐). 방문자가 자기 API 키를 입력해 쓰는 선택 기능입니다(`search.sentence`가 켜져 있어야 함) |
+| `krds.search.ai` | 검색의 "AI에게 물어보기"를 켤지(기본 꺼짐). `true`이거나 서비스 목록(예: `[chatgpt, gemini, grok]`). 질문을 무료 웹 챗봇으로 넘기는 링크이며 `search.sentence`가 켜져 있어야 합니다 |
 | `krds.search.sentence` | 검색의 "문장으로 찾기"를 켤지(기본 `true`). 끄면 색인에서 소제목별 본문이 빠집니다 |
 
 ## 색과 글꼴 바꾸기

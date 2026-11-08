@@ -25,7 +25,7 @@ REPOS = {"hugo": "hugo-theme-krds", "jekyll": "jekyll-theme-krds"}
 OWNER = "leejongyoung"
 
 # (종류, Hugo 경로, Jekyll 경로, 방식). 종류: file | dir
-JS_EXACT = ["hwpx", "text", "home", "wiki", "attachment-viewer", "hwp-rhwp", "answer"]
+JS_EXACT = ["hwpx", "text", "home", "wiki", "attachment-viewer", "hwp-rhwp", "ask-ai"]
 JS_LOOSE = ["theme", "embeds", "math", "search"]
 TARGETS = (
     [("file", f"static/assets/js/{n}.js", f"assets/js/{n}.js", "exact") for n in JS_EXACT]
