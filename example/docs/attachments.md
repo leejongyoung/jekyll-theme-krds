@@ -39,9 +39,13 @@ attachments:
 
 ## pdf 미리보기
 
-`pdf`는 브라우저 내장 뷰어로 바로 보여줍니다.
+`pdf`는 브라우저 내장 뷰어를 쓰지 않고 테마에 들어 있는 [pdf.js](https://github.com/mozilla/pdf.js)(Apache-2.0)로 직접 그립니다. 브라우저마다 다르게 보이던 내장 보기의 들쭉날쭉함을 없애고, 카드와 새 탭 viewer가 같은 쪽 모양으로 나옵니다. 카드가 화면 근처에 오면 그때 불러오고(그 전에는 받지 않음), 쪽은 화면에 보일 때 하나씩 그립니다.
 
 {% include embed/attachment.html src="/assets/files/sample.pdf" title="첨부 예제 PDF" size="5.8KB" sha256="0e3be03e83aa11752eaf5cabd18d74b852596c67d29bb9cbab5cff7332e96e07" %}
+
+- **접근성:** 쪽은 그림(캔버스)으로 그리되, 스크린 리더에는 쪽의 글을 화면에 보이지 않게 함께 둡니다.
+- **사이트 용량:** pdf.js(약 1.7MB)는 테마의 `assets/vendor/pdfjs/`에 들어 있고, PDF 첨부가 있는 페이지를 만들 때만 사이트에 발행됩니다(Hugo). Jekyll은 테마 파일을 항상 복사합니다.
+- **열리지 않는 문서:** 암호가 걸린 PDF는 오류 안내와 내려받기가 나옵니다. 30MB를 넘는 문서는 미리보기를 건너뜁니다.
 
 ## 이미지 미리보기
 
@@ -51,7 +55,7 @@ attachments:
 
 ## 오피스 문서 + PDF 변환본
 
-`docx`·`pptx` 같은 오피스 문서는 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 브라우저 viewer로 엽니다.
+`docx`·`pptx` 같은 오피스 문서는 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 테마 viewer로 엽니다.
 
 {% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
 

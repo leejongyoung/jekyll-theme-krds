@@ -128,6 +128,8 @@
 
       var holder = document.createElement('div');
       holder.className = 'th-hwp-pages';
+      holder.setAttribute('role', 'group');
+      holder.setAttribute('aria-label', '한글 문서 미리보기, 전체 ' + count + '쪽');
       var boxes = [];
       var painted = [];
       var observer = null;

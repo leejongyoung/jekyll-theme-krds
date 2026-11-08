@@ -21,6 +21,8 @@ main:
         url: /docs/icons/
       - title: 홈 화면 꾸미기
         url: /docs/home/
+      - title: 자주 묻는 질문
+        url: /docs/faq/
   - title: 블로그
     url: /blog/
   - title: 태그

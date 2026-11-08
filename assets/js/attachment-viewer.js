@@ -36,7 +36,6 @@
     ['sheet', 'file-excel', 'xls xlsx ods cell'],
     ['sheet', 'file-csv', 'csv tsv'],
     ['slides', 'file-powerpoint', 'ppt pptx odp show'],
-    ['hwp', 'file-hwp', 'hwp hwpx'],
     ['image', 'file-image', 'png jpg jpeg gif webp svg bmp'],
     ['audio', 'file-audio', 'mp3 wav ogg m4a flac'],
     ['video', 'file-video', 'mp4 webm mov mkv'],
@@ -68,21 +67,24 @@
     printButton.disabled = false;
   }
   function renderPDF(url) {
-    var object = document.createElement('object');
-    object.data = url;
-    object.type = 'application/pdf';
-    object.setAttribute('aria-label', title + ' 미리보기');
-    var fallback = document.createElement('p');
-    fallback.className = 'th-attachment-fallback';
-    var link = document.createElement('a');
-    link.href = url;
-    link.textContent = title + ' 내려받기';
-    fallback.appendChild(link);
-    object.appendChild(fallback);
-    content.textContent = '';
-    content.appendChild(object);
-    readyToPrint();
+    var script = document.createElement('script');
+    script.src = new URL('js/pdf.js', location.href).href;
+    script.onload = function () {
+      window.KRDSPdf.open({ base: new URL('vendor/pdfjs/', location.href).href, src: url, eager: true }).then(function (view) {
+        content.textContent = '';
+        var wrap = document.createElement('div');
+        wrap.className = 'th-pdf-viewer';
+        wrap.appendChild(view.root);
+        content.appendChild(wrap);
+        view.rendered.then(readyToPrint);
+      }).catch(function (error) {
+        fail((error && error.krdsPdf ? error.message : 'PDF를 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
+      });
+    };
+    script.onerror = function () { fail('PDF 미리보기 스크립트를 불러오지 못했습니다.'); };
+    document.head.appendChild(script);
   }
+
   function renderImage(url) {
     var image = document.createElement('img');
     image.alt = title;
@@ -183,10 +185,6 @@
         content.textContent = '';
         var wrap = document.createElement('div');
         wrap.className = 'th-hwp-viewer';
-        var info = document.createElement('p');
-        info.className = 'th-hwp-info';
-        info.textContent = '쪽 모양 그대로 · 전체 ' + view.pageCount + '쪽';
-        wrap.appendChild(info);
         wrap.appendChild(view.root);
         content.appendChild(wrap);
         view.rendered.then(readyToPrint);

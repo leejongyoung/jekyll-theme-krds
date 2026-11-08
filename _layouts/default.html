@@ -19,10 +19,12 @@
 {%- if th_sheet == nil and site.krds.sheet != false and content contains 'data-th-sheet' -%}{%- assign th_sheet = true -%}{%- endif -%}
 {%- assign th_embeds = false -%}
 {%- assign th_hwp = false -%}
+{%- assign th_pdf = false -%}
 {%- assign th_text = false -%}
 {%- if content contains 'data-th-text' -%}{%- assign th_text = true -%}{%- endif -%}
 {%- if content contains 'data-th-hwp' -%}{%- assign th_hwp = true -%}{%- endif -%}
-{%- if th_mermaid or th_chart or th_sheet or th_hwp or th_text or content contains 'data-th-embed' -%}{%- assign th_embeds = true -%}{%- endif -%}
+{%- if content contains 'data-th-pdf' -%}{%- assign th_pdf = true -%}{%- endif -%}
+{%- if th_mermaid or th_chart or th_sheet or th_hwp or th_pdf or th_text or content contains 'data-th-embed' -%}{%- assign th_embeds = true -%}{%- endif -%}
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: 'ko' }}">
 <head>
@@ -56,15 +58,14 @@
   {%- if th_hwp %}
   <script src="{{ '/assets/js/hwp.js' | relative_url }}" defer></script>
   {%- endif %}
+  {%- if th_pdf %}
+  <script src="{{ '/assets/js/pdf.js' | relative_url }}" defer></script>
+  {%- endif %}
   {%- if th_embeds %}
   <script src="{{ '/assets/js/embeds.js' | relative_url }}" defer{% if th_mermaid %} data-mermaid="{{ '/assets/vendor/mermaid/mermaid.esm.min.mjs' | relative_url }}"{% endif %}></script>
   {%- endif %}
   {%- if page.layout == 'search' %}
   <script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
-  {%- include search-ai-services.html %}
-  {%- if th_ai_services != '' %}
-  <script src="{{ '/assets/js/ask-ai.js' | relative_url }}" defer></script>
-  {%- endif %}
   {%- endif %}
   {%- if page.layout == 'wiki' or page.layout == 'wiki-home' %}
   <script src="{{ '/assets/js/wiki.js' | relative_url }}" defer></script>

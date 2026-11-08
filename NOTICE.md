@@ -96,3 +96,10 @@ MIT License, see `LICENSE`.
 - License: **MIT** — `assets/vendor/rhwp/LICENSE`
 - Files: `rhwp.js` (SHA-256 `70cde06a369fa7fd4fc8bc8f3d6acaee158596ba1a116a2c72159002b0b5654e`) and `rhwp_bg.wasm` (SHA-256 `54cf95014312e605c51b98eb9021247ea79ef2bbd0a7080e11c011d0246e3989`), unmodified from the npm package; the version is recorded in `assets/vendor/rhwp/VERSION`.
 - Loaded only when a page previews a `hwp` or `hwpx` attachment. The sample `sample.hwp` in the example site is a test document of the rhwp project (MIT).
+
+## 12. pdf.js (PDF preview)
+
+- Source: <https://github.com/mozilla/pdf.js> (npm `pdfjs-dist`) · Version vendored: **6.5.438**
+- License: **Apache-2.0** — `assets/vendor/pdfjs/LICENSE`
+- Files: `pdf.mjs` (SHA-256 `3a88402882cfa3e7e72c2c9b5149f52f0f88baf1c5b62aa11a41abdbc207244`) and `pdf.worker.mjs` (SHA-256 `1e64c8240e54735ec5913b37acd5134747799cb8c6bb3777c70adbc01232d2aa`), unmodified from the npm package; the version is recorded in `assets/vendor/pdfjs/VERSION`.
+- Loaded only when a page previews a `pdf` attachment.

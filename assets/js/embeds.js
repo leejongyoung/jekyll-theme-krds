@@ -429,12 +429,52 @@
         if (!window.KRDSHwp) { failed('한글 문서 미리보기 스크립트를 불러오지 못했습니다.'); return; }
         window.KRDSHwp.open({ base: base, src: src, root: scroller }).then(function (opened) {
           host.textContent = '';
-          host.appendChild(el('p', 'th-hwp-info', '쪽 모양 그대로 · 전체 ' + opened.pageCount + '쪽'));
           scroller.hidden = false;
           scroller.appendChild(opened.root);
           host.appendChild(scroller);
         }).catch(function (error) {
           failed(error && error.krdsHwp ? error.message : '한글 문서를 불러오지 못했습니다.');
+        });
+      }
+      if (typeof IntersectionObserver === 'function') {
+        var observer = new IntersectionObserver(function (entries) {
+          if (entries.some(function (entry) { return entry.isIntersecting; })) { observer.disconnect(); load(); }
+        }, { rootMargin: '300px 0px' });
+        observer.observe(fig);
+      } else {
+        load();
+      }
+    });
+  }
+  // 6) 첨부 PDF: pdf.js로 브라우저마다 같은 모양으로 직접 그린다(KRDSPdf = js/pdf.js). PDF 변환본(preview_pdf)도 이 경로로 그린다.
+  //    엔진(약 1.7MB, 전송은 압축되어 약 0.5MB)은 카드가 화면 근처에 왔을 때 비로소 불러온다. 쪽은 보이는 것만 그리고 쪽 글은 스크린 리더용 대체 글로 함께 둔다.
+  function initPdf() {
+    var figs = document.querySelectorAll('figure.th-attachment[data-th-pdf]');
+    if (!figs.length) return;
+    figs.forEach(function (fig) {
+      var host = fig.querySelector('.th-pdf-wrap');
+      var src = fig.getAttribute('data-pdf-src');
+      var base = fig.getAttribute('data-pdf-base');
+      if (!host || !src || !base) return;
+      var scroller = el('div', 'th-pdf-view');
+      scroller.hidden = true;
+      host.appendChild(scroller);
+      function failed(message) {
+        host.textContent = '';
+        host.appendChild(el('p', 'th-embed-error', message + ' 내려받기로 확인하세요.'));
+      }
+      var started = false;
+      function load() {
+        if (started) return;
+        started = true;
+        if (!window.KRDSPdf) { failed('PDF 미리보기 스크립트를 불러오지 못했습니다.'); return; }
+        window.KRDSPdf.open({ base: base, src: src, root: scroller }).then(function (opened) {
+          host.textContent = '';
+          scroller.hidden = false;
+          scroller.appendChild(opened.root);
+          host.appendChild(scroller);
+        }).catch(function (error) {
+          failed(error && error.krdsPdf ? error.message : 'PDF를 불러오지 못했습니다.');
         });
       }
       if (typeof IntersectionObserver === 'function') {
@@ -481,4 +521,5 @@
   initSheets();
   initHwp();
   initText();
+  initPdf();
 })();
