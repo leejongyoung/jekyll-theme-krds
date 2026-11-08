@@ -239,55 +239,48 @@ html[data-krds-mode="high-contrast"] .th-text-chip--warn { border-color: var(--k
   }
 }
 
-// 고화질 한글 미리보기(rhwp, 선택)
-.th-rhwp-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--krds-gap-2) var(--krds-gap-4);
+// 한글 문서 미리보기(rhwp)
+.th-hwp-info {
+  margin: 0;
   padding: var(--krds-padding-2) var(--krds-padding-3);
   border-bottom: 1px solid var(--th-border);
   background: var(--th-bg-subtle);
   color: var(--th-text-subtle);
   font-size: var(--krds-pc-font-size-body-small);
 }
-.th-rhwp-info { margin: 0; }
-.th-rhwp-info--error { color: var(--th-danger); }
-.th-rhwp-wrap { padding: var(--krds-padding-3); }
-.th-rhwp-view {
+.th-hwp-wrap > .th-embed-note,
+.th-hwp-wrap > .th-embed-error { margin: 0; padding: var(--krds-padding-3); }
+.th-hwp-view {
   max-height: 70vh;
   padding: var(--krds-padding-3);
   overflow: auto;
   background: var(--th-bg-subtle);
 }
-.th-rhwp-view[hidden],
-.th-hwpx-wrap[hidden],
-.th-rhwp-wrap[hidden] { display: none; }
-.th-rhwp-pages {
+.th-hwp-view[hidden] { display: none; }
+.th-hwp-pages {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--krds-gap-3);
 }
-.th-rhwp-page {
+.th-hwp-page {
   width: 100%;
   max-width: 82rem;
   aspect-ratio: 210 / 297;
   background: #fff;
   box-shadow: 0 0 0 1px var(--th-border-strong), 0 0.2rem 0.8rem rgba(0, 0, 0, 0.12);
 }
-.th-rhwp-page svg { display: block; width: 100%; height: auto; }
-.th-rhwp-page--error {
+.th-hwp-page svg { display: block; width: 100%; height: auto; }
+.th-hwp-page--error {
   display: flex;
   align-items: center;
   justify-content: center;
   color: #555;
 }
-.th-rhwp-viewer { max-width: 100rem; margin: 0 auto; }
-.th-rhwp-viewer > .th-rhwp-info { margin: 0 0 var(--krds-gap-3); color: var(--th-text-subtle); }
+.th-hwp-viewer { max-width: 100rem; margin: 0 auto; }
+.th-hwp-viewer > .th-hwp-info { margin: 0 0 var(--krds-gap-3); padding: 0; border: 0; background: none; }
 @media print {
-  .th-rhwp-bar, .th-rhwp-viewer > .th-rhwp-info { display: none; }
-  .th-rhwp-view { max-height: none; padding: 0; overflow: visible; background: none; }
-  .th-rhwp-page { max-width: none; aspect-ratio: auto; box-shadow: none; break-after: page; }
+  .th-hwp-info, .th-hwp-viewer > .th-hwp-info { display: none; }
+  .th-hwp-view { max-height: none; padding: 0; overflow: visible; background: none; }
+  .th-hwp-page { max-width: none; aspect-ratio: auto; box-shadow: none; break-after: page; }
 }

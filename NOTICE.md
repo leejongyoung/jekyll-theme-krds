@@ -89,3 +89,10 @@ MIT License, see `LICENSE`.
 ## 10. ClamAV (optional attachment scan)
 
 - The optional `attachment-scan` GitHub Action installs ClamAV (<https://www.clamav.net/>, GPL-2.0) on the CI runner from the Ubuntu package repository and runs `clamscan` as a separate program. No ClamAV code or virus definitions are included in this repository or in the theme.
+
+## 11. rhwp (Hangul document preview)
+
+- Source: <https://github.com/edwardkim/rhwp> (npm `@rhwp/core`) · Version vendored: **0.8.7**
+- License: **MIT** — `assets/vendor/rhwp/LICENSE`
+- Files: `rhwp.js` (SHA-256 `70cde06a369fa7fd4fc8bc8f3d6acaee158596ba1a116a2c72159002b0b5654e`) and `rhwp_bg.wasm` (SHA-256 `54cf95014312e605c51b98eb9021247ea79ef2bbd0a7080e11c011d0246e3989`), unmodified from the npm package; the version is recorded in `assets/vendor/rhwp/VERSION`.
+- Loaded only when a page previews a `hwp` or `hwpx` attachment. The sample `sample.hwp` in the example site is a test document of the rhwp project (MIT).

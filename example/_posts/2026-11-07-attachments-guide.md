@@ -63,7 +63,7 @@ attachments:
 | :--- | :--- |
 | PDF, 이미지 | 브라우저가 직접 그립니다. 버튼을 누르면 새 탭의 viewer가 열립니다. |
 | 스프레드시트(`xlsx`, `xls`, `ods`, `csv`, `tsv`) | 테마에 들어 있는 SheetJS가 표로 보여 줍니다(처음 100행). |
-| 한글 문서(`hwpx`) | 브라우저가 파일을 직접 읽어 글·표·그림을 보여 줍니다(도형·머리말은 제외). 변환본(`preview_pdf`)이 있으면 PDF가 우선입니다. |
+| 한글 문서(`hwp`·`hwpx`) | 브라우저가 rhwp로 쪽 모양 그대로 그려 줍니다(카드가 화면 근처에 오면 불러옵니다). 변환본(`preview_pdf`)이 있으면 PDF가 우선입니다. |
 | 오피스 문서(`docx`, `pptx` 등) | PDF 변환본(`preview_pdf`)이 있을 때 그 PDF를 보여 줍니다. |
 | 텍스트(`txt`, `log`, `md`, `json` 등) | `<pre>` 영역에 그대로 보여 줍니다(본문 카드는 앞 100KB, viewer는 앞 2MB). UTF-8과 EUC-KR은 자동으로 판별합니다. |
 | 그 밖의 파일 | 카드와 `내려받기`만 나옵니다. |
@@ -72,11 +72,11 @@ attachments:
 
 ## 5. 한글과 오피스 문서는 PDF로 바꿔 두기
 
-`docx` 같은 오피스 문서는 브라우저가 직접 그리지 못합니다. 빌드할 때 PDF로 바꿔 두면 그 PDF로 미리보기를 보여 줄 수 있습니다. `hwpx`는 바로 미리볼 수 있지만, 서식까지 정확히 보여야 하거나 예전 형식 `hwp`라면 변환이 필요합니다. GitHub Actions를 쓴다면 테마의 `document-previews` 액션이 Ubuntu에 LibreOffice와 H2Orestart(한글 문서 변환 확장)를 설치해 원본과 같은 이름의 `.pdf`를 만들어 줍니다.
+`docx` 같은 오피스 문서는 브라우저가 직접 그리지 못합니다. 빌드할 때 PDF로 바꿔 두면 그 PDF로 미리보기를 보여 줄 수 있습니다. `hwp`·`hwpx`는 변환 없이도 미리볼 수 있지만, 한컴오피스와 똑같은 모양이 꼭 필요하면 PDF 변환본을 함께 두세요. GitHub Actions를 쓴다면 테마의 `document-previews` 액션이 Ubuntu에 LibreOffice와 H2Orestart(한글 문서 변환 확장)를 설치해 원본과 같은 이름의 `.pdf`를 만들어 줍니다.
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.14.0
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.15.0
   with:
     source: assets/files
 - run: bundle exec jekyll build
