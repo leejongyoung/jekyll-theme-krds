@@ -97,7 +97,7 @@
     {%- endif %}
   {%- endif %}
   <figcaption class="th-attachment-meta">
-    {% include embed/attachment-icon.html ext=ext %}
+    {% unless want_preview == false and view_kind == 'hwp' %}{% include embed/attachment-icon.html ext=ext %}{% endunless %}
     <span class="th-attachment-title">{{ title | escape }}</span>
     {%- if include.desc %}<span class="th-attachment-desc">{{ include.desc | escape }}</span>{% endif -%}
     {%- assign _size = include['size'] -%}
