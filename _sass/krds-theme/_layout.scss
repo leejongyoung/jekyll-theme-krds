@@ -166,7 +166,16 @@ body {
   }
   @include size-large-less { grid-template-columns: minmax(0, 1fr); .th-doc-toc { display: none; } } // 1fr 만 쓰면 넓은 SVG·표가 열을 밀어내 가로로 넘친다
   &-side { position: sticky; top: var(--krds-gap-6); @include size-large-less { position: static; } }
-  &-toc { position: sticky; top: var(--krds-gap-6); }
+  &-toc {
+    // top 17rem: 위로 스크롤하면 다시 나타나는 고정 헤더(전체 높이 168px) 아래에 둔다. 기존 목차는 위에서 256px에 고정이었다.
+    position: sticky; top: 17rem;
+    // KRDS 기본값은 목차를 화면(fixed) 기준 오른쪽 여백으로 계산해서, 화면 폭이 1728px 아래(예: 맥북 프로 14인치 1512px)면 본문과 겹친다.
+    // 위 그리드가 이미 오른쪽 칸을 확보하므로 목차를 그 칸 안에 둔다. 목차가 화면보다 길면 칸 안에서 스크롤한다.
+    .krds-in-page-navigation-type .krds-in-page-navigation-area {
+      position: static; width: auto; max-width: var(--krds-in-page-navigation--width);
+      max-height: calc(100vh - 17rem - var(--krds-gap-6)); padding: 0.4rem; margin: -0.4rem; overflow-y: auto;
+    }
+  }
 }
 .th-doc > article, .th-doc-side { min-width: 0; }
 
