@@ -33,5 +33,16 @@
 .th-hwpx-table .th-hwpx-p { margin: 0; }
 .th-hwpx-img { display: inline-block; max-width: 100%; height: auto; margin: 0; vertical-align: middle; }
 .th-hwpx-missing { color: var(--th-text-subtle); }
+.th-hwpx a.th-hwpx-link {
+  color: var(--th-text-primary);
+  text-decoration: underline;
+  text-underline-offset: var(--krds-font-underline-offset);
+}
+.th-hwpx a.th-hwpx-link:hover { text-decoration-thickness: 2px; }
+.th-hwpx a.th-hwpx-link > span { color: inherit !important; }   /* 글자 모양의 색이 링크 색을 덮지 않게 한다 */
+.th-hwpx a.th-hwpx-link:focus-visible {
+  border-radius: 2px;
+  box-shadow: var(--krds-box-shadow-outline);
+}
 .th-attachment-hwpx .th-hwpx-wrap { max-height: 70vh; padding: var(--krds-padding-3); overflow: auto; }
 @media print { .th-hwpx-note { display: none; } .th-attachment-hwpx .th-hwpx-wrap { max-height: none; overflow: visible; } }
