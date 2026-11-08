@@ -36,6 +36,7 @@
     ['sheet', 'file-excel', 'xls xlsx ods cell'],
     ['sheet', 'file-csv', 'csv tsv'],
     ['slides', 'file-powerpoint', 'ppt pptx odp show'],
+    ['hwp', 'file-hwp', 'hwp hwpx'],
     ['image', 'file-image', 'png jpg jpeg gif webp svg bmp'],
     ['audio', 'file-audio', 'mp3 wav ogg m4a flac'],
     ['video', 'file-video', 'mp4 webm mov mkv'],
