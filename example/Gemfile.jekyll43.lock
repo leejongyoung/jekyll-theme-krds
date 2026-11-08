@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    jekyll-theme-krds (1.9.1)
+    jekyll-theme-krds (1.10.0)
       jekyll (>= 4.3, < 5.0)
       jekyll-seo-tag (~> 2.8)
 
