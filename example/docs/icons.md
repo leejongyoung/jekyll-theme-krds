@@ -28,13 +28,13 @@ tags: [아이콘, 가이드]
 
 | 종류 | 확장자 | 아이콘 |
 | :--- | :--- | :--- |
-| PDF | pdf | {% include embed/icon.html name="file-pdf" %} file-pdf |
-| 문서 | doc, docx, odt, rtf | {% include embed/icon.html name="file-word" %} file-word |
-| 스프레드시트 | xls, xlsx, ods, cell, csv, tsv | {% include embed/icon.html name="file-excel" %} file-excel · {% include embed/icon.html name="file-csv" %} file-csv |
-| 프레젠테이션 | ppt, pptx, odp, show | {% include embed/icon.html name="file-powerpoint" %} file-powerpoint |
-| 한글 | hwp, hwpx | {% include embed/icon.html name="file-hwp" %} file-hwp |
-| 이미지·음원·영상 | png, jpg, svg, mp3, mp4 … | {% include embed/icon.html name="file-image" %} {% include embed/icon.html name="file-audio" %} {% include embed/icon.html name="file-video" %} |
-| 압축·코드·텍스트 | zip, html, json, txt … | {% include embed/icon.html name="file-zipper" %} {% include embed/icon.html name="file-code" %} {% include embed/icon.html name="file-lines" %} |
+| PDF | pdf | <i class="th-fa th-fa-file-pdf" aria-hidden="true"></i> file-pdf |
+| 문서 | doc, docx, odt, rtf | <i class="th-fa th-fa-file-word" aria-hidden="true"></i> file-word |
+| 스프레드시트 | xls, xlsx, ods, cell, csv, tsv | <i class="th-fa th-fa-file-excel" aria-hidden="true"></i> file-excel · <i class="th-fa th-fa-file-csv" aria-hidden="true"></i> file-csv |
+| 프레젠테이션 | ppt, pptx, odp, show | <i class="th-fa th-fa-file-powerpoint" aria-hidden="true"></i> file-powerpoint |
+| 한글 | hwp, hwpx | <i class="th-fa th-fa-file-hwp" aria-hidden="true"></i> file-hwp |
+| 이미지·음원·영상 | png, jpg, svg, mp3, mp4 … | <i class="th-fa th-fa-file-image" aria-hidden="true"></i> <i class="th-fa th-fa-file-audio" aria-hidden="true"></i> <i class="th-fa th-fa-file-video" aria-hidden="true"></i> |
+| 압축·코드·텍스트 | zip, html, json, txt … | <i class="th-fa th-fa-file-zipper" aria-hidden="true"></i> <i class="th-fa th-fa-file-code" aria-hidden="true"></i> <i class="th-fa th-fa-file-lines" aria-hidden="true"></i> |
 
 ## 들어 있는 아이콘
 
