@@ -102,7 +102,7 @@
     {%- assign _size = include['size'] -%}
     {%- if _size %}<span class="th-attachment-size">{{ _size | escape }}</span>{% endif -%}
     <span class="th-attachment-kind">{{ kind_label }}</span>
-    {%- if scan %}<span class="th-attachment-scan" title="{{ scan.engine | escape }} · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과 · {{ scan.scanned_at | escape }}</span>{% endif -%}
+    {%- if scan %}<span class="th-attachment-scan" title="{{ scan.engine | escape }} · {{ scan.scanned_at | escape }} 검사 · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과</span>{% endif -%}
     {%- if show_actions and view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
     {%- if show_actions %}<a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{% endif -%}
     {%- assign _sha = include.sha256 | default: '' -%}
