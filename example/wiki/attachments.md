@@ -24,6 +24,11 @@ attachments:
     desc: "스프레드시트 미리보기"
     size: "5.2KB"
     sha256: "f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414"
+  - src: "/assets/files/sample.hwpx"
+    title: "첨부 예제 한글 문서"
+    desc: "한글(HWPX) 브라우저 미리보기"
+    size: "11.4KB"
+    sha256: "84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf"
 ---
 문서 front matter의 `attachments`에 파일을 적으면 이 페이지 아래처럼 목록이 만들어집니다. 각 줄에는 형식별 [[아이콘]], 용량, SHA-256 전체 값, 그리고 `미리보기`와 `내려받기` 버튼이 나옵니다.
 
