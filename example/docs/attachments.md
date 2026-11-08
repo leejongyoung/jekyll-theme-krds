@@ -23,8 +23,8 @@ attachments:
     sha256: "f60aa2d526e8482478469c3f19a1b9a398c8081d72c3250c4c8186d54373a414"
   - src: "/assets/files/sample.hwpx"
     title: "첨부 예제 한글 문서"
-    size: "11.4KB"
-    sha256: "84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf"
+    size: "11.7KB"
+    sha256: "5c121fe16c4375fd1cec206bdb180ea6d3e30c88e528f97ad0b05a40af1f7ddd"
   - src: "/assets/files/sample.txt"
     title: "첨부 예제 텍스트"
     size: "474B"
@@ -69,9 +69,9 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ## 한글(HWPX) 미리보기
 
-`hwpx`는 변환 없이 브라우저가 파일을 직접 읽어 보여줍니다. 문단, 글자 모양(굵기·기울임·밑줄·취소선·색·크기), 문단 정렬, 표(칸 합치기 포함), 그림(PNG·JPEG·GIF·BMP·WebP·SVG)을 그립니다. 테마에 포함된 `hwpx.js`가 ZIP을 풀어 처리하며 외부 연결이 없습니다.
+`hwpx`는 변환 없이 브라우저가 파일을 직접 읽어 보여줍니다. 문단, 글자 모양(굵기·기울임·밑줄·취소선·색·크기), 문단 정렬, 표(칸 합치기 포함), 그림(PNG·JPEG·GIF·BMP·WebP·SVG), 하이퍼링크를 그립니다. 링크는 `http`·`https`·`mailto`만 열리고 새 탭에서 열립니다(그 밖의 주소는 글자로만 보임). 테마에 포함된 `hwpx.js`가 ZIP을 풀어 처리하며 외부 연결이 없습니다.
 
-{% include embed/attachment.html src="/assets/files/sample.hwpx" title="첨부 예제 한글 문서" size="11.4KB" sha256="84f03594c146a331013d6c31f2ce3f23ade79720237060b0384e73b67cde2bcf" %}
+{% include embed/attachment.html src="/assets/files/sample.hwpx" title="첨부 예제 한글 문서" size="11.7KB" sha256="5c121fe16c4375fd1cec206bdb180ea6d3e30c88e528f97ad0b05a40af1f7ddd" %}
 
 - **그리지 않는 것:** 쪽 모양, 머리말·꼬리말·쪽 번호, 도형·글상자, 수식, 변경 추적. 그래서 글과 표를 훑어보는 용도입니다. 서식까지 정확히 보여야 하면 위의 PDF 변환본을 `preview_pdf`로 함께 두세요(변환본이 있으면 PDF가 우선입니다).
 - **지원하지 않는 형식:** 예전 형식 `hwp`와 암호가 걸린 문서는 미리볼 수 없고 내려받기만 나옵니다.
