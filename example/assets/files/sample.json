@@ -1,0 +1,15 @@
+{
+  "site": "KRDS 테마 예제",
+  "version": "1.9.0",
+  "features": ["문서", "블로그", "위키", "첨부 파일"],
+  "search": {
+    "sentence": true,
+    "maxChars": 3000,
+    "ratio": 0.17
+  },
+  "attachments": [
+    { "src": "/assets/files/sample.pdf", "size": 5934, "scan": "clean" },
+    { "src": "/assets/files/sample.hwpx", "size": 11981, "scan": null }
+  ],
+  "note": "문자열 안의 \"따옴표\"와 줄바꿈 \\n 도 그대로 보입니다"
+}
