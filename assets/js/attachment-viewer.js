@@ -1,4 +1,4 @@
-/* Standalone attachment viewer: PDF, images, the first spreadsheet sheet, HWPX, and plain text. */
+/* Standalone attachment viewer: PDF, images, the first spreadsheet sheet, HWPX, plain text, and (optional) HWP/HWPX through rhwp. */
 (function () {
   'use strict';
   var params = new URLSearchParams(location.search);
@@ -203,9 +203,33 @@
     document.head.appendChild(script);
   }
 
+  // 고화질 한글 미리보기(rhwp, 선택): 사이트가 rhwp를 올려 둔 경우에만 링크가 생긴다. 쪽 수가 적으면 모두 그려 인쇄할 수 있다.
+  function renderRhwp(url) {
+    var script = document.createElement('script');
+    script.src = new URL('js/hwp-rhwp.js', location.href).href;
+    script.onload = function () {
+      window.KRDSRhwp.open({ base: new URL('vendor/rhwp/', location.href).href, src: url, eager: true }).then(function (view) {
+        content.textContent = '';
+        var wrap = document.createElement('div');
+        wrap.className = 'th-rhwp-viewer';
+        var info = document.createElement('p');
+        info.className = 'th-rhwp-info';
+        info.textContent = '쪽 모양 그대로 · 전체 ' + view.pageCount + '쪽';
+        wrap.appendChild(info);
+        wrap.appendChild(view.root);
+        content.appendChild(wrap);
+        view.rendered.then(readyToPrint);
+      }).catch(function (error) {
+        fail((error && error.krdsRhwp ? error.message : '한글 문서를 불러오지 못했습니다.') + ' 원본을 내려받아 확인하세요.');
+      });
+    };
+    script.onerror = function () { fail('고화질 미리보기 스크립트를 불러오지 못했습니다.'); };
+    document.head.appendChild(script);
+  }
+
   var url = safeURL(src);
   var originalURL = safeURL(originalSrc);
-  if (!url || ['pdf', 'image', 'sheet', 'hwpx', 'text'].indexOf(kind) === -1) {
+  if (!url || ['pdf', 'image', 'sheet', 'hwpx', 'text', 'rhwp'].indexOf(kind) === -1) {
     fail('지원하지 않거나 잘못된 미리보기 주소입니다.');
     return;
   }
@@ -227,5 +251,6 @@
   else if (kind === 'image') renderImage(url);
   else if (kind === 'hwpx') renderHwpx(url);
   else if (kind === 'text') renderText(url);
+  else if (kind === 'rhwp') renderRhwp(url);
   else renderSheet(url);
 })();

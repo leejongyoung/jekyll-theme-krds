@@ -12,6 +12,7 @@ on:
       - "jekyll-theme-krds.gemspec"
       - "document-previews/**"
       - "attachment-scan/**"
+      - "rhwp-vendor/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -41,6 +42,10 @@ jobs:
         uses: ./document-previews
         with:
           source: example/assets/files
+      - name: Download rhwp (optional high-fidelity Hangul preview)
+        uses: ./rhwp-vendor
+        with:
+          dest: example/assets/vendor/rhwp
       - uses: actions/configure-pages@v6
       - uses: ruby/setup-ruby@v1
         with:
