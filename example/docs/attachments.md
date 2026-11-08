@@ -59,7 +59,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.13.0
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.14.0
   with:
     source: assets/files
 - run: bundle exec jekyll build
@@ -88,7 +88,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ```yaml
 - name: Download rhwp (optional high-fidelity Hangul preview)
-  uses: leejongyoung/jekyll-theme-krds/rhwp-vendor@v1.13.0
+  uses: leejongyoung/jekyll-theme-krds/rhwp-vendor@v1.14.0
   with:
     dest: assets/vendor/rhwp
 ```
@@ -148,7 +148,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 ```yaml
 - uses: actions/checkout@v7
 - name: Scan attachment files for viruses (first time only)
-  uses: leejongyoung/jekyll-theme-krds/attachment-scan@v1.13.0
+  uses: leejongyoung/jekyll-theme-krds/attachment-scan@v1.14.0
   with:
     source: assets/files
     manifest: _data/attachment_scan.json
@@ -169,7 +169,7 @@ jobs:
   deploy:
     steps:
       - uses: actions/checkout@v7
-      - uses: leejongyoung/jekyll-theme-krds/attachment-scan@v1.13.0
+      - uses: leejongyoung/jekyll-theme-krds/attachment-scan@v1.14.0
         with:
           source: assets/files
           manifest: _data/attachment_scan.json
