@@ -91,6 +91,176 @@
     return total;
   }
 
+
+  // ── 문장(질문) 검색 ────────────────────────────────────────────────
+  // 색인의 s(소제목별 본문)를 600자 안팎으로 나누고, 글자 두 개(bigram)가 겹치는 정도에 희귀도(idf)를 곱해 점수를 낸다.
+  // 모델이나 형태소 분석 없이 "…할 수 있나요?"처럼 조사·어미가 붙은 질문도 찾는다. 외부 요청은 없다.
+  var ASK_WINDOW = 600, ASK_MAX_TOTAL = 3000000, ASK_SHOW = 5, ASK_PER_PAGE = 2;
+  var ASK_MIN_REL = 0.17;   // ln(1+단위 수)에 대한 최소 점수 비율(범위 밖 질문을 거른다)
+  var ASK_TITLE = 0.5;      // 글 제목·소제목에 겹친 조각에 주는 가점 비율
+  var ASK_MIN_TOP = 0.4;    // 1위 점수에 대한 최소 비율
+  var LETTER = /[\p{L}\p{N}]/u;
+  var ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+  var askEl = root.querySelector('.th-search-ask');
+  var askList = askEl && askEl.querySelector('.th-search-ask-list');
+  var askResults = [];
+  var units = null, unitDf = null;
+
+  // 이름 있는 엔티티와 숫자 엔티티(&#34; &#x22;)를 풀어 쓴다. 색인 생성 단계에서 한 번 더 이스케이프된 경우를 위해 두 번까지 푼다.
+  function decode(s) {
+    var out = String(s || '');
+    for (var pass = 0; pass < 2; pass++) {
+      var next = out.replace(/&(#x[0-9a-f]+|#[0-9]+|amp|lt|gt|quot|apos|nbsp);/gi, function (m, e) {
+        if (e.charAt(0) === '#') {
+          var n = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+          return n > 0 && n <= 0x10ffff ? String.fromCodePoint(n) : m;
+        }
+        return ENT[e.toLowerCase()];
+      });
+      if (next === out) break;
+      out = next;
+    }
+    return out;
+  }
+  // 위키 문서의 [[문서|표시 글]] 표기는 표시 글(없으면 문서 이름)만 남긴다.
+  function unwiki(s) { return s.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, function (m, a, b) { return b || a; }); }
+
+  // 글자·숫자만 이어 붙인 문자열(t)과 각 글자의 원문 위치(pos)
+  function letterGrams(text) {
+    var t = '', pos = [];
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if (LETTER.test(ch)) { t += ch.toLowerCase(); pos.push(i); }
+    }
+    return { t: t, pos: pos };
+  }
+
+  function gramsOf(t) {
+    var m = Object.create(null), n = 0;
+    for (var i = 0; i < t.length - 1; i++) { var k = t.substr(i, 2); m[k] = (m[k] || 0) + 1; n++; }
+    return { m: m, n: n };
+  }
+
+  function splitWindows(text) {
+    var out = [], from = 0;
+    while (from < text.length) {
+      var to = Math.min(text.length, from + ASK_WINDOW);
+      if (to < text.length) { var sp = text.lastIndexOf(' ', to); if (sp > from + ASK_WINDOW * 0.6) to = sp; }
+      var piece = text.slice(from, to).trim();
+      if (piece.length >= 15) out.push(piece);
+      from = to;
+    }
+    return out;
+  }
+
+  // 처음 문장 검색을 할 때 한 번만 만든다. 본문이 너무 크면(약 3MB 초과) 끈다.
+  function buildUnits() {
+    var total = 0;
+    docs.forEach(function (d) { (d.s || []).forEach(function (sec) { total += String(sec.c || '').length; }); });
+    units = []; unitDf = Object.create(null);
+    if (!total || total > ASK_MAX_TOTAL) return;
+    docs.forEach(function (d) {
+      (d.s || []).forEach(function (sec) {
+        var head = clean(decode(sec.h));
+        splitWindows(unwiki(clean(decode(sec.c)))).forEach(function (w) {
+          var g = gramsOf(letterGrams(d.t + ' ' + head + ' ' + w).t);
+          units.push({ d: d, h: head, a: sec.a || '', text: w, g: g.m, n: g.n, th: gramsOf(letterGrams(d.t + ' ' + head).t).m });
+          for (var k in g.m) unitDf[k] = (unitDf[k] || 0) + 1;
+        });
+      });
+    });
+  }
+
+  function ask(q, tokens) {
+    if (!askEl || !docs || !tokens.length) return [];
+    // 단어가 모두 일치하는 글이 있고 질문처럼 길지 않으면(3단어 이하) 따로 보태지 않는다.
+    if (results.length && tokens.length < 4) return [];
+    if (!units) buildUnits();
+    if (!units.length) return [];
+    var qg = gramsOf(letterGrams(q).t).m, keys = Object.keys(qg);
+    if (keys.length < 2) return [];
+    var N = units.length, scale = Math.log(1 + N), idf = Object.create(null), hl = Object.create(null);
+    keys.forEach(function (k) {
+      idf[k] = Math.log(1 + N / (unitDf[k] || 0.5));
+      if ((unitDf[k] || 0) <= N * 0.3) hl[k] = true;     // 너무 흔한 조각은 강조하지 않는다
+    });
+    var scored = [];
+    units.forEach(function (u) {
+      for (var i = 0; i < selected.length; i++) if (u.d.g.indexOf(selected[i]) < 0) return;
+      var s = 0;
+      for (var j = 0; j < keys.length; j++) {
+        if (u.g[keys[j]]) s += idf[keys[j]];
+        if (u.th[keys[j]]) s += ASK_TITLE * idf[keys[j]];
+      }
+      if (s) scored.push({ u: u, s: s / Math.sqrt(1 + u.n), hl: hl });
+    });
+    if (!scored.length) return [];
+    scored.sort(function (a, b) { return b.s - a.s; });
+    var min = Math.max(ASK_MIN_REL * scale, ASK_MIN_TOP * scored[0].s);
+    var out = [], per = Object.create(null), seen = Object.create(null);
+    for (var r = 0; r < scored.length && out.length < ASK_SHOW; r++) {
+      if (scored[r].s < min) break;
+      var key = scored[r].u.d.u, sect = key + '#' + scored[r].u.a + '|' + scored[r].u.h;
+      if (seen[sect] || (per[key] || 0) >= ASK_PER_PAGE) continue;   // 같은 소제목은 한 번만, 한 글에서는 최대 2개
+      seen[sect] = true;
+      per[key] = (per[key] || 0) + 1;
+      out.push(scored[r]);
+    }
+    return out;
+  }
+
+  // 강조가 가장 몰린 구간을 잘라 보여 주고, 겹친 글자 조각을 <mark>로 감싼다.
+  function fillAskSnippet(p, u, hl) {
+    var L = letterGrams(u.text), flag = [], hits = [], i;
+    for (i = 0; i < L.t.length - 1; i++) {
+      if (hl[L.t.substr(i, 2)]) { flag[L.pos[i]] = true; flag[L.pos[i + 1]] = true; hits.push(L.pos[i]); }
+    }
+    var best = 0, bestN = -1;
+    for (var h = 0; h < hits.length; h++) {
+      var n = 0;
+      for (var x = h; x < hits.length && hits[x] < hits[h] + 140; x++) n++;
+      if (n > bestN) { bestN = n; best = hits[h]; }
+    }
+    var text = u.text, from = Math.max(0, best - 20), to = Math.min(text.length, from + 160);
+    if (from > 0) { var sp = text.indexOf(' ', from); if (sp > 0 && sp < from + 20) from = sp + 1; }
+    if (from > 0) p.appendChild(document.createTextNode('…'));
+    var buf = '', marked = false;
+    function flush() {
+      if (!buf) return;
+      if (marked) p.appendChild(el('mark', null, buf)); else p.appendChild(document.createTextNode(buf));
+      buf = '';
+    }
+    for (i = from; i < to; i++) {
+      var ch = text.charAt(i);
+      var on = !!flag[i] || (/\s/.test(ch) && flag[i - 1] && flag[i + 1]);
+      if (on !== marked) { flush(); marked = on; }
+      buf += ch;
+    }
+    flush();
+    if (to < text.length) p.appendChild(document.createTextNode('…'));
+  }
+
+  function askItem(r) {
+    var u = r.u;
+    var li = el('li', 'th-search-item');
+    var h = el('h3', 'th-search-title');
+    var a = el('a', null, u.d.t + (u.h && u.h !== u.d.t ? ' › ' + u.h : ''));
+    a.href = u.d.u + (u.a ? '#' + u.a : '');
+    h.appendChild(a);
+    li.appendChild(h);
+    var p = el('p', 'th-search-snippet');
+    fillAskSnippet(p, u, r.hl);
+    li.appendChild(p);
+    return li;
+  }
+
+  function renderAsk() {
+    if (!askEl) return;
+    askList.textContent = '';
+    askResults.forEach(function (r) { askList.appendChild(askItem(r)); });
+    askEl.hidden = !askResults.length;
+  }
+
   function search() {
     var q = input.value;
     var tokens = tokensOf(q);
@@ -103,9 +273,11 @@
       });
       results.sort(function (a, b) { return b.s - a.s || (b.d.d > a.d.d ? 1 : b.d.d < a.d.d ? -1 : 0); });
     }
+    askResults = ask(q, tokens);
     shown = 0;
     listEl.textContent = '';
     render(tokens);
+    renderAsk();
     updateStatus(q, tokens);
     syncUrl(q);
   }
@@ -152,12 +324,14 @@
     var msg;
     if (!docs) msg = '검색 색인을 불러오는 중입니다.';
     else if (!tokens.length && !selected.length) msg = '검색어를 입력하거나 태그를 선택해 주세요. 전체 ' + docs.length + '건을 검색합니다.';
+    else if (!results.length && askResults.length) msg = '입력한 모든 단어가 들어 있는 글은 없습니다. 질문과 가까운 내용 ' + askResults.length + '건을 아래에 보여 드립니다.';
     else if (!results.length) msg = '검색 결과가 없습니다. 다른 단어로 검색하거나 태그 선택을 줄여 보세요.';
     else {
       var what = [];
       if (q.trim()) what.push('‘' + q.trim() + '’');
       if (selected.length) what.push('태그 ' + selected.join(', '));
       msg = what.join(' · ') + ' 검색 결과 ' + results.length + '건';
+      if (askResults.length) msg += ' · 질문과 가까운 내용 ' + askResults.length + '건';
     }
     statusEl.textContent = msg;
   }
