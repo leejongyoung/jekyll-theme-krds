@@ -76,7 +76,7 @@ attachments:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.15.0
+- uses: leejongyoung/jekyll-theme-krds/document-previews@v1.16.0
   with:
     source: assets/files
 - run: bundle exec jekyll build
