@@ -19,8 +19,8 @@ attachments:
     preview_pdf: "/assets/files/sample-report.pdf"
   - src: "/assets/files/sample-presentation.pptx"
     title: "첨부 예제 프레젠테이션"
-    size: "5.4KB"
-    sha256: "2dd3c0a43822cc9f3d7684b74383c4e929b5bd7a7111aa4f570aaf55f9bdf14b"
+    size: "5.5KB"
+    sha256: "f22696e32d14325768540ec69c946549d034e7d372e784ce8fbae2ee643b327a"
     preview_pdf: "/assets/files/sample-presentation.pdf"
   - src: "/assets/files/sample-data.xlsx"
     title: "첨부 예제 데이터"
@@ -63,7 +63,7 @@ attachments:
 `docx`·`pptx` 같은 오피스 문서는 브라우저가 직접 그리지 못하므로 `preview_pdf`로 PDF 변환본을 함께 두면 그걸 보여줍니다. 미리보기 버튼은 PDF 변환본을 새 탭의 테마 viewer로 엽니다.
 
 {% include embed/attachment.html src="/assets/files/sample-report.docx" title="첨부 예제 보고서" size="36.3KB" sha256="ad97c69b95bb82b009ba90f07d2fe8c59b1f1db8a89612e5b03b7bc88cabfcb1" preview_pdf="/assets/files/sample-report.pdf" %}
-{% include embed/attachment.html src="/assets/files/sample-presentation.pptx" title="첨부 예제 프레젠테이션" size="5.4KB" sha256="2dd3c0a43822cc9f3d7684b74383c4e929b5bd7a7111aa4f570aaf55f9bdf14b" preview_pdf="/assets/files/sample-presentation.pdf" %}
+{% include embed/attachment.html src="/assets/files/sample-presentation.pptx" title="첨부 예제 프레젠테이션" size="5.5KB" sha256="f22696e32d14325768540ec69c946549d034e7d372e784ce8fbae2ee643b327a" preview_pdf="/assets/files/sample-presentation.pdf" %}
 
 HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미리 보려면 사이트의 GitHub Actions 빌드 job에서 아래 composite action을 정적 사이트 빌드보다 먼저 실행하세요. Ubuntu runner에 LibreOffice와 해시가 고정된 H2Orestart v0.8.0을 설치하고, 원본과 같은 경로·이름의 `.pdf`를 생성합니다.
 
