@@ -41,13 +41,13 @@ plugins:
   - jekyll-paginate
 ```
 
-Jekyll 4로 직접 빌드(`bundle exec jekyll build`)해서 동작하는 것을 확인했습니다. `owner/repo@v1.10.1`처럼 태그를 붙여 버전을 고정할 수 있습니다.
+Jekyll 4로 직접 빌드(`bundle exec jekyll build`)해서 동작하는 것을 확인했습니다. `owner/repo@v1.11.0`처럼 태그를 붙여 버전을 고정할 수 있습니다.
 
 ### 방법 2. gem
 
 ```ruby
 # Gemfile
-gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds", tag: "v1.10.1"
+gem "jekyll-theme-krds", github: "leejongyoung/jekyll-theme-krds", tag: "v1.11.0"
 ```
 
 ```yaml
