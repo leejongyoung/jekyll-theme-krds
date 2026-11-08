@@ -123,6 +123,31 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 - 파일이 바뀌었는데 front matter의 `sha256`이 예전 값이면 표시를 달지 않습니다.
 - 정적 사이트 빌드보다 먼저, `document-previews`보다도 먼저 실행하세요(변환된 PDF는 매번 달라져 검사 대상이 되지 않게 하기 위함입니다).
 - 처음 올리는 파일은 컴퓨터에서 먼저 검사해도 됩니다. `brew install clamav && freshclam` 뒤에 `python3 attachment-scan/scan.py scan --source assets/files --manifest _data/attachment_scan.json`를 실행하고 만들어진 JSON을 커밋하세요.
+- **검사 기록을 CI가 자동으로 남기기(선택):** 기록 파일을 커밋하지 않으면 빌드마다 전부 검사합니다. 아래처럼 `main` 빌드가 기록 파일을 직접 커밋하게 할 수도 있습니다. job에 `contents: write` 권한이 필요하고(기본은 읽기 전용), 기록이 바뀐 빌드에서만 커밋합니다.
+
+```yaml
+permissions:
+  contents: write   # 기록 파일을 커밋하려면 필요
+jobs:
+  deploy:
+    steps:
+      - uses: actions/checkout@v7
+      - uses: leejongyoung/jekyll-theme-krds/attachment-scan@v1.9.0
+        with:
+          source: assets/files
+          manifest: _data/attachment_scan.json
+      - name: Record scan results
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add _data/attachment_scan.json
+          git diff --cached --quiet || { git commit -m "chore: record attachment scan results" && git push; }
+```
+
+  - 처음 한 번 빌드하면 파일을 검사해 기록을 커밋하고, 다음 빌드부터는 `pending=0`으로 검사를 건너뜁니다. 새 파일을 올리면 그 파일만 검사합니다. `GITHUB_TOKEN`으로 한 푸시는 워크플로를 다시 실행하지 않아 빌드가 반복되지 않습니다.
+  - 포크에서 온 PR은 쓰기 권한이 없어 푸시할 수 없으므로 `push` 이벤트에서만 커밋합니다. `main`에 직접 푸시를 막는 브랜치 보호를 켠 저장소에서는 이 방식이 실패하니, 그때는 컴퓨터에서 검사해 기록 파일을 커밋하는 방법을 쓰세요.
+  - 같은 시각에 `main`이 바뀌면 푸시가 거절될 수 있습니다(다시 실행하면 됩니다).
 - **한계:** 검사는 파일을 처음 넣을 때 그 시점의 바이러스 정의로 한 번만 합니다. 이후에 나온 정의로는 다시 보지 않으며(`rescan: "true"`로 전부 다시 검사), 검사 통과가 안전을 보증하지도 않습니다. 외부 주소(`http…`)의 파일은 검사하지 않습니다.
 
 ## 파일 정보 표시
