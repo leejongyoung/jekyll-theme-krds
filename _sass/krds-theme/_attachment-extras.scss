@@ -211,6 +211,9 @@ html[data-krds-mode="high-contrast"] .th-text-chip--warn { border-color: var(--k
   background: transparent;
   color: var(--th-text);
 }
+
+// rhwp 바로열기 배지(rhwp-badge)는 목록·viewer 모두 표시하지 않는다
+.rhwp-badge { display: none !important; }
 @media print {
   .th-text-tools { display: none; }
   .th-text-card { overflow: visible; }
