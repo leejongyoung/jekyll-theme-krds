@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-11-08
+
 ### 추가
 - 첨부 파일 바이러스 검사 옵션: `attachment-scan` GitHub Action이 ClamAV로 새로 들어온 파일만(주소·SHA-256 기준, 처음 한 번) 검사해 `_data/attachment_scan.json`에 기록하고, 감염이 있으면 빌드를 실패시킵니다. 기록된 파일 카드에 "바이러스 검사 통과 · 날짜" 표시가 붙습니다
 - 첨부 텍스트 미리보기(`txt`·`log`·`md`·`json`·`xml`·`yml`·`ini`·`conf`·`toml` 등): `<pre>`로 본문 카드(앞 100KB)와 새 탭 viewer(앞 2MB, 인쇄 가능)에 표시. UTF-8·UTF-16(BOM)·EUC-KR(CP949) 자동 판별, 내용은 `textContent`로만 넣어 HTML이 실행되지 않음, NUL이 있으면 텍스트로 보지 않음
