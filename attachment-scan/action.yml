@@ -44,8 +44,11 @@ runs:
         sudo apt-get install -y --no-install-recommends clamav ca-certificates
         sudo systemctl stop clamav-freshclam || true
         # clamd 없이 clamscan만 쓰므로 clamd 알림이 없는 최소 설정으로 정의 DB를 받는다.
-        printf 'DatabaseMirror database.clamav.net\nDatabaseDirectory /var/lib/clamav\nDatabaseOwner clamav\n' > "${RUNNER_TEMP}/freshclam.conf"
-        sudo freshclam --config-file="${RUNNER_TEMP}/freshclam.conf"
+        # freshclam은 clamav 사용자로 권한을 낮춘 뒤 설정을 읽으므로 runner 홈 아래(RUNNER_TEMP)가 아니라 /tmp에 둔다.
+        conf=$(mktemp /tmp/krds-freshclam.XXXXXX)
+        chmod 0644 "${conf}"
+        printf 'DatabaseMirror database.clamav.net\nDatabaseDirectory /var/lib/clamav\nDatabaseOwner clamav\n' > "${conf}"
+        sudo freshclam --config-file="${conf}"
     - name: Scan new attachment files
       if: steps.plan.outputs.pending != '0'
       shell: bash
