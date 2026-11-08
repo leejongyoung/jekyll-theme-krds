@@ -2,7 +2,7 @@
 
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를, 버전은 [유의적 버전](https://semver.org/lang/ko/)을 따릅니다.
 
-## [Unreleased]
+## [1.16.0] - 2026-11-08
 
 ### 추가
 - **자주 묻는 질문(FAQ) 아코디언**을 넣었습니다. 글의 front matter에 `faq` 목록을 적고 본문에서 `{% include embed/faq.html %}`로 보여주면 누르면 펼쳐지는 목록으로 보이고, 검색엔진용 FAQ 구조화 데이터(JSON-LD)도 함께 나갑니다. 자바스크립트 없이 동작합니다. `ask`를 쓰면 아래에 **질문하기** 버튼이 생기고, 사이트 설정 `krds.faq.ask`로 기본 주소를 둘 수 있습니다
