@@ -1,0 +1,8 @@
+# 지원 범위의 하한(Jekyll 4.3, Ruby 3.1)을 CI에서 확인하는 Gemfile. 평소 개발은 Gemfile(Jekyll 4.4)을 쓴다.
+# 사용: BUNDLE_GEMFILE=Gemfile.jekyll43 bundle exec jekyll build --strict_front_matter
+source "https://rubygems.org"
+
+gem "jekyll", "~> 4.3.0"
+gem "jekyll-theme-krds", path: ".."
+gem "jekyll-paginate", "~> 1.1"
+gem "webrick", "~> 1.8"
