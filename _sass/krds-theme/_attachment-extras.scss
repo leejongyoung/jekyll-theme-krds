@@ -38,3 +38,24 @@
   color: var(--th-text);
 }
 @media print { .th-text-note { display: none; } .th-text-pre { max-height: none; overflow: visible; } }
+
+// 모바일: 첨부 제목·설명은 2줄, SHA-256은 한 줄로 줄이고 나머지는 …로 표시(전체 값은 문서에 그대로 있음)
+@media (max-width: 767px) {
+  .th-attachment-meta .th-attachment-title,
+  .th-attachment-meta .th-attachment-desc {
+    display: -webkit-box;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  .th-attachment-meta .th-attachment-sha {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: normal;
+  }
+}
