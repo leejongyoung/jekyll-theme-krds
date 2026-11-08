@@ -204,6 +204,31 @@
     return node;
   }
 
+  // 하이퍼링크 필드(fieldBegin type="HYPERLINK")의 주소. http·https·mailto만 링크로 만든다(javascript: 등은 글자로만 보임).
+  function linkHref(field) {
+    var raw = '';
+    var params = all(field, 'stringParam');
+    for (var i = 0; i < params.length; i += 1) {
+      var pname = params[i].getAttribute('name');
+      if (pname === 'Path' && params[i].textContent) { raw = params[i].textContent; break; }
+      if (pname === 'Command' && !raw) raw = params[i].textContent.replace(/\\:/g, ':').split(';')[0];
+    }
+    raw = raw.trim();
+    if (!raw) return '';
+    try {
+      var url = new URL(raw);
+      return /^(https?|mailto):$/.test(url.protocol) ? url.href : '';
+    } catch (error) { return ''; }
+  }
+
+  function linkNode(href) {
+    var a = el('a', 'th-hwpx-link');
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    return a;
+  }
+
   function renderParagraph(p, ctx, into) {
     if (ctx.count >= MAX_PARAGRAPHS) { ctx.truncated = true; return; }
     ctx.count += 1;
@@ -232,6 +257,7 @@
       if (line) { into.appendChild(line); line = null; }
     }
 
+    var link = null;   // 열려 있는 하이퍼링크 { id, href, node }
     kids(p).forEach(function (run) {
       if (run.localName !== 'run') return;
       var style = ctx.styles.chars[run.getAttribute('charPrIDRef')];
@@ -239,7 +265,29 @@
         var name = item.localName;
         if (name === 't') {
           var text = textOf(item);
-          if (text) { open().appendChild(span(text, style)); hasContent = true; }
+          if (text) {
+            var piece = span(text, style);
+            if (link && link.href) {
+              if (!link.node) { link.node = linkNode(link.href); open().appendChild(link.node); }
+              link.node.appendChild(piece);
+            } else {
+              open().appendChild(piece);
+            }
+            hasContent = true;
+          }
+        } else if (name === 'ctrl') {
+          kids(item).forEach(function (c) {
+            if (c.localName === 'fieldBegin' && c.getAttribute('type') === 'HYPERLINK') {
+              link = { id: c.getAttribute('id'), href: linkHref(c), node: null };
+            } else if (c.localName === 'fieldEnd' && link && c.getAttribute('beginIDRef') === link.id) {
+              if (link.node) {
+                var hint = el('span', 'th-sr-only');
+                hint.textContent = ' (새 창 열림)';
+                link.node.appendChild(hint);
+              }
+              link = null;
+            }
+          });
         } else if (name === 'tbl') {
           flush();
           into.appendChild(renderTable(item, ctx));
