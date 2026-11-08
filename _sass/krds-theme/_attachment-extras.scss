@@ -1,0 +1,40 @@
+// 첨부 텍스트 미리보기(<pre>)와 바이러스 검사 표시.
+.th-text { color: var(--th-text); }
+.th-text-note {
+  margin: var(--krds-gap-2) 0 0;
+  color: var(--th-text-subtle);
+  font-size: var(--krds-pc-font-size-body-small);
+}
+.th-text-viewer > .th-text-note { margin: 0 0 var(--krds-gap-3); }
+.th-text-pre {
+  margin: 0;
+  padding: var(--krds-padding-4);
+  border: 1px solid var(--th-border);
+  border-radius: var(--krds-radius-medium2);
+  background: var(--th-bg-subtle);
+  color: var(--th-text);
+  font: 1.4rem/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, "Noto Sans Mono CJK KR", "D2Coding", monospace;
+  overflow: auto;
+  overflow-wrap: anywhere;
+  tab-size: 4;
+  white-space: pre-wrap;
+}
+.th-attachment-text .th-text-wrap { padding: var(--krds-padding-3); }
+.th-attachment-text .th-text-pre { max-height: 36rem; }
+.th-attachment-meta .th-attachment-scan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 var(--krds-padding-2);
+  border-radius: var(--krds-radius-small2);
+  background: var(--krds-color-light-success-5);
+  color: var(--krds-color-light-success-70);
+  font-size: var(--krds-pc-font-size-body-small);
+  white-space: nowrap;
+}
+[data-krds-mode="high-contrast"] .th-attachment-meta .th-attachment-scan {
+  border: 1px solid var(--th-border-strong);
+  background: transparent;
+  color: var(--th-text);
+}
+@media print { .th-text-note { display: none; } .th-text-pre { max-height: none; overflow: visible; } }

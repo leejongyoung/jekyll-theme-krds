@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+      - name: Scan attachment files for viruses (first time only)
+        uses: ./attachment-scan
+        with:
+          source: example/assets/files
+          manifest: example/_data/attachment_scan.json
       - name: Generate document preview PDFs
         uses: ./document-previews
         with:

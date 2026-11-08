@@ -435,8 +435,38 @@
       });
     });
   }
+  // 6) 첨부 텍스트 파일: <pre>로 앞부분을 보여 준다(KRDSText = js/text.js). 전체는 새 창 viewer나 내려받기로 본다.
+  var TEXT_INLINE_BYTES = 100 * 1024;
+  function initText() {
+    var figs = document.querySelectorAll('figure.th-attachment[data-th-text]');
+    if (!figs.length) return;
+    figs.forEach(function (fig) {
+      var host = fig.querySelector('.th-text-wrap');
+      var src = fig.getAttribute('data-text-src');
+      if (!host || !src) return;
+      var titleEl = fig.querySelector('.th-attachment-title');
+      var label = (titleEl ? titleEl.textContent : '텍스트 파일') + ' 내용';
+      function failed(message) {
+        host.textContent = '';
+        host.appendChild(el('p', 'th-embed-error', message));
+      }
+      if (!window.KRDSText) { failed('텍스트 미리보기 스크립트를 불러오지 못했습니다. 내려받기로 확인하세요.'); return; }
+      fetch(src).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return window.KRDSText.read(res, TEXT_INLINE_BYTES);
+      }).then(function (buf) {
+        var out = window.KRDSText.render(buf, { maxBytes: TEXT_INLINE_BYTES, label: label });
+        host.textContent = '';
+        host.appendChild(out.root);
+        host.appendChild(el('p', 'th-embed-note', out.note + (out.truncated ? ' · 전체는 내려받기로 확인하세요.' : '')));
+      }).catch(function (error) {
+        failed((error && error.krdsText ? error.message : '텍스트를 불러오지 못했습니다.') + ' 내려받기로 확인하세요.');
+      });
+    });
+  }
   initDiagrams();
   initCharts();
   initSheets();
   initHwpx();
+  initText();
 })();

@@ -22,9 +22,11 @@
     {%- assign images = 'png,jpg,jpeg,gif,webp,svg,bmp' | split: ',' -%}
     {%- assign sheets = 'xls,xlsx,ods,csv,tsv' | split: ',' -%}
     {%- assign docs = 'doc,docx,odt,ppt,pptx,odp,hwp,hwpx,cell' | split: ',' -%}
+    {%- assign texts = 'txt,text,log,md,markdown,json,xml,yml,yaml,ini,conf,cfg,toml' | split: ',' -%}
     {%- if images contains ext -%}{%- assign kind = 'image' -%}
     {%- elsif sheets contains ext -%}{%- assign kind = 'sheet' -%}
     {%- elsif docs contains ext -%}{%- assign kind = 'doc' -%}
+    {%- elsif texts contains ext -%}{%- assign kind = 'text' -%}
     {%- endif -%}
   {%- endif -%}
   {%- assign kind_label = '파일' -%}
@@ -49,7 +51,7 @@
     {%- if pdf_head == 'http' -%}{%- assign preview_pdf_url = preview_pdf -%}{%- else -%}{%- assign preview_pdf_url = preview_pdf | relative_url -%}{%- endif -%}
   {%- endif -%}
   {%- assign view_kind = '' -%}
-  {%- if kind == 'pdf' or kind == 'image' or kind == 'sheet' -%}{%- assign view_kind = kind -%}
+  {%- if kind == 'pdf' or kind == 'image' or kind == 'sheet' or kind == 'text' -%}{%- assign view_kind = kind -%}
   {%- elsif kind == 'doc' and preview_pdf != '' -%}{%- assign view_kind = 'doc' -%}
   {%- elsif ext == 'hwpx' and preview_pdf == '' -%}{%- assign view_kind = 'hwpx' -%}
   {%- endif -%}
@@ -67,7 +69,17 @@
     {%- assign encoded_ext = ext | uri_escape -%}
     {%- assign viewer_url = viewer_base | append: '?src=' | append: encoded_src | append: '&download=' | append: encoded_download | append: '&kind=' | append: encoded_kind | append: '&ext=' | append: encoded_ext | append: '&title=' | append: encoded_title -%}
   {%- endif -%}
-<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'hwpx' %} data-th-hwpx data-hwpx-src="{{ src_url | escape }}"{% endif %}>
+{%- comment -%} 바이러스 검사 표시: _data/attachment_scan.json(attachment-scan action이 만듦)에 이 파일이 clean으로 기록돼 있고 sha256이 맞으면 표시 {%- endcomment -%}
+{%- assign scan = nil -%}
+{%- if src_head != 'http' and site.data.attachment_scan.files -%}
+  {%- assign first_char = clean | slice: 0 -%}
+  {%- if first_char == '/' -%}{%- assign scan_key = clean -%}{%- else -%}{%- assign scan_key = clean | prepend: '/' -%}{%- endif -%}
+  {%- assign scan = site.data.attachment_scan.files[scan_key] -%}
+  {%- assign given_sha = include.sha256 | default: '' | downcase -%}
+  {%- if scan and scan.result != 'clean' -%}{%- assign scan = nil -%}{%- endif -%}
+  {%- if scan and given_sha != '' and given_sha != scan.sha256 -%}{%- assign scan = nil -%}{%- endif -%}
+{%- endif -%}
+<figure class="th-embed th-attachment th-attachment-{{ kind }}"{% if want_preview and kind == 'sheet' %} data-th-sheet data-sheet-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'hwpx' %} data-th-hwpx data-hwpx-src="{{ src_url | escape }}"{% endif %}{% if want_preview and view_kind == 'text' %} data-th-text data-text-src="{{ src_url | escape }}"{% endif %}>
   {%- if want_preview and view_kind != '' %}
     {%- if view_kind == 'pdf' %}
   <div class="th-attachment-preview"><object data="{{ src_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
@@ -77,6 +89,8 @@
   <div class="th-attachment-preview"><div class="th-table-wrap"><p class="th-embed-note">표 불러오는 중…</p></div></div>
     {%- elsif view_kind == 'doc' and preview_pdf != '' %}
   <div class="th-attachment-preview"><object data="{{ preview_pdf_url | escape }}" type="application/pdf" aria-label="{{ title | escape }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ src_url | escape }}">{{ title | escape }} 내려받기</a></p></object></div>
+    {%- elsif view_kind == 'text' %}
+  <div class="th-attachment-preview th-attachment-text"><div class="th-text-wrap" aria-live="polite"><p class="th-embed-note">텍스트 불러오는 중…</p></div></div>
     {%- elsif view_kind == 'hwpx' %}
   <div class="th-attachment-preview th-attachment-hwpx"><div class="th-hwpx-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
     {%- endif %}
@@ -88,6 +102,7 @@
     {%- assign _size = include['size'] -%}
     {%- if _size %}<span class="th-attachment-size">{{ _size | escape }}</span>{% endif -%}
     <span class="th-attachment-kind">{{ kind_label }}</span>
+    {%- if scan %}<span class="th-attachment-scan" title="{{ scan.engine | escape }} · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과 · {{ scan.scanned_at | escape }}</span>{% endif -%}
     {%- if show_actions and view_kind != '' %}<a class="krds-btn small text th-attachment-preview-link" href="{{ viewer_url | escape }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{% endif -%}
     {%- if show_actions %}<a class="krds-btn small text th-attachment-download" href="{{ src_url | escape }}"{% if src_head == 'http' %} target="_blank" rel="noopener"{% else %} download{% endif %}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{% endif -%}
     {%- assign _sha = include.sha256 | default: '' -%}
