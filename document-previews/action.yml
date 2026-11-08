@@ -14,13 +14,21 @@ runs:
     - name: Install LibreOffice and H2Orestart
       shell: bash
       env:
-        H2ORESTART_VERSION: v0.8.0
+        H2ORESTART_ASSET_ID: "652144775"
         H2ORESTART_SHA256: f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c
+        GH_TOKEN: ${{ github.token }}
       run: |
         set -euo pipefail
         sudo apt-get update -qq
         sudo apt-get install -y --no-install-recommends default-jre-headless libreoffice-java-common libreoffice-writer libreoffice-impress fonts-nanum
-        curl -fsSLo "${RUNNER_TEMP}/H2Orestart.oxt" "https://github.com/ebandal/H2Orestart/releases/download/${H2ORESTART_VERSION}/H2Orestart.oxt"
+        curl --fail --show-error --silent --location \
+          --retry 5 --retry-all-errors --retry-delay 5 \
+          --connect-timeout 20 --max-time 180 \
+          -H "Accept: application/octet-stream" \
+          -H "Authorization: Bearer ${GH_TOKEN}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          --output "${RUNNER_TEMP}/H2Orestart.oxt" \
+          "https://api.github.com/repos/ebandal/H2Orestart/releases/assets/${H2ORESTART_ASSET_ID}"
         echo "${H2ORESTART_SHA256}  ${RUNNER_TEMP}/H2Orestart.oxt" | sha256sum -c -
         sudo -H unopkg add --shared --force "${RUNNER_TEMP}/H2Orestart.oxt"
     - name: Convert document previews
