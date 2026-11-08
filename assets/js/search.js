@@ -175,6 +175,12 @@
     if (!askEl || !docs || !tokens.length) return [];
     // 단어가 모두 일치하는 글이 있고 질문처럼 길지 않으면(3단어 이하) 따로 보태지 않는다.
     if (results.length && tokens.length < 4) return [];
+    return rank(q, tokens);
+  }
+
+  // 질문과 가까운 구간을 점수순으로 고른다(화면의 ask()와 답변용 passages()가 함께 쓴다).
+  function rank(q, tokens) {
+    if (!docs || !tokens.length) return [];
     if (!units) buildUnits();
     if (!units.length) return [];
     var qg = gramsOf(letterGrams(q).t).m, keys = Object.keys(qg);
@@ -208,6 +214,23 @@
     }
     return out;
   }
+
+  // 답변 만들기(answer.js)가 근거 글을 가져가는 곳. 점수 기준을 넘는 구간을 글자 수 한도 안에서 돌려준다.
+  // 화면용 ask()와 달리 "단어가 모두 일치하는 글이 있으면 건너뛴다"는 규칙을 쓰지 않는다.
+  window.KRDSSearch = {
+    passages: function (q, maxChars) {
+      var tokens = tokensOf(q);
+      if (!docs || !tokens.length) return [];
+      var limit = maxChars || 3000, used = 0, out = [];
+      rank(q, tokens).forEach(function (r) {
+        if (used >= limit) return;
+        var text = r.u.text.length > limit - used ? r.u.text.slice(0, limit - used) : r.u.text;
+        used += text.length;
+        out.push({ title: r.u.d.t, heading: r.u.h, url: r.u.d.u + (r.u.a ? '#' + r.u.a : ''), text: text });
+      });
+      return out;
+    }
+  };
 
   // 강조가 가장 몰린 구간을 잘라 보여 주고, 겹친 글자 조각을 <mark>로 감싼다.
   function fillAskSnippet(p, u, hl) {
