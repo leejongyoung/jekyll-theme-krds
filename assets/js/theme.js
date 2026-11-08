@@ -84,6 +84,19 @@
       }, 0);
     }, true);
 
+    // 모바일 전체메뉴는 Escape로 닫고 메뉴를 열었던 버튼으로 포커스를 돌린다.
+    var mobileNav = document.getElementById('mobile-nav');
+    var mobileTrigger = document.querySelector('.btn-navi.all');
+    var mobileClose = document.getElementById('close-nav');
+    if (mobileNav && mobileTrigger && mobileClose) {
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape' || !mobileNav.classList.contains('is-open')) return;
+        e.preventDefault();
+        mobileClose.click();
+        setTimeout(function () { mobileTrigger.focus(); }, 0);
+      });
+    }
+
     // 모바일 전체메뉴의 글자 크기 단계 버튼(키트의 크기 조절은 드롭다운 안에서만 동작한다)
     var order = Object.keys(SCALES).map(function (k) { return SCALES[k]; });
     document.querySelectorAll('[data-th-scale-step]').forEach(function (btn) {
