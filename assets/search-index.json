@@ -11,13 +11,37 @@
 {%- assign th_pages = site.html_pages | where_exp: 'p', 'p.title and p.layout and p.search != false and p.layout != "search" and p.layout != "tags" and p.layout != "blog"' -%}
 {%- assign th_search_page = site.pages | where: 'layout', 'search' | first -%}
 {%- if th_search_page -%}{%- assign th_items = site.posts | concat: th_pages -%}{%- else -%}{%- assign th_items = '' | split: '' -%}{%- endif -%}
+{%- assign th_sentence = site.krds.search.sentence -%}
+{%- if th_sentence == nil -%}{%- assign th_sentence = true -%}{%- endif -%}
 {%- assign th_first = true -%}
 [
 {%- for d in th_items -%}
   {%- assign th_lead = d.lead | default: d.description | strip_html | normalize_whitespace -%}
   {%- assign th_body = d.content | markdownify | strip_html | normalize_whitespace | truncate: th_max, "" -%}
-  {%- if th_lead == '' and th_body == '' -%}{%- continue -%}{%- endif %}
-{% unless th_first %},{% endunless %}{ "t": {{ d.title | jsonify }}, "u": {{ d.url | relative_url | jsonify }}, "k": {% if d.date %}"post"{% else %}"page"{% endif %}, "d": {% if d.date %}{{ d.date | date: "%Y.%m.%d" | jsonify }}{% else %}""{% endif %}, "g": {% if d.tags %}{{ d.tags | jsonify }}{% else %}[]{% endif %}, "l": {{ th_lead | jsonify }}, "c": {{ th_body | jsonify }} }
+  {%- if th_lead == '' and th_body == '' -%}{%- continue -%}{%- endif -%}
+  {%- comment -%} 문장 검색용 소제목별 본문(s): h2·h3 앞에서 나누고 한 절은 4000자까지만 담는다. {%- endcomment -%}
+  {%- capture th_sections -%}
+    {%- if th_sentence != false -%}
+      {%- assign th_html = d.content | markdownify | replace: '<h3', '<h2' | replace: '</h3>', '</h2>' -%}
+      {%- assign th_parts = th_html | split: '<h2' -%}
+      {%- assign th_sfirst = true -%}
+      [
+      {%- for th_part in th_parts -%}
+        {%- if forloop.first -%}
+          {%- assign th_head = '' -%}{%- assign th_anchor = '' -%}
+          {%- assign th_text = th_part | strip_html | normalize_whitespace | truncate: 4000, "" -%}
+        {%- else -%}
+          {%- assign th_hb = th_part | split: '</h2>' | first -%}
+          {%- assign th_head = '<h2' | append: th_hb | append: '</h2>' | strip_html | normalize_whitespace -%}
+          {%- if th_hb contains 'id="' -%}{%- assign th_anchor = th_hb | split: 'id="' | last | split: '"' | first -%}{%- else -%}{%- assign th_anchor = '' -%}{%- endif -%}
+          {%- assign th_text = th_part | split: '</h2>' | last | strip_html | normalize_whitespace | truncate: 4000, "" -%}
+        {%- endif -%}
+        {%- if th_text.size > 14 -%}{%- unless th_sfirst -%},{%- endunless -%}{ "h": {{ th_head | jsonify }}, "a": {{ th_anchor | jsonify }}, "c": {{ th_text | jsonify }} }{%- assign th_sfirst = false -%}{%- endif -%}
+      {%- endfor -%}
+      ]
+    {%- else -%}[]{%- endif -%}
+  {%- endcapture %}
+{% unless th_first %},{% endunless %}{ "t": {{ d.title | jsonify }}, "u": {{ d.url | relative_url | jsonify }}, "k": {% if d.date %}"post"{% else %}"page"{% endif %}, "d": {% if d.date %}{{ d.date | date: "%Y.%m.%d" | jsonify }}{% else %}""{% endif %}, "g": {% if d.tags %}{{ d.tags | jsonify }}{% else %}[]{% endif %}, "l": {{ th_lead | jsonify }}, "c": {{ th_body | jsonify }}, "s": {{ th_sections | strip }} }
   {%- assign th_first = false -%}
 {%- endfor %}
 ]

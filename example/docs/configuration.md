@@ -13,6 +13,7 @@ lead: 사이트 이름, 푸터, 색과 글꼴을 바꾸는 방법입니다.
 | `krds.footer.contact` | 푸터 연락처 목록(`label`, `value`) |
 | `krds.favicon` | 파비콘 경로 |
 | `krds.search.max_chars` | 검색 색인에 담는 본문 길이(글자 수, 기본 3000). 글이 많으면 줄입니다 |
+| `krds.search.sentence` | 검색의 "문장으로 찾기"를 켤지(기본 `true`). 끄면 색인에서 소제목별 본문이 빠집니다 |
 
 ## 색과 글꼴 바꾸기
 

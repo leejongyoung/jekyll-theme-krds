@@ -16,7 +16,7 @@ layout: default
             <input type="search" id="th-search-q" name="q" class="krds-input" autocomplete="off" aria-describedby="th-search-hint" placeholder="찾고 싶은 내용을 입력해 주세요">
             <button type="submit" class="krds-btn medium icon"><span class="sr-only">검색</span><i class="svg-icon ico-sch"></i></button>
           </div>
-          <p class="form-hint" id="th-search-hint">공백으로 나누면 모든 단어가 들어 있는 글을 찾습니다. 제목, 태그, 본문을 검색합니다.</p>
+          <p class="form-hint" id="th-search-hint">공백으로 나누면 모든 단어가 들어 있는 글을 찾습니다. 제목, 태그, 본문을 검색합니다.{% if site.krds.search.sentence != false %} 질문처럼 문장으로 적으면 가까운 내용도 함께 찾아 줍니다.{% endif %}</p>
         </div>
       </div>
     </form>
@@ -30,6 +30,9 @@ layout: default
     <ol class="th-search-results"></ol>
     <p class="th-search-more" hidden><button type="button" class="krds-btn medium secondary">결과 더 보기</button></p>
 
+    {%- if site.krds.search.sentence != false %}
+    <section class="th-search-ask" hidden aria-labelledby="th-search-ask-title"><h2 class="th-search-ask-title" id="th-search-ask-title">질문과 가까운 내용</h2><p class="th-search-ask-note">문장으로 찾은 내용입니다. 정확한 답이 아닐 수 있으니 링크를 열어 확인해 주세요.</p><ol class="th-search-ask-list"></ol></section>
+    {%- endif %}
     <noscript><p class="th-embed-error">검색에는 JavaScript가 필요합니다. 태그 페이지에서 글을 찾아볼 수 있습니다.</p></noscript>
   </div>
 </div>
