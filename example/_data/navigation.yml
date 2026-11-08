@@ -60,6 +60,8 @@ docs:
         url: /docs/icons/
       - title: 홈 화면 꾸미기
         url: /docs/home/
+      - title: 자주 묻는 질문
+        url: /docs/faq/
 
 # 푸터 링크
 footer:
