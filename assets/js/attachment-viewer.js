@@ -63,20 +63,6 @@
     icon.appendChild(glyph);
     var kicker = document.querySelector('.th-file-viewer-kicker');
     if (kicker && /^[a-z0-9]{1,8}$/.test(ext)) kicker.textContent = '첨부 파일 미리보기 · ' + ext.toUpperCase();
-    var kindBadge = document.querySelector('.th-file-viewer-kind');
-    if (kindBadge) {
-      if (row[0] === 'hwp' && /^[a-z0-9]{1,8}$/.test(ext)) {
-        kindBadge.hidden = false;
-        kindBadge.textContent = ext.toUpperCase() + ' ';
-        var mark = document.createElement('i');
-        mark.className = 'th-fa th-fa-' + row[1];
-        mark.setAttribute('aria-hidden', 'true');
-        kindBadge.appendChild(mark);
-      } else {
-        kindBadge.hidden = true;
-        kindBadge.textContent = '';
-      }
-    }
   }
   function readyToPrint() {
     printButton.disabled = false;
